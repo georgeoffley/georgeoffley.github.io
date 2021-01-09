@@ -54,7 +54,7 @@ var store = [{
 },{
     "title": "Creating a Twitter Bot Using AWS Lambda and Go",
     "link": "/aws/go/creating-a-twitter-bot-using-aws-lambda-and-go.html",
-    "image": "/assets/images/twitter-bot-aws-lambda.jpg",
+    "image": "https://georgeoffley.com/assets/images/twitter-bot-aws-lambda.jpg",
     "date": "August 8, 2020",
     "category": ["AWS","Go"],
     "excerpt": "Table Of Contents Introduction Twitter App Set-Up Twitter Bot Code Setting up a Lambda Function Conclusion Introduction Most people have..."
