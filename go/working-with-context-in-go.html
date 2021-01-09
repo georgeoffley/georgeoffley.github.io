@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta content="text/html; charset=UTF-8" name="Content-Type" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Working with Context in Go | George Offley &mdash; Software Engineer </title>
+    <meta property="og:title" content="Working with Context in Go | George Offley &mdash; Software Engineer " />
+
+    <meta name="description" content="I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!">
+    <meta name="description" property="og:description" content="I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!" />
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site"    content="@georgeoffley">
+    <meta name="twitter:creator" content="@georgeoffley">
+    <meta name="twitter:title"   content="Working with Context in Go">
+
+    
+    <meta name="twitter:description" content="I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!">
+    
+
+    
+    <meta name="twitter:card"  content="summary_large_image">
+    <meta name="twitter:image" content="">
+    
+    <!-- end of Twitter cards -->
+    
+    <meta property="og:url" content="https://georgeoffley.com/go/working-with-context-in-go.html" />
+
+    <meta property="og:image" content="" />
+
+    <meta name="author" content="George Offley" />
+
+    <meta name="copyright" content="Copyright by George Offley. All Rights Reserved." />
+
+    <style>
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 300;
+            src: local('Roboto Light'), local('Roboto-Light'), url(https://fonts.gstatic.com/s/roboto/v15/Hgo13k-tfSpn0qi1SFdUfVtXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 400;
+            src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v15/CWB0XYA8bzo0kSThX0UTuA.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 700;
+            src: local('Roboto Bold'), local('Roboto-Bold'), url(https://fonts.gstatic.com/s/roboto/v15/d-6IYplOFocCacKzxwXSOFtXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 900;
+            src: local('Roboto Black'), local('Roboto-Black'), url(https://fonts.gstatic.com/s/roboto/v15/mnpfi9pxYH-Go5UiibESIltXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 300;
+            src: local('Roboto Light Italic'), local('Roboto-LightItalic'), url(https://fonts.gstatic.com/s/roboto/v15/7m8l7TlFO-S3VkhHuR0at44P5ICox8Kq3LLUNMylGO4.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 400;
+            src: local('Roboto Italic'), local('Roboto-Italic'), url(https://fonts.gstatic.com/s/roboto/v15/vPcynSL0qHq_6dX7lKVByfesZW2xOQ-xsNqO47m55DA.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 700;
+            src: local('Roboto Bold Italic'), local('Roboto-BoldItalic'), url(https://fonts.gstatic.com/s/roboto/v15/t6Nd4cfPRhZP44Q5QAjcC44P5ICox8Kq3LLUNMylGO4.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 900;
+            src: local('Roboto Black Italic'), local('Roboto-BlackItalic'), url(https://fonts.gstatic.com/s/roboto/v15/bmC0pGMXrhphrZJmniIZpY4P5ICox8Kq3LLUNMylGO4.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+    </style>
+    
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    
+    <link rel="stylesheet" href="https://georgeoffley.com/assets/css/main.css">
+
+    <link rel="canonical" href="https://georgeoffley.com/go/working-with-context-in-go.html">
+
+    <link rel="alternate" type="application/rss+xml" title="" href="https://georgeoffley.com/feed.xml">
+</head>
+
+    <body>
+        <div class="wrapper">
+            <aside class="user-profile fixed" role="complementary">
+    <div class="burger">
+        <input class="trigger hidden" id="toggleBurger" type="checkbox" />
+        <label for="toggleBurger">
+            <span>Navigation</span>
+        </label>
+    </div>
+
+    <div class="compact-header">
+        <a class="avatar" href="https://georgeoffley.com"><img alt="Avatar" src="https://raw.githubusercontent.com/georgeoffley/georgeoffley.github.io/master/assets/images/george_headshot_small.jpg" /></a>
+        <div class="my-info">
+            <strong class="my-name">George Offley</strong>
+            <span class="my-job-title">Software Engineer</span>
+        </div>
+    </div>
+
+    
+        
+        <div class="mainmenu">
+            <a href="https://georgeoffley.com" >Home</a>
+            
+                
+            
+                
+            
+                
+            
+                
+                    <a href="https://georgeoffley.com/blog/" >Blog</a>
+                
+            
+                
+                    <a href="https://georgeoffley.com/about_me/" >About Me</a>
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+        </div>
+        
+    
+
+    <p class="about-me">I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!</p>
+
+    <ul class="socials">
+        <li><a href="https://twitter.com/georgeoffley"><svg title="twitter" width="16" height="16" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li><li><a href="https://www.linkedin.com/in/georgeoffley/"><svg title="linkedin" width="16" height="16" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#linkedin-icon"></use></svg></a></li><li><a href="https://github.com/georgeoffley"><svg title="github" width="16" height="16" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#github-icon"></use></svg></a></li>
+
+        
+
+        
+    </ul>
+</aside>
+
+            <main class="the-content" role="main">
+                <div class="search" role="search">
+    <div>
+        <div class="show-results-count">0 Results</div>
+        <div class="search-holder">
+            <input type="text" id="search-input" placeholder="search for..." />
+        </div>
+    </div>
+    <ul id="results-container" class="results-container"></ul>
+</div>
+
+
+                <article class="post single" role="article" itemscope itemtype="http://schema.org/BlogPosting">
+    <header class="post-header">
+        <ul>
+            <li><time datetime="2020-08-17T21:00:00-04:00" itemprop="datePublished">17 Aug, 2020</time></li>
+            
+                
+                <li class="cats">
+                    
+                        <a href="/categories/Go/">Go</a>
+                    
+                </li>
+                
+            
+        </ul>
+        <h2 itemprop="name headline">Working with Context in Go</h2>
+    </header>
+
+    <div class="post-content">
+        <figure>
+    <img src="/assets/images/working-with-context-in-go.jpg" />
+</figure>
+
+<h2 id="table-of-contents">Table Of Contents</h2>
+<ul>
+  <li><a href="#introduction">Introduction</a></li>
+  <li><a href="#context_interface">Context Interface</a></li>
+  <li><a href="#context_in_context">Context in context</a></li>
+  <li><a href="#context_background">Context.Background</a></li>
+  <li><a href="#context_todo">Context.TODO</a></li>
+  <li><a href="#context_withcancel">Context.WithCancel</a></li>
+  <li><a href="#context_withDeadline">Context.WithDeadline</a></li>
+  <li><a href="#context_withtimeout">Context.WithTimeout</a></li>
+  <li><a href="#context_withvalue">Context.WithValue</a></li>
+  <li><a href="#conclusion">Conclusion</a></li>
+</ul>
+
+<h3 id="introduction-">Introduction <a name="introduction"></a></h3>
+
+<p>When you’re having a breakdown caused by the combination of burnout and existential pain, do you get annoyed that your harried cries into the void go unanswered? Well, I can’t help with that, but I can suggest some methods for timing out calls to external or internal services. I’ve been doing research and playing with some of the standard libraries in Go and one of them I find most useful is the context library. Used to get some control over a system that might be running slowly for whatever reason or to enforce a certain level of quality for service calls this small library is a standard for a reason. For any production level systems to keep good flow control the context library is going to be necessary.
+<!--This is a test-->
+<!--more--></p>
+
+<p>Created by <a href="https://twitter.com/Sajma">Sameer Ajmani</a> and <a href="https://vimeo.com/115309491">introduced in 2014</a>, the context library become a standard library with Go 1.7. If you have looked through some Go library source code you can find tons of examples <a href="https://github.com/mongodb/mongo-go-driver/blob/v1.4.0/mongo/client.go#L96">requiring a context to be passed along</a>. This is just one I’ve used recently. A <em>context</em> is a deadline you can pass into a running process in your code. This deadline can indicate to a process to stop running and return after a condition is met. This becomes useful when reaching out to external APIs, databases as shown above, or system commands.</p>
+
+<p>The following supposes that the reader knows about goroutines and channels and how they work together. I am going to deep dive into concurrency after writing about context as the context library is part of concurrency. For now, though, goroutines are lightweight threads that can be started for processes and channels are the pipelines used to pass data between these new processes.</p>
+
+<h3 id="context-interface-">Context Interface <a name="context_interface"></a></h3>
+
+<p>The context library defines a new interface called Context. The Context interface has some interesting fields laid out below:</p>
+
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/i/3zgq8cmkrprdfgo66niv.png" alt="Context Interface" /></p>
+
+<p>The <em>Deadline</em> field returns the expected time the work is finished and indicates when the context should be canceled.</p>
+
+<p>The <em>Done</em> field is a channel that is closed when work done for the context should be canceled. This operation can happen asynchronously. The channel can return as nil if the associated context can never be canceled. Different context types will arrange for work to be canceled depending on the circumstances, which we will get into.</p>
+
+<p><em>Err</em> will return nil until Done is closed. After which <em>Err</em> will either return <em>Canceled</em> if the context was canceled or <em>DealineExceeded</em> if the context’s deadline has passed.</p>
+
+<p>The Value field is a key-value interface which will return a value associated with the context as a key or nil if there was no value associated. Values should be used carefully as they are not for passing parameters into a function but for <a href="https://github.com/golang/go/blob/master/src/context/context.go#L185">request-scoped data transits processes and API boundaries</a>.</p>
+
+<h3 id="context-in-context-">Context in context <a name="context_in_context"></a></h3>
+
+<p>When creating a context in Go it is easy to write out a static context to store and reuse. So far as I can tell from my research this is not the optimal way to work with the context library. Context should take the form needed for each use. It should be shapeless, or in the words of <a href="https://youtu.be/cJMwBwFj5nQ">Bruce Lee be like water</a>. Your context should flow through your code and evolve depending on the need.</p>
+
+<p>There are some exceptions to this. For higher-level processes, you can pass in an empty context when you do not yet have a context in which to pass. These can work as placeholders before being refactored.</p>
+
+<h3 id="contextbackground-">Context.Background <a name="context_background"></a></h3>
+
+<p>The “Background” function returns an empty non-nil context. There is no associated deadline and no cancelation to speak of. This can be typically used in the main function, for testing, or for creating a top-level context to be made into something else. Looking into the source code you can see that it doesn’t have any logic other than returning an <a href="https://github.com/golang/go/blob/master/src/context/context.go#L208">empty context</a>:</p>
+
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/i/8g9hh8bxgsybws10ftld.png" alt="Context Background" /></p>
+
+<p><em>QuickNote:</em>
+Typically, the context is named <em>ctx</em> when it is declared. I’ve seen this in most implementations of context so if you come across <em>ctx</em> in random spots in source code there’s a good chance that it is referring to a context.</p>
+
+<h3 id="contexttodo-">Context.TODO <a name="context_todo"></a></h3>
+
+<p>The <em>TODO</em> function does the same thing. It returns an empty non-nil context. This again is a use case for higher-level functions that may not yet have a function available to use them. In many cases, this would be used as a placeholder when extending your program to use the context library. If you checked out the talk by Sameer Ajmani about the introduction of the context library while refactoring their code at Google they would use the <em>context.TODO</em> to start introducing context into the Google code base without breaking anything.</p>
+
+<p><em>QuickNote:</em>
+One thing I will also mention is that somewhere along the way it was suggested that the <em>TODO</em> would be compatible for use in static analysis tools for seeing context propagation across a program. This from what I can tell might have been an off-hand comment from the person who wrote out the notes in the source code. I’ve been looking for the last couple of days and <a href="https://go-review.googlesource.com/c/go/+/130876/">from what I can tell no such tool yet exists</a>. I would investigate how to create such a tool but I’m going to go watch a movie instead.</p>
+
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/i/iu484psunf8fgrlgqwe8.png" alt="Context.TODO" /></p>
+
+<h3 id="contextwithcancel-">Context.WithCancel <a name="context_withcancel"></a></h3>
+
+<p>Let’s say I’m building a website to review movies. There is a myriad of APIs designed for serving movie information. One of the recent ones I’ve come across is the <a href="https://ghibliapi.herokuapp.com/#section/Studio-Ghibli-API">Studio Ghibli API</a> which is a public API we can just grab stuff from. So, for the special section of the website for Studio Ghibli movies, we’ll use this. The <em>WithCancel</em> function returns a copy of the parent context passed into it with a new <em>Done</em> channel. The new <em>Done</em> channel is closed either when the cancel function is called or when the parent context’s <em>Done</em> channel is closed. Whichever event happens first.</p>
+
+<p>Below is an example in action:</p>
+
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/i/vk990lim7irgfmgqjm4w.png" alt="Context.WithCancel" /></p>
+
+<p>Here we are going to simulate a process that is hanging up using the <em>longRunningProcess</em> function. In this example, the function is screwing up but we must run it before we request the JSON data from the API. The “longRunningProcess* function will return an error that will cause the <em>cancel()</em> function within the context to fire.</p>
+
+<p>For the <em>ghibliReq</em> function we will set up a simple HTTP request using the API and pass a string for locating stuff from the API. Once we set up the request, we have a case statement which will receive channel data. Depending on what happens first the select statement will be sent either the current time or the “Done” channel from the passed in context. If the <em>Done</em> channel is closed we error out, if not we will return the status code from our request.</p>
+
+<p>Our main code starts with setting up the context with a new <em>Background()</em> context which is then passed into a <em>WithCancel()</em> context. The new <em>ctx</em> was passed in an empty context so nothing has happened yet. We then create a new goroutine to create a new thread and call our <em>longRunningProcess</em>. Once that is called we check for errors, which will return since we engineered it that way, and if there are errors we can call the <em>cancel()</em> function in our context. Finally, we use our context to call our request. After we run this we find that the request errored out since it took too long and the <em>cancel()</em> function was called.</p>
+
+<p>In this example, we are running our <em>longRunningProcess</em> before our request because that is needed before we call our request. If the function errors out we need to be able to call “cancel()” so that we can error out the <em>ghibliReq()</em> function. The way we set it up we are calling <em>cancel</em> for our context before the function has a chance to run. This is intentional to show how the cancel works. We could easily change the <em>time.Sleep()</em> in <em>longRunningProcess</em> to say 1000 milliseconds and our request function will run before <em>cancel()</em> is called but in a production environment if the goal is to make sure we maintain the flow of the call stack we would make sure we’re not returning errors and not calling <em>cancel()</em> for this context.</p>
+
+<p><em>QuickNote:</em>
+Keep in mind that a context-specific call shouldn’t be a blocking action unless necessary. It’s all about keeping stuff running.</p>
+
+<h3 id="contextwithdeadline-">Context.WithDeadline <a name="context_withDeadline"></a></h3>
+
+<p>The <em>WithDeadline</em> function requires two arguments. One is the parent context and the other is a new time object. The function will take the parent context and adjust it to meet the new time object which was passed in. There are a couple of caveats. If you pass in a context that is already earlier than the passed in the time object then the source code will pass just return a <em>WithCancel</em> context with the same cancellation requirements as the parent which you can see <a href="https://github.com/golang/go/blob/master/src/context/context.go#L430">in the source</a>. The <em>Done</em> channel is closed after the new deadline expires. You can also manually return the <em>cancel</em> function or it will close when the parent context’s <em>Done</em> channel is closed. Whichever of those events happens first.</p>
+
+<p>Below we can go through how the <em>WithDeadline</em> works:</p>
+
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/i/nwwcwgh95cejnb5kjdsh.png" alt="Context.WithDeadline" /></p>
+
+<p>We’re going to continue with the idea that we are putting together a movie review site. To be honest it would not be far off character of me to start a website dedicated to talking exclusively about Studio Ghibli movies. The example above is doing something like the <em>withCancel</em> example. We are going to reuse a function to demonstrate our context. Reuse the stuff that works, save yourself some time. We are going to make a request and return the status of said request. The difference is how we handle our context.</p>
+
+<p>Hypothetically, we need to create a whole bunch of these cascading requests and we want to make sure that everything is happening on time throughout the call stack. To keep track of time and gracefully error out when needed we can continue to use the deadlines and augment the time for the additional calls. In our example, we create a <em>Background</em> context, then pass that in along with a new time. Now we get a returned context in our <em>ctx</em> variable for about 1 second. In our example, if the request process takes longer than 1 second our context calls the cancel function and closes the <em>Done</em> channel causing the request to error out.</p>
+
+<p>We can see that this is dependent on the standards that we set. Setting a time implies that you have a decent idea about how long something should take. Which can be dependent on your server availability, internet connection, hardware constraints, etc. I have also seen people grumble about certain service level agreements guaranteeing the return of assets within a certain time frame. With the aim of usability in mind using context, deadlines can help to ensure that we can pull information at a reasonable amount of time and return if not.</p>
+
+<h3 id="contextwithtimeout-">Context.WithTimeout <a name="context_withtimeout"></a></h3>
+
+<p>The next relevant function is the <em>WithTimeout</em> function. This is a slight variation from the <em>WithDeadline</em> function. With a need to make something original in mind the <em>WithTimeout</em> simply returns a <em>WithDeadline</em> context with the time argument passed in added to the deadline. In other words, it acts similar to the <em>WithDeadline</em> in that it will take the parent and augment the time to return a derived context with the new time added to the time before the <em>cancel</em> function is called and the <em>Done</em> channel is closed. I’ll make this example even simpler:</p>
+
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/i/dcw4vhshlsephh1c19na.png" alt="Context.WithTimeout" /></p>
+
+<p>Same as the example before we set the timeout to close the “Done” channel after the allotted time. In our case, if after a half-second, we’re still waiting for the call we timeout. I love the HTTP go library because it has a built-in function for returning a shadow copy of the request with the <a href="https://golang.org/src/net/http/request.go?s=12980:13039#L341">new context added</a>.</p>
+
+<h3 id="contextwithvalue-">Context.WithValue <a name="context_withvalue"></a></h3>
+
+<p>The last bit of the source I am going to touch on is the <em>ContextWithValue</em> function. This one is a bit controversial since the nature of it, from what I can tell, goes against what the context should be. A context should be a way to ensure that we keep data flowing to and from our programs. The value part of the context though can be used to carry information back and forth. The function allows you to pass in a key-value interface to pass around with your calls.</p>
+
+<p>From the original post about context <a href="https://blog.golang.org/context">“WithValue provides a way to associate request-scoped values with a context”</a>. I’m going to talk a little about what it shouldn’t be used for. Most articles or tutorials I came across seem to agree that passing information that lives outside of the request itself was a bad idea. DB connections, function arguments, anything that is not created and destroyed within that request is probably not a great design pattern. That said passing values along your context can be useful.</p>
+
+<p>Let’s check out some code:</p>
+
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/i/nrbebpw31tc4nmwjj285.png" alt="Context.WithValue" /></p>
+
+<p>We’re going to use the same code from the last example. Only in this case, we are going to create a new function which will calculate a fake request ID. Say I want to keep a database of all my requests, because… I don’t know, I’m a psychopath. Or I work for the NSA and I’m making some spyware to look in on my ex in the name of national security. And because they don’t train me in operational intelligence, I don’t know how to discern the data that indicates something and white noise, so I collect everything. Even innocuous calls to an open API for looking up animated movie information. I’m very tired right now.</p>
+
+<p>In our example we do the same as above; set up a context with a timeout for half a second. Only now we have a helper method that will calculate a new request ID and we will use the context to pass that ID along within the context as a new interface that we can access and do stuff with. In this fake scenario, we would log this and close out the context. This will conform to our self-imposed standard of keeping only information relevant to that call. Yay information!</p>
+
+<p>There is a lot more to be explored about passing along values within a context. I have seen articles where middleware is used to do stuff in between two services to make something work better. I might dig deeper into this and since it’s a bit outside the scope of this I might write about it later. Who knows, I need sleep.</p>
+
+<h3 id="conclusion-">Conclusion <a name="conclusion"></a></h3>
+
+<p>The context library helps to add some sanity to calls in our program. When designing a program incorporating a context in our functions should happen as early as possible. As mentioned, before it is easy to create our function with a <em>TODO</em> as a placeholder and go back when refactoring. It was also mentioned that programs should be created to fail gracefully as well. Take it from someone who spent a long time creating vague fail messages which no one can understand including me. A user should not have to know that a call to something failed just that they aren’t getting their movie title in half a second.</p>
+
+<p>A cool way to picture how useful these contexts can be was touched on in Sameer’s talk. He spoke about the practice of hedged calls where you call out redundant services and take the one which takes less time. It’s all about speed and optimization with them Google people. That is one way in which creating a context to flow through your program would be helpful. When one comes back you cancel out the other which releases the resources that thread might have been using up. The context is a small but very powerful library, it should be used often and with plenty of thought and planning into how it should flow into your program. My hope after reading this is that we all come away with a better understanding of context and how we can use it! If you liked this, had questions and or comments, or you just want to berate me on how much the Last Jedi sucked (it was an imperfect but powerful movie for a world not yet ready for it) hit me up on <a href="https://twitter.com/georgeoffley">Twitter</a>! I love topical references.</p>
+
+    </div>
+
+    <footer class="post-footer">
+        <div class="share">Share
+            <ul class="social-networks">
+                <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Working with Context in Go&p[summary]=
+    
+
+
+Table Of Contents
+
+  Introduction
+  Context Interface
+  Context in context
+  Context.Background
+  Context.TODO
+  Context.WithCanc...&p[url]=https://georgeoffley.com/go/working-with-context-in-go.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></li>
+                <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/go/working-with-context-in-go.html&text=
+    
+
+
+Table Of Contents
+
+  Introduction
+  Context Interface
+  Context in context
+  Context.Background
+  Context.TODO
+  Context.WithCanc...&hashtags=concurrency,Go," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+            </ul>
+        </div>
+        
+        <div class="tags">
+            <ul>
+                
+                <li><a href="https://georgeoffley.com/tag/concurrency">concurrency</a></li>
+                
+                <li><a href="https://georgeoffley.com/tag/Go">Go</a></li>
+                
+            </ul>
+        </div>
+        
+    </footer>
+</article>
+
+
+<aside class="comments" role="complementary">
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function () {
+            this.page.url = 'https://georgeoffley.com/go/working-with-context-in-go.html';
+            this.page.identifier = '8/17/2020';
+        };
+        (function() {
+            var d = document, s = d.createElement('script');
+
+            s.src = '//your_disqus_site.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+</aside> 
+
+            </main>
+        </div>
+
+        <script src="https://georgeoffley.com/assets/js/jquery-1.12.2.min.js"></script>
+<script src="https://georgeoffley.com/assets/js/backtotop.js"></script>
+<script src="https://georgeoffley.com/assets/js/lunr.min.js"></script>
+<script src="https://georgeoffley.com/assets/js/lunr-feed.js"></script>
+<script src="https://georgeoffley.com/assets/js/jquery.fitvids.js"></script>
+<script src="https://georgeoffley.com/assets/js/svg4everybody.min.js"></script>
+<script src="https://georgeoffley.com/assets/js/scripts.js"></script>
+
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-46498110-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+    </body>
+</html>
