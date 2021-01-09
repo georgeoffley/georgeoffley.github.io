@@ -40,14 +40,14 @@ var index = lunr(function () {
 var store = [{
     "title": "Encrypting Your Environment Variables in Lambda with KMS",
     "link": "/aws/encrypting-your-envioronment-variables-in-lambda-with-kms.html",
-    "image": null,
+    "image": "https://georgeoffley.com/assets/images/encrypt-lambda-envs.jpg",
     "date": "September 4, 2020",
     "category": ["AWS"],
     "excerpt": "Table Of Contents Introduction Key Management System in AWS Customer Master Keys KMS and Lambda Conclusion Additional Notes Introduction Do..."
 },{
     "title": "Working with Context in Go",
     "link": "/go/working-with-context-in-go.html",
-    "image": null,
+    "image": "https://georgeoffley.com/assets/images/working-with-context-in-go.jpg",
     "date": "August 17, 2020",
     "category": ["Go"],
     "excerpt": "Table Of Contents Introduction Context Interface Context in context Context.Background Context.TODO Context.WithCancel Context.WithDeadline Context.WithTimeout Context.WithValue Conclusion Introduction When you’re having..."
