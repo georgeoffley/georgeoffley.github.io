@@ -5,9 +5,81 @@
     <description>I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!</description>
     <link>https://georgeoffley.com/</link>
     <atom:link href="https://georgeoffley.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 09 Jan 2021 14:30:43 -0500</pubDate>
-    <lastBuildDate>Sat, 09 Jan 2021 14:30:43 -0500</lastBuildDate>
+    <pubDate>Wed, 03 Mar 2021 09:19:08 -0500</pubDate>
+    <lastBuildDate>Wed, 03 Mar 2021 09:19:08 -0500</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
+    
+      <item>
+        <title>Health Checking S3 and DynamoDB in AWS</title>
+        <description>&lt;figure&gt;
+    &lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-03-03-checking-health-in-s3-and-dynamodb/cover.jpg&quot; /&gt;
+&lt;/figure&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#problem&quot;&gt;Problem&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#s3_solution&quot;&gt;S3 Solution&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#dynamo_solution&quot;&gt;DynamoDB Solution&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#conclusion&quot;&gt;Conclusion&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;introduction-&quot;&gt;Introduction &lt;a name=&quot;introduction&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;A hybrid infrastructure has tons of exciting challenges. Although we host a great deal of our software in AWS at my company, we cannot do everything in the cloud. As such, we have tons of physical infrastructure as well. This hybrid infrastructure presents many challenges that we strive to overcome on the software team. One of the challenges we are working towards is imaging and utilizing software to detect our yields. This piece of that puzzle will focus on storage for our images.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;We decided that we would use a combination of services offered by AWS. The first is the Amazon Simple Storage Service or S3 for image storage and DynamoDB for holding metadata of said images. Given that we are getting information straight from hardware, many things might go wrong, from getting the pictures to when said pictures are pushed to AWS. This brings us to this evening’s question: How can I be sure these services are available for me to send stuff to?&lt;/p&gt;
+
+&lt;h3 id=&quot;problem-&quot;&gt;Problem &lt;a name=&quot;problem&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Well, as it turns out, there are a few ways this can be done. For example, there are libraries out there that will scan health check websites to see if AWS has any service outages. This would not be a great way to do health checks for a production application. So, I decided to spike this problem and make something myself. I am not worried about AWS services being out as they have high availability using their different availability zones. I am more concerned about our endpoints failing, internet issues, or Cloverfield monsters. So, this needs to be explored.&lt;/p&gt;
+
+&lt;h3 id=&quot;s3-solution-&quot;&gt;S3 Solution &lt;a name=&quot;s3_solution&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;A simple solution for checking the health of my resources was needed. Luckily, I quickly put something together using the &lt;a href=&quot;https://boto3.amazonaws.com/v1/documentation/api/latest/index.html&quot;&gt;Boto3 library&lt;/a&gt;, which is the AWS SDK for Python. This library gives us easy access to the AWS API for configuring and managing services. The first thing I did was create an object class to utilize the Client class in Boto3.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-03-03-checking-health-in-s3-and-dynamodb/client_object.png&quot; alt=&quot;Client Object&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We only need to pass in our access credentials and the services we want to create a client object for, and we get our client object back. Each turn in Boto3 allows for interacting with the Client class. The docs define the Client class as &lt;a href=&quot;https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#client&quot;&gt;“a low-level client representing whatever service”&lt;/a&gt;. In most cases, you would use it to access the various functions for interacting with the service.&lt;/p&gt;
+
+&lt;p&gt;After that, I put together some simple logic to return some information on the resource we are looking for. In our case, we were trying to get access to a bucket where we will store images. This solution is enough to satisfy me that the resource exists, and I can communicate with it. Below is the code I used for S3.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-03-03-checking-health-in-s3-and-dynamodb/s3.png&quot; alt=&quot;S3&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The code above sets up a new client instance and utilizes the &lt;a href=&quot;https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.head_bucket&quot;&gt;&lt;em&gt;head_bucket()&lt;/em&gt; function&lt;/a&gt;. This is great for seeing if a bucket exists and if the entity polling it has permissions to access it. In my case, I only need to be able to see if I get a message back. So, I pass in the bucket name, and I can receive a 200 message back from the server if the resource is there and I have access to it. I like this approach because it is dead simple, and I also get to utilize the custom exception that we get access to using the client object, which is the &lt;em&gt;NoSuchBucket&lt;/em&gt; exception. Using this exception allows us to be concise with our exceptions.&lt;/p&gt;
+
+&lt;p&gt;There were some questions about the limitations on being able to use something like this. We expect to use this frequently to pole S3 and make sure that we can talk to our bucket. If AWS is not available, we need to turn off the spigot and stop our software from sending stuff to AWS and not lose messages in the void of space. That said, we will be polling a few times a second at least; luckily for us, &lt;a href=&quot;https://aws.amazon.com/about-aws/whats-new/2018/07/amazon-s3-announces-increased-request-rate-performance/&quot;&gt;S3 upped their request rate to 3500 to add data and 5500 for retrieving data&lt;/a&gt;. This gives us plenty of room to be able to pole what we need.&lt;/p&gt;
+
+&lt;h3 id=&quot;dynamodb-solution-&quot;&gt;DynamoDB Solution &lt;a name=&quot;dynamo_solution&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;With the client object that we created above, we can also use that to access DynamoDB. As such, the code is below:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-03-03-checking-health-in-s3-and-dynamodb/dynamo.png&quot; alt=&quot;Dynamo&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The above code snippet does the same thing as the S3 code does. We create a new instance, and we use the &lt;a href=&quot;https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html#DynamoDB.Client.describe_table&quot;&gt;&lt;em&gt;describe_table()&lt;/em&gt; function while passing in the table name&lt;/a&gt;. This function returns information about the table, including the status. Also, note that the &lt;em&gt;ResourceNotFoundException&lt;/em&gt; is another custom exception provided by the Dynamo Client object. This bit of code satisfies what I need to be able to check the status of a table. Yay!&lt;/p&gt;
+
+&lt;p&gt;Using this method also has similar challenges. The &lt;em&gt;decribe_table()&lt;/em&gt; function uses up an eventually consistent read on your table. So, getting out-of-date data is possible if you are polling something you just created, so give it a second. If you are using a provisioned table in Dynamo, this method will take up one of your reads per second. We will need to make sure this is accounted for when we start designing our database.&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusion-&quot;&gt;Conclusion &lt;a name=&quot;conclusion&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;The above simple bit of code was a brief spike for a solution we needed to explore. This write-up was inspired by a lot of the help I received from my fellow AWS Community Builders. Checking the health and status of services is one of many things that we will build out using AWS. I am excited to keep up my learning and building. If you have seen or made other stuff to accomplish this type of work, let me know! I would love to learn more.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 03 Mar 2021 09:00:00 -0500</pubDate>
+        <link>https://georgeoffley.com/aws/python/checking-health-in-s3-and-dynamodb.html</link>
+        <guid isPermaLink="true">https://georgeoffley.com/aws/python/checking-health-in-s3-and-dynamodb.html</guid>
+        
+        <category>AWS</category>
+        
+        <category>Python</category>
+        
+        
+        <category>AWS</category>
+        
+        <category>Python</category>
+        
+      </item>
     
       <item>
         <title>Encrypting Your Environment Variables in Lambda with KMS</title>
