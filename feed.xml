@@ -5,8 +5,8 @@
     <description>I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!</description>
     <link>https://georgeoffley.com/</link>
     <atom:link href="https://georgeoffley.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 03 Mar 2021 09:19:08 -0500</pubDate>
-    <lastBuildDate>Wed, 03 Mar 2021 09:19:08 -0500</lastBuildDate>
+    <pubDate>Sun, 21 Mar 2021 15:03:26 -0400</pubDate>
+    <lastBuildDate>Sun, 21 Mar 2021 15:03:26 -0400</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
     
       <item>
@@ -67,17 +67,15 @@
 &lt;p&gt;The above simple bit of code was a brief spike for a solution we needed to explore. This write-up was inspired by a lot of the help I received from my fellow AWS Community Builders. Checking the health and status of services is one of many things that we will build out using AWS. I am excited to keep up my learning and building. If you have seen or made other stuff to accomplish this type of work, let me know! I would love to learn more.&lt;/p&gt;
 </description>
         <pubDate>Wed, 03 Mar 2021 09:00:00 -0500</pubDate>
-        <link>https://georgeoffley.com/aws/python/checking-health-in-s3-and-dynamodb.html</link>
-        <guid isPermaLink="true">https://georgeoffley.com/aws/python/checking-health-in-s3-and-dynamodb.html</guid>
+        <link>https://georgeoffley.com/blog/checking-health-in-s3-and-dynamodb.html</link>
+        <guid isPermaLink="true">https://georgeoffley.com/blog/checking-health-in-s3-and-dynamodb.html</guid>
         
         <category>AWS</category>
         
         <category>Python</category>
         
         
-        <category>AWS</category>
-        
-        <category>Python</category>
+        <category>Blog</category>
         
       </item>
     
@@ -219,8 +217,8 @@ aws kms enable-key-rotation - enables automatic rotation of the key material for
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 </description>
         <pubDate>Fri, 04 Sep 2020 16:30:00 -0400</pubDate>
-        <link>https://georgeoffley.com/aws/encrypting-your-envioronment-variables-in-lambda-with-kms.html</link>
-        <guid isPermaLink="true">https://georgeoffley.com/aws/encrypting-your-envioronment-variables-in-lambda-with-kms.html</guid>
+        <link>https://georgeoffley.com/blog/encrypting-your-envioronment-variables-in-lambda-with-kms.html</link>
+        <guid isPermaLink="true">https://georgeoffley.com/blog/encrypting-your-envioronment-variables-in-lambda-with-kms.html</guid>
         
         <category>KMS</category>
         
@@ -229,7 +227,7 @@ aws kms enable-key-rotation - enables automatic rotation of the key material for
         <category>Lambda</category>
         
         
-        <category>AWS</category>
+        <category>Blog</category>
         
       </item>
     
@@ -365,15 +363,15 @@ Keep in mind that a context-specific call shouldn’t be a blocking action unles
 &lt;p&gt;A cool way to picture how useful these contexts can be was touched on in Sameer’s talk. He spoke about the practice of hedged calls where you call out redundant services and take the one which takes less time. It’s all about speed and optimization with them Google people. That is one way in which creating a context to flow through your program would be helpful. When one comes back you cancel out the other which releases the resources that thread might have been using up. The context is a small but very powerful library, it should be used often and with plenty of thought and planning into how it should flow into your program. My hope after reading this is that we all come away with a better understanding of context and how we can use it! If you liked this, had questions and or comments, or you just want to berate me on how much the Last Jedi sucked (it was an imperfect but powerful movie for a world not yet ready for it) hit me up on &lt;a href=&quot;https://twitter.com/georgeoffley&quot;&gt;Twitter&lt;/a&gt;! I love topical references.&lt;/p&gt;
 </description>
         <pubDate>Mon, 17 Aug 2020 21:00:00 -0400</pubDate>
-        <link>https://georgeoffley.com/go/working-with-context-in-go.html</link>
-        <guid isPermaLink="true">https://georgeoffley.com/go/working-with-context-in-go.html</guid>
+        <link>https://georgeoffley.com/blog/working-with-context-in-go.html</link>
+        <guid isPermaLink="true">https://georgeoffley.com/blog/working-with-context-in-go.html</guid>
         
         <category>concurrency</category>
         
         <category>Go</category>
         
         
-        <category>Go</category>
+        <category>Blog</category>
         
       </item>
     
@@ -597,17 +595,15 @@ So far as I can tell when you zip the contents of the package using Windows it r
 &lt;h4 id=&quot;aws-docs&quot;&gt;&lt;a href=&quot;https://docs.aws.amazon.com/lambda/index.html&quot;&gt;AWS Docs&lt;/a&gt;&lt;/h4&gt;
 </description>
         <pubDate>Sat, 08 Aug 2020 23:56:00 -0400</pubDate>
-        <link>https://georgeoffley.com/aws/go/creating-a-twitter-bot-using-aws-lambda-and-go.html</link>
-        <guid isPermaLink="true">https://georgeoffley.com/aws/go/creating-a-twitter-bot-using-aws-lambda-and-go.html</guid>
+        <link>https://georgeoffley.com/blog/creating-a-twitter-bot-using-aws-lambda-and-go.html</link>
+        <guid isPermaLink="true">https://georgeoffley.com/blog/creating-a-twitter-bot-using-aws-lambda-and-go.html</guid>
         
         <category>AWS</category>
         
         <category>Go</category>
         
         
-        <category>AWS</category>
-        
-        <category>Go</category>
+        <category>Blog</category>
         
       </item>
     
