@@ -59,7 +59,7 @@ var store = [{
     "title": "Messaging and Madness: Sending Messages with AMQP and Amazon MQ",
     "link": "/blog/messaging-and-madness-sending-messages-with-amqp-and-amazon-mq.html",
     "image": "https://georgeoffley-blog-images.s3.amazonaws.com/2021-10-30-messaging-and-madness/title_card.png",
-    "date": "March 3, 2021",
+    "date": "October 30, 2021",
     "category": ["Blog"],
     "excerpt": "Table Of Contents Introduction AMQP AMQP and Amazon MQ Serialization Conclusion Introduction How do software systems talk to each other?..."
 },{

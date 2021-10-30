@@ -5,8 +5,8 @@
     <description>I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!</description>
     <link>https://georgeoffley.com/</link>
     <atom:link href="https://georgeoffley.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 30 Oct 2021 13:13:42 -0400</pubDate>
-    <lastBuildDate>Sat, 30 Oct 2021 13:13:42 -0400</lastBuildDate>
+    <pubDate>Sat, 30 Oct 2021 13:14:36 -0400</pubDate>
+    <lastBuildDate>Sat, 30 Oct 2021 13:14:36 -0400</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
     
       <item>
@@ -77,7 +77,7 @@ via &lt;a href=&quot;https://www.rabbitmq.com/tutorials/amqp-concepts.html&quot;
 
 &lt;p&gt;-George&lt;/p&gt;
 </description>
-        <pubDate>Wed, 03 Mar 2021 09:00:00 -0500</pubDate>
+        <pubDate>Sat, 30 Oct 2021 12:00:00 -0400</pubDate>
         <link>https://georgeoffley.com/blog/messaging-and-madness-sending-messages-with-amqp-and-amazon-mq.html</link>
         <guid isPermaLink="true">https://georgeoffley.com/blog/messaging-and-madness-sending-messages-with-amqp-and-amazon-mq.html</guid>
         
