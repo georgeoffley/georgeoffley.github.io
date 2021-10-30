@@ -5,77 +5,9 @@
     <description>I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!</description>
     <link>https://georgeoffley.com/</link>
     <atom:link href="https://georgeoffley.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 30 Oct 2021 13:11:07 -0400</pubDate>
-    <lastBuildDate>Sat, 30 Oct 2021 13:11:07 -0400</lastBuildDate>
+    <pubDate>Sat, 30 Oct 2021 13:13:42 -0400</pubDate>
+    <lastBuildDate>Sat, 30 Oct 2021 13:13:42 -0400</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
-    
-      <item>
-        <title>Coding Challenge: Check if the Sentence is a Pangram.</title>
-        <description>&lt;figure&gt;
-    &lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-04-24-challenge-pangram-sentence/title_figure.png&quot; /&gt;
-&lt;/figure&gt;
-
-&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#definitions&quot;&gt;Definitions&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;introduction-&quot;&gt;Introduction &lt;a name=&quot;introduction&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;Today’s coding challenge is a simple one. Albeit one that I do not think I have ever seen in the wild, it seems to be popular on coding challenge sites. The prompt is simple.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Determine if a sentence is a pangram. A pangram is a sentence using every letter of the alphabet at least once.&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;An example, “The quick brown fox jumps over the lazy dog” should return as True.&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;The alphabet used consists of ASCII letters “a” to “z”, inclusive, and is case insensitive. Input will not contain non-ASCII symbols.&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Not a complex problem; however, there are some concepts we need to define before we begin.&lt;/p&gt;
-
-&lt;h3 id=&quot;definitions-&quot;&gt;Definitions &lt;a name=&quot;definitions&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;We know what a pangram is since they defined it for us, but we should also understand ASCII. ASCII or the American Standard Code for Information Interchange is a character encoding standard for electronic communication. ASCII was created in 1963 and is one of the most common character encoding sets in use. ASCII codes represent the text we type in and display on computers and other electronic devices. When you enter characters on a keyboard or display them on a screen, the computer needs to understand the language you are speaking. Binary is the language of computers, and when characters are stored using ASCII, they are assigned a denary character code stored in the computer as binary. If you look at some of the below examples, you can see how these translate.&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Character&lt;/th&gt;
-      &lt;th&gt;Denary Value&lt;/th&gt;
-      &lt;th&gt;Binary&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;a&lt;/td&gt;
-      &lt;td&gt;97&lt;/td&gt;
-      &lt;td&gt;1100001&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;b&lt;/td&gt;
-      &lt;td&gt;98&lt;/td&gt;
-      &lt;td&gt;1100010&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;c&lt;/td&gt;
-      &lt;td&gt;99&lt;/td&gt;
-      &lt;td&gt;1100011&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-</description>
-        <pubDate>Sat, 24 Apr 2021 23:56:00 -0400</pubDate>
-        <link>https://georgeoffley.com/challenge/challenge-pangram-sentence.html</link>
-        <guid isPermaLink="true">https://georgeoffley.com/challenge/challenge-pangram-sentence.html</guid>
-        
-        <category>CodingChallenge</category>
-        
-        <category>Python</category>
-        
-        
-        <category>Challenge</category>
-        
-      </item>
     
       <item>
         <title>Messaging and Madness: Sending Messages with AMQP and Amazon MQ</title>
