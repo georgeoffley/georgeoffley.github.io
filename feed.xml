@@ -5,9 +5,160 @@
     <description>I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!</description>
     <link>https://georgeoffley.com/</link>
     <atom:link href="https://georgeoffley.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 22 Mar 2021 10:09:37 -0400</pubDate>
-    <lastBuildDate>Mon, 22 Mar 2021 10:09:37 -0400</lastBuildDate>
+    <pubDate>Sat, 30 Oct 2021 13:11:07 -0400</pubDate>
+    <lastBuildDate>Sat, 30 Oct 2021 13:11:07 -0400</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
+    
+      <item>
+        <title>Coding Challenge: Check if the Sentence is a Pangram.</title>
+        <description>&lt;figure&gt;
+    &lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-04-24-challenge-pangram-sentence/title_figure.png&quot; /&gt;
+&lt;/figure&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#definitions&quot;&gt;Definitions&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;introduction-&quot;&gt;Introduction &lt;a name=&quot;introduction&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Today’s coding challenge is a simple one. Albeit one that I do not think I have ever seen in the wild, it seems to be popular on coding challenge sites. The prompt is simple.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Determine if a sentence is a pangram. A pangram is a sentence using every letter of the alphabet at least once.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;An example, “The quick brown fox jumps over the lazy dog” should return as True.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;The alphabet used consists of ASCII letters “a” to “z”, inclusive, and is case insensitive. Input will not contain non-ASCII symbols.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Not a complex problem; however, there are some concepts we need to define before we begin.&lt;/p&gt;
+
+&lt;h3 id=&quot;definitions-&quot;&gt;Definitions &lt;a name=&quot;definitions&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;We know what a pangram is since they defined it for us, but we should also understand ASCII. ASCII or the American Standard Code for Information Interchange is a character encoding standard for electronic communication. ASCII was created in 1963 and is one of the most common character encoding sets in use. ASCII codes represent the text we type in and display on computers and other electronic devices. When you enter characters on a keyboard or display them on a screen, the computer needs to understand the language you are speaking. Binary is the language of computers, and when characters are stored using ASCII, they are assigned a denary character code stored in the computer as binary. If you look at some of the below examples, you can see how these translate.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Character&lt;/th&gt;
+      &lt;th&gt;Denary Value&lt;/th&gt;
+      &lt;th&gt;Binary&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;a&lt;/td&gt;
+      &lt;td&gt;97&lt;/td&gt;
+      &lt;td&gt;1100001&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;b&lt;/td&gt;
+      &lt;td&gt;98&lt;/td&gt;
+      &lt;td&gt;1100010&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;c&lt;/td&gt;
+      &lt;td&gt;99&lt;/td&gt;
+      &lt;td&gt;1100011&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+</description>
+        <pubDate>Sat, 24 Apr 2021 23:56:00 -0400</pubDate>
+        <link>https://georgeoffley.com/challenge/challenge-pangram-sentence.html</link>
+        <guid isPermaLink="true">https://georgeoffley.com/challenge/challenge-pangram-sentence.html</guid>
+        
+        <category>CodingChallenge</category>
+        
+        <category>Python</category>
+        
+        
+        <category>Challenge</category>
+        
+      </item>
+    
+      <item>
+        <title>Messaging and Madness: Sending Messages with AMQP and Amazon MQ</title>
+        <description>&lt;figure&gt;
+    &lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-10-30-messaging-and-madness/title_card.png&quot; /&gt;
+&lt;/figure&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#amqp&quot;&gt;AMQP&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#amqp_amazon_mq&quot;&gt;AMQP and Amazon MQ&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#serialization&quot;&gt;Serialization&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#conclusion&quot;&gt;Conclusion&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;introduction-&quot;&gt;Introduction &lt;a name=&quot;introduction&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;How do software systems talk to each other? Back-end systems can scale into giant melted together &lt;a href=&quot;https://youtu.be/NH-8L1iZq20&quot;&gt;Cronenberg monsters&lt;/a&gt;, often making up different tools and languages. So, communicating between these services can become an untenable challenge without some shared vocabulary. We can communicate in many ways, but today I wanted to talk about asynchronous messaging protocols and figure out how AWS can help.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h3 id=&quot;amqp-&quot;&gt;AMQP &lt;a name=&quot;amqp&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;AMQP stands for Advanced Message Queuing Protocol. I’ve been working to implement it for some back-end software suites I’m building out to enable them to talk to each other. AMQP utilizes these things called &lt;em&gt;brokers&lt;/em&gt; to publish messages on, then on the other end, a receiving service subscribed to the same “channel” that we posted to can pick up that message.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-10-30-messaging-and-madness/hello-world-example-routing.png&quot; alt=&quot;Hello World Visualization&quot; /&gt;
+via &lt;a href=&quot;https://www.rabbitmq.com/tutorials/amqp-concepts.html&quot;&gt;Rabbit MQ Tutorials&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Let’s dive a little further down; the &lt;em&gt;publisher&lt;/em&gt; service publishes a message to an &lt;em&gt;exchange&lt;/em&gt; on a &lt;em&gt;broker&lt;/em&gt;. This exchange has &lt;em&gt;routes&lt;/em&gt; that lead to &lt;em&gt;queues&lt;/em&gt;, or “channels,” where the payload is published. We make sure to include the sending information with our message to be routed to the correct queue. The broker cannot see the message, although it might look into any metadata attached to the message from the publisher. This workflow asynchronously sends messages. Imagine a server version of a mail sorting machine shooting letters into the correct mail slot based on the address.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-10-30-messaging-and-madness/mail_sorting.gif&quot; alt=&quot;Mail Sorting Gif from MIB II&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;When referring to a publisher, I mean some code that we utilize to connect and send a message. AMQP is programmable, so I can shape it to fit most situations. In this case, we need to send messages to our different software suites to trigger actions to happen. Learning this took some time, but it’s been simple to implement.&lt;/p&gt;
+
+&lt;p&gt;There are different types of exchanges that we can use to make these services fit our needs. I’m going to explain what we use briefly.&lt;/p&gt;
+
+&lt;p&gt;We use a &lt;em&gt;direct exchange&lt;/em&gt; utilizing &lt;em&gt;routing keys&lt;/em&gt; to bind queues to exchanges. Our code can use direct exchanges to distribute tasks to many different endpoints, but we used these direct exchanges to make direct routes between our services. Other types of exchanges can be used to broadcast messages. More information can be found &lt;a href=&quot;https://www.rabbitmq.com/tutorials/amqp-concepts.html&quot;&gt;here&lt;/a&gt;. For now, we’re going to focus on direct exchanges.&lt;/p&gt;
+
+&lt;h3 id=&quot;amqp-and-amazon-mq-&quot;&gt;AMQP and Amazon MQ &lt;a name=&quot;amqp_amazon_mq&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;We touched on all that because I wanted to talk about &lt;a href=&quot;https://aws.amazon.com/amazon-mq/?amazon-mq.sort-by=item.additionalFields.postDateTime&amp;amp;amazon-mq.sort-order=desc&quot;&gt;Amazon MQ&lt;/a&gt;. Amazon MQ is a fully managed platform for setting up message brokers. Amazon MQ utilizes both RabbitMQ and Apache Active MQ for creating brokers. We’re sticking with Rabbit MQ for the time being.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-10-30-messaging-and-madness/amazon_mq_dash.png&quot; alt=&quot;Amazon MQ Dashboard&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Here above, you can see you can easily set up a broker in just a few clicks. I left most of the settings on default, except for choosing “RabbitMQ” for our broker engine and setting some security up for accessing our management console.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-10-30-messaging-and-madness/rabbit_mq_dash.png&quot; alt=&quot;Rabbit MQ Management Console&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Once we get that, we have access to the RabbitMQ dashboard Amazon MQ created and is managing. Now that we have a broker set up, we can play with some code.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-10-30-messaging-and-madness/code.png&quot; alt=&quot;Code&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Above I use the library &lt;a href=&quot;https://github.com/celery/kombu&quot;&gt;Kombu&lt;/a&gt; to create some connections and send some stuff. I started by setting up our environment variables. Then created exchange and queue objects. Finally, I made our connection object and the producer object, and then we sent a simple “Hello” message.&lt;/p&gt;
+
+&lt;h3 id=&quot;serialization-&quot;&gt;Serialization &lt;a name=&quot;serialization&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Serialization is &lt;a href=&quot;https://www.tutorialspoint.com/object_oriented_python/object_oriented_python_serialization.htm&quot;&gt;another blog post&lt;/a&gt;, but I chose to use JSON to serialize the payload. In the production software, I use a combination of JSON and &lt;a href=&quot;https://docs.python.org/3/library/pickle.html&quot;&gt;Pickle&lt;/a&gt; to serialize things like image data.&lt;/p&gt;
+
+&lt;p&gt;Now we can see our message published on the queue I declared in our publisher service. An identical receiving service would be set up on the other side to read out messages sent to that queue.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-10-30-messaging-and-madness/results.png&quot; alt=&quot;Results&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusion-&quot;&gt;Conclusion &lt;a name=&quot;conclusion&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;In conclusion, using Amazon MQ allows us to set up managed brokers for us to send messages. With AMQP as the broker engine, we have a lightweight message-sending workflow. Thanks for reading.&lt;/p&gt;
+
+&lt;p&gt;-George&lt;/p&gt;
+</description>
+        <pubDate>Wed, 03 Mar 2021 09:00:00 -0500</pubDate>
+        <link>https://georgeoffley.com/blog/messaging-and-madness-sending-messages-with-amqp-and-amazon-mq.html</link>
+        <guid isPermaLink="true">https://georgeoffley.com/blog/messaging-and-madness-sending-messages-with-amqp-and-amazon-mq.html</guid>
+        
+        <category>AWS</category>
+        
+        <category>Python</category>
+        
+        <category>AMQP</category>
+        
+        
+        <category>Blog</category>
+        
+      </item>
     
       <item>
         <title>Health Checking S3 and DynamoDB in AWS</title>

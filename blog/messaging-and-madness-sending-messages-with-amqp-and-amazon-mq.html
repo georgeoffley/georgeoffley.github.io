@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Health Checking S3 and DynamoDB in AWS | George Offley &mdash; Software Engineer </title>
-    <meta property="og:title" content="Health Checking S3 and DynamoDB in AWS | George Offley &mdash; Software Engineer " />
+    <title>Messaging and Madness: Sending Messages with AMQP and Amazon MQ | George Offley &mdash; Software Engineer </title>
+    <meta property="og:title" content="Messaging and Madness: Sending Messages with AMQP and Amazon MQ | George Offley &mdash; Software Engineer " />
 
     <meta name="description" content="I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!">
     <meta name="description" property="og:description" content="I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!" />
@@ -14,19 +14,19 @@
     <!-- Twitter cards -->
     <meta name="twitter:site"    content="@georgeoffley">
     <meta name="twitter:creator" content="@georgeoffley">
-    <meta name="twitter:title"   content="Health Checking S3 and DynamoDB in AWS">
+    <meta name="twitter:title"   content="Messaging and Madness: Sending Messages with AMQP and Amazon MQ">
 
     
-    <meta name="twitter:description" content="How can I make sure I can talk to S3 and Dynamo? Let's dig into it.">
+    <meta name="twitter:description" content="How to systems talk to each other? Let's look at  Amazon MQ and AMQP to see how.">
     
 
     
     <meta name="twitter:card"  content="summary_large_image">
-    <meta name="twitter:image" content="https://georgeoffley-blog-images.s3.amazonaws.com/2021-03-03-checking-health-in-s3-and-dynamodb/cover.jpg">
+    <meta name="twitter:image" content="https://georgeoffley-blog-images.s3.amazonaws.com/2021-10-30-messaging-and-madness/title_card.png">
     
     <!-- end of Twitter cards -->
     
-    <meta property="og:url" content="https://georgeoffley.com/blog/checking-health-in-s3-and-dynamodb.html" />
+    <meta property="og:url" content="https://georgeoffley.com/blog/messaging-and-madness-sending-messages-with-amqp-and-amazon-mq.html" />
 
     <meta property="og:image" content="" />
 
@@ -104,7 +104,7 @@
     
     <link rel="stylesheet" href="https://georgeoffley.com/assets/css/main.css">
 
-    <link rel="canonical" href="https://georgeoffley.com/blog/checking-health-in-s3-and-dynamodb.html">
+    <link rel="canonical" href="https://georgeoffley.com/blog/messaging-and-madness-sending-messages-with-amqp-and-amazon-mq.html">
 
     <link rel="alternate" type="application/rss+xml" title="" href="https://georgeoffley.com/feed.xml">
 </head>
@@ -219,102 +219,113 @@
                 
             
         </ul>
-        <h2 itemprop="name headline">Health Checking S3 and DynamoDB in AWS</h2>
+        <h2 itemprop="name headline">Messaging and Madness: Sending Messages with AMQP and Amazon MQ</h2>
     </header>
 
     <div class="post-content">
         <figure>
-    <img src="https://georgeoffley-blog-images.s3.amazonaws.com/2021-03-03-checking-health-in-s3-and-dynamodb/cover.jpg" />
+    <img src="https://georgeoffley-blog-images.s3.amazonaws.com/2021-10-30-messaging-and-madness/title_card.png" />
 </figure>
 
 <h2 id="table-of-contents">Table Of Contents</h2>
 <ul>
   <li><a href="#introduction">Introduction</a></li>
-  <li><a href="#problem">Problem</a></li>
-  <li><a href="#s3_solution">S3 Solution</a></li>
-  <li><a href="#dynamo_solution">DynamoDB Solution</a></li>
+  <li><a href="#amqp">AMQP</a></li>
+  <li><a href="#amqp_amazon_mq">AMQP and Amazon MQ</a></li>
+  <li><a href="#serialization">Serialization</a></li>
   <li><a href="#conclusion">Conclusion</a></li>
 </ul>
 
 <h3 id="introduction-">Introduction <a name="introduction"></a></h3>
 
-<p>A hybrid infrastructure has tons of exciting challenges. Although we host a great deal of our software in AWS at my company, we cannot do everything in the cloud. As such, we have tons of physical infrastructure as well. This hybrid infrastructure presents many challenges that we strive to overcome on the software team. One of the challenges we are working towards is imaging and utilizing software to detect our yields. This piece of that puzzle will focus on storage for our images.</p>
+<p>How do software systems talk to each other? Back-end systems can scale into giant melted together <a href="https://youtu.be/NH-8L1iZq20">Cronenberg monsters</a>, often making up different tools and languages. So, communicating between these services can become an untenable challenge without some shared vocabulary. We can communicate in many ways, but today I wanted to talk about asynchronous messaging protocols and figure out how AWS can help.</p>
 
 <!--more-->
 
-<p>We decided that we would use a combination of services offered by AWS. The first is the Amazon Simple Storage Service or S3 for image storage and DynamoDB for holding metadata of said images. Given that we are getting information straight from hardware, many things might go wrong, from getting the pictures to when said pictures are pushed to AWS. This brings us to this evening’s question: How can I be sure these services are available for me to send stuff to?</p>
+<h3 id="amqp-">AMQP <a name="amqp"></a></h3>
 
-<h3 id="problem-">Problem <a name="problem"></a></h3>
+<p>AMQP stands for Advanced Message Queuing Protocol. I’ve been working to implement it for some back-end software suites I’m building out to enable them to talk to each other. AMQP utilizes these things called <em>brokers</em> to publish messages on, then on the other end, a receiving service subscribed to the same “channel” that we posted to can pick up that message.</p>
 
-<p>Well, as it turns out, there are a few ways this can be done. For example, there are libraries out there that will scan health check websites to see if AWS has any service outages. This would not be a great way to do health checks for a production application. So, I decided to spike this problem and make something myself. I am not worried about AWS services being out as they have high availability using their different availability zones. I am more concerned about our endpoints failing, internet issues, or Cloverfield monsters. So, this needs to be explored.</p>
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2021-10-30-messaging-and-madness/hello-world-example-routing.png" alt="Hello World Visualization" />
+via <a href="https://www.rabbitmq.com/tutorials/amqp-concepts.html">Rabbit MQ Tutorials</a></p>
 
-<h3 id="s3-solution-">S3 Solution <a name="s3_solution"></a></h3>
+<p>Let’s dive a little further down; the <em>publisher</em> service publishes a message to an <em>exchange</em> on a <em>broker</em>. This exchange has <em>routes</em> that lead to <em>queues</em>, or “channels,” where the payload is published. We make sure to include the sending information with our message to be routed to the correct queue. The broker cannot see the message, although it might look into any metadata attached to the message from the publisher. This workflow asynchronously sends messages. Imagine a server version of a mail sorting machine shooting letters into the correct mail slot based on the address.</p>
 
-<p>A simple solution for checking the health of my resources was needed. Luckily, I quickly put something together using the <a href="https://boto3.amazonaws.com/v1/documentation/api/latest/index.html">Boto3 library</a>, which is the AWS SDK for Python. This library gives us easy access to the AWS API for configuring and managing services. The first thing I did was create an object class to utilize the Client class in Boto3.</p>
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2021-10-30-messaging-and-madness/mail_sorting.gif" alt="Mail Sorting Gif from MIB II" /></p>
 
-<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2021-03-03-checking-health-in-s3-and-dynamodb/client_object.png" alt="Client Object" /></p>
+<p>When referring to a publisher, I mean some code that we utilize to connect and send a message. AMQP is programmable, so I can shape it to fit most situations. In this case, we need to send messages to our different software suites to trigger actions to happen. Learning this took some time, but it’s been simple to implement.</p>
 
-<p>We only need to pass in our access credentials and the services we want to create a client object for, and we get our client object back. Each turn in Boto3 allows for interacting with the Client class. The docs define the Client class as <a href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#client">“a low-level client representing whatever service”</a>. In most cases, you would use it to access the various functions for interacting with the service.</p>
+<p>There are different types of exchanges that we can use to make these services fit our needs. I’m going to explain what we use briefly.</p>
 
-<p>After that, I put together some simple logic to return some information on the resource we are looking for. In our case, we were trying to get access to a bucket where we will store images. This solution is enough to satisfy me that the resource exists, and I can communicate with it. Below is the code I used for S3.</p>
+<p>We use a <em>direct exchange</em> utilizing <em>routing keys</em> to bind queues to exchanges. Our code can use direct exchanges to distribute tasks to many different endpoints, but we used these direct exchanges to make direct routes between our services. Other types of exchanges can be used to broadcast messages. More information can be found <a href="https://www.rabbitmq.com/tutorials/amqp-concepts.html">here</a>. For now, we’re going to focus on direct exchanges.</p>
 
-<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2021-03-03-checking-health-in-s3-and-dynamodb/s3.png" alt="S3" /></p>
+<h3 id="amqp-and-amazon-mq-">AMQP and Amazon MQ <a name="amqp_amazon_mq"></a></h3>
 
-<p>The code above sets up a new client instance and utilizes the <a href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.head_bucket"><em>head_bucket()</em> function</a>. This is great for seeing if a bucket exists and if the entity polling it has permissions to access it. In my case, I only need to be able to see if I get a message back. So, I pass in the bucket name, and I can receive a 200 message back from the server if the resource is there and I have access to it. I like this approach because it is dead simple, and I also get to utilize the custom exception that we get access to using the client object, which is the <em>NoSuchBucket</em> exception. Using this exception allows us to be concise with our exceptions.</p>
+<p>We touched on all that because I wanted to talk about <a href="https://aws.amazon.com/amazon-mq/?amazon-mq.sort-by=item.additionalFields.postDateTime&amp;amazon-mq.sort-order=desc">Amazon MQ</a>. Amazon MQ is a fully managed platform for setting up message brokers. Amazon MQ utilizes both RabbitMQ and Apache Active MQ for creating brokers. We’re sticking with Rabbit MQ for the time being.</p>
 
-<p>There were some questions about the limitations on being able to use something like this. We expect to use this frequently to pole S3 and make sure that we can talk to our bucket. If AWS is not available, we need to turn off the spigot and stop our software from sending stuff to AWS and not lose messages in the void of space. That said, we will be polling a few times a second at least; luckily for us, <a href="https://aws.amazon.com/about-aws/whats-new/2018/07/amazon-s3-announces-increased-request-rate-performance/">S3 upped their request rate to 3500 to add data and 5500 for retrieving data</a>. This gives us plenty of room to be able to pole what we need.</p>
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2021-10-30-messaging-and-madness/amazon_mq_dash.png" alt="Amazon MQ Dashboard" /></p>
 
-<h3 id="dynamodb-solution-">DynamoDB Solution <a name="dynamo_solution"></a></h3>
+<p>Here above, you can see you can easily set up a broker in just a few clicks. I left most of the settings on default, except for choosing “RabbitMQ” for our broker engine and setting some security up for accessing our management console.</p>
 
-<p>With the client object that we created above, we can also use that to access DynamoDB. As such, the code is below:</p>
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2021-10-30-messaging-and-madness/rabbit_mq_dash.png" alt="Rabbit MQ Management Console" /></p>
 
-<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2021-03-03-checking-health-in-s3-and-dynamodb/dynamo.png" alt="Dynamo" /></p>
+<p>Once we get that, we have access to the RabbitMQ dashboard Amazon MQ created and is managing. Now that we have a broker set up, we can play with some code.</p>
 
-<p>The above code snippet does the same thing as the S3 code does. We create a new instance, and we use the <a href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html#DynamoDB.Client.describe_table"><em>describe_table()</em> function while passing in the table name</a>. This function returns information about the table, including the status. Also, note that the <em>ResourceNotFoundException</em> is another custom exception provided by the Dynamo Client object. This bit of code satisfies what I need to be able to check the status of a table. Yay!</p>
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2021-10-30-messaging-and-madness/code.png" alt="Code" /></p>
 
-<p>Using this method also has similar challenges. The <em>decribe_table()</em> function uses up an eventually consistent read on your table. So, getting out-of-date data is possible if you are polling something you just created, so give it a second. If you are using a provisioned table in Dynamo, this method will take up one of your reads per second. We will need to make sure this is accounted for when we start designing our database.</p>
+<p>Above I use the library <a href="https://github.com/celery/kombu">Kombu</a> to create some connections and send some stuff. I started by setting up our environment variables. Then created exchange and queue objects. Finally, I made our connection object and the producer object, and then we sent a simple “Hello” message.</p>
+
+<h3 id="serialization-">Serialization <a name="serialization"></a></h3>
+
+<p>Serialization is <a href="https://www.tutorialspoint.com/object_oriented_python/object_oriented_python_serialization.htm">another blog post</a>, but I chose to use JSON to serialize the payload. In the production software, I use a combination of JSON and <a href="https://docs.python.org/3/library/pickle.html">Pickle</a> to serialize things like image data.</p>
+
+<p>Now we can see our message published on the queue I declared in our publisher service. An identical receiving service would be set up on the other side to read out messages sent to that queue.</p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2021-10-30-messaging-and-madness/results.png" alt="Results" /></p>
 
 <h3 id="conclusion-">Conclusion <a name="conclusion"></a></h3>
 
-<p>The above simple bit of code was a brief spike for a solution we needed to explore. This write-up was inspired by a lot of the help I received from my fellow AWS Community Builders. Checking the health and status of services is one of many things that we will build out using AWS. I am excited to keep up my learning and building. If you have seen or made other stuff to accomplish this type of work, let me know! I would love to learn more.</p>
+<p>In conclusion, using Amazon MQ allows us to set up managed brokers for us to send messages. With AMQP as the broker engine, we have a lightweight message-sending workflow. Thanks for reading.</p>
+
+<p>-George</p>
 
     </div>
 
     <footer class="post-footer">
         <div class="share">Share
             <ul class="social-networks">
-                <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Health Checking S3 and DynamoDB in AWS&p[summary]=
+                <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Messaging and Madness: Sending Messages with AMQP and Amazon MQ&p[summary]=
     
 
 
 Table Of Contents
 
   Introduction
-  Problem
-  S3 Solution
-  DynamoDB Solution
+  AMQP
+  AMQP and Amazon MQ
+  Serialization
   Conclusion
 
 
 Introduction 
 
-A hybrid infrastructu...&p[url]=https://georgeoffley.com/blog/checking-health-in-s3-and-dynamodb.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></li>
-                <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/blog/checking-health-in-s3-and-dynamodb.html&text=
+How do software syste...&p[url]=https://georgeoffley.com/blog/messaging-and-madness-sending-messages-with-amqp-and-amazon-mq.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></li>
+                <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/blog/messaging-and-madness-sending-messages-with-amqp-and-amazon-mq.html&text=
     
 
 
 Table Of Contents
 
   Introduction
-  Problem
-  S3 Solution
-  DynamoDB Solution
+  AMQP
+  AMQP and Amazon MQ
+  Serialization
   Conclusion
 
 
 Introduction 
 
-A hybrid infrastructu...&hashtags=AWS,Python," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+How do software syste...&hashtags=AWS,Python,AMQP," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
             </ul>
         </div>
         
@@ -324,6 +335,8 @@ A hybrid infrastructu...&hashtags=AWS,Python," rel="noreferrer" target="_blank" 
                 <li><a href="https://georgeoffley.com/tag/AWS">AWS</a></li>
                 
                 <li><a href="https://georgeoffley.com/tag/Python">Python</a></li>
+                
+                <li><a href="https://georgeoffley.com/tag/AMQP">AMQP</a></li>
                 
             </ul>
         </div>
@@ -336,7 +349,7 @@ A hybrid infrastructu...&hashtags=AWS,Python," rel="noreferrer" target="_blank" 
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function () {
-            this.page.url = 'https://georgeoffley.com/blog/checking-health-in-s3-and-dynamodb.html';
+            this.page.url = 'https://georgeoffley.com/blog/messaging-and-madness-sending-messages-with-amqp-and-amazon-mq.html';
             this.page.identifier = '3/3/2021';
         };
         (function() {
