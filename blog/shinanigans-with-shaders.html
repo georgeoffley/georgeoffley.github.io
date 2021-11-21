@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Health Checking S3 and DynamoDB in AWS | George Offley &mdash; Software Engineer </title>
-    <meta property="og:title" content="Health Checking S3 and DynamoDB in AWS | George Offley &mdash; Software Engineer " />
+    <title>Shenanigans with Shaders | George Offley &mdash; Software Engineer </title>
+    <meta property="og:title" content="Shenanigans with Shaders | George Offley &mdash; Software Engineer " />
 
     <meta name="description" content="I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!">
     <meta name="description" property="og:description" content="I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!" />
@@ -14,19 +14,19 @@
     <!-- Twitter cards -->
     <meta name="twitter:site"    content="@georgeoffley">
     <meta name="twitter:creator" content="@georgeoffley">
-    <meta name="twitter:title"   content="Health Checking S3 and DynamoDB in AWS">
+    <meta name="twitter:title"   content="Shenanigans with Shaders">
 
     
-    <meta name="twitter:description" content="How can I make sure I can talk to S3 and Dynamo? Let's dig into it.">
+    <meta name="twitter:description" content="How do Shaders in Unity work? Let's find out!">
     
 
     
     <meta name="twitter:card"  content="summary_large_image">
-    <meta name="twitter:image" content="https://georgeoffley-blog-images.s3.amazonaws.com/2021-03-03-checking-health-in-s3-and-dynamodb/cover.jpg">
+    <meta name="twitter:image" content="https://georgeoffley-blog-images.s3.amazonaws.com/2021-10-30-messaging-and-madness/title_card.png">
     
     <!-- end of Twitter cards -->
     
-    <meta property="og:url" content="https://georgeoffley.com/blog/checking-health-in-s3-and-dynamodb.html" />
+    <meta property="og:url" content="https://georgeoffley.com/blog/shinanigans-with-shaders.html" />
 
     <meta property="og:image" content="" />
 
@@ -104,7 +104,7 @@
     
     <link rel="stylesheet" href="https://georgeoffley.com/assets/css/main.css">
 
-    <link rel="canonical" href="https://georgeoffley.com/blog/checking-health-in-s3-and-dynamodb.html">
+    <link rel="canonical" href="https://georgeoffley.com/blog/shinanigans-with-shaders.html">
 
     <link rel="alternate" type="application/rss+xml" title="" href="https://georgeoffley.com/feed.xml">
 </head>
@@ -210,7 +210,7 @@
                 <article class="post single" role="article" itemscope itemtype="http://schema.org/BlogPosting">
     <header class="post-header">
         <ul>
-            <li><time datetime="2021-03-03T09:00:00-05:00" itemprop="datePublished">3 Mar, 2021</time></li>
+            <li><time datetime="2021-11-21T12:00:00-05:00" itemprop="datePublished">21 Nov, 2021</time></li>
             
                 
                 <li class="cats">
@@ -221,111 +221,115 @@
                 
             
         </ul>
-        <h2 itemprop="name headline">Health Checking S3 and DynamoDB in AWS</h2>
+        <h2 itemprop="name headline">Shenanigans with Shaders</h2>
     </header>
 
     <div class="post-content">
         <figure>
-    <img src="https://georgeoffley-blog-images.s3.amazonaws.com/2021-03-03-checking-health-in-s3-and-dynamodb/cover.jpg" />
+    <img src="https://georgeoffley-blog-images.s3.amazonaws.com/2021-11-21-shenanigans-in-shaders/cover.jpg" />
 </figure>
 
 <h2 id="table-of-contents">Table Of Contents</h2>
 <ul>
   <li><a href="#introduction">Introduction</a></li>
-  <li><a href="#problem">Problem</a></li>
-  <li><a href="#s3_solution">S3 Solution</a></li>
-  <li><a href="#dynamo_solution">DynamoDB Solution</a></li>
-  <li><a href="#conclusion">Conclusion</a></li>
+  <li><a href="#shaders">Shaders</a></li>
+  <li><a href="#setup">Setup</a></li>
+  <li><a href="#shader_code">Shader Code</a></li>
+  <li><a href="#conslusion">Conclusion</a></li>
 </ul>
 
-<h3 id="introduction-">Introduction <a name="introduction"></a></h3>
-
-<p>A hybrid infrastructure has tons of exciting challenges. Although we host a great deal of our software in AWS at my company, we cannot do everything in the cloud. As such, we have tons of physical infrastructure as well. This hybrid infrastructure presents many challenges that we strive to overcome on the software team. One of the challenges we are working towards is imaging and utilizing software to detect our yields. This piece of that puzzle will focus on storage for our images.</p>
+<p>For those of you who love rabbit holes, learning graphics programming is a pretty deep one. There’s always some new thing to learn, there’s a bunch of different new languages and toolsets to know, and on top of all that, <a href="https://www.youtube.com/watch?v=tt_gPXpx0eo&amp;t=101s&amp;ab_channel=SamwellTarly">there’s math</a>. Like anything else in programming, you pick up momentum with each new thing you build, so I <a href="https://github.com/Xibanya/ShaderTutorials">found a tutorial</a> and started making shaders. I know very little about this. However, I’m writing what I’m learning, so don’t come for me if I’m off on anything.</p>
 
 <!--more-->
 
-<p>We decided that we would use a combination of services offered by AWS. The first is the Amazon Simple Storage Service or S3 for image storage and DynamoDB for holding metadata of said images. Given that we are getting information straight from hardware, many things might go wrong, from getting the pictures to when said pictures are pushed to AWS. This brings us to this evening’s question: How can I be sure these services are available for me to send stuff to?</p>
+<h3 id="shaders-">Shaders <a name="shaders"></a></h3>
 
-<h3 id="problem-">Problem <a name="problem"></a></h3>
+<p>A shader is a program that runs on the GPU as part of the <a href="https://en.wikipedia.org/wiki/Graphics_pipeline">graphics pipeline</a>. We’re going to focus primarily on shaders in Unity. There are other ways to tackle this, but Unity gives an easy setup to get started quickly. For the context of Unity, a shader is a small script containing logic and calculations for determining the colors of a pixel.</p>
 
-<p>Well, as it turns out, there are a few ways this can be done. For example, there are libraries out there that will scan health check websites to see if AWS has any service outages. This would not be a great way to do health checks for a production application. So, I decided to spike this problem and make something myself. I am not worried about AWS services being out as they have high availability using their different availability zones. I am more concerned about our endpoints failing, internet issues, or Cloverfield monsters. So, this needs to be explored.</p>
+<p>In Unity, we create <em>shader objects</em> which act as wrappers for our shader program. A shader object exists in a <em>shader asset</em> which is just the script we are writing. Creating these in Unity allows for a great deal of freedom in what we make. What we’ll focus on is adding some basic functionality to a shader. We’ll be focusing on using <a href="https://docs.unity3d.com/Manual/SL-Reference.html"><em>ShaderLab</em></a> to create shaders.</p>
 
-<h3 id="s3-solution-">S3 Solution <a name="s3_solution"></a></h3>
+<h3 id="setup-">Setup <a name="setup"></a></h3>
 
-<p>A simple solution for checking the health of my resources was needed. Luckily, I quickly put something together using the <a href="https://boto3.amazonaws.com/v1/documentation/api/latest/index.html">Boto3 library</a>, which is the AWS SDK for Python. This library gives us easy access to the AWS API for configuring and managing services. The first thing I did was create an object class to utilize the Client class in Boto3.</p>
+<p>The first thing to set yourself up making shaders in Unity is Unity. So <a href="https://unity3d.com/get-unity/download">download it</a>, and create a new project.</p>
 
-<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2021-03-03-checking-health-in-s3-and-dynamodb/client_object.png" alt="Client Object" /></p>
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2021-11-21-shenanigans-in-shaders/new_scene.png" alt="New Scene in Unity" /></p>
 
-<p>We only need to pass in our access credentials and the services we want to create a client object for, and we get our client object back. Each turn in Boto3 allows for interacting with the Client class. The docs define the Client class as <a href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#client">“a low-level client representing whatever service”</a>. In most cases, you would use it to access the various functions for interacting with the service.</p>
+<p>I won’t give a full rundown of Unity and the stuff you can do. I leave that to <a href="https://learn.unity.com/">better minds</a>. In the <em>Hierarchy Window</em>, right-click and scroll to <em>3D Object</em> and click whichever object grabs your fancy. I always pick sphere for testing stuff. Now we have a <a href="https://en.wikipedia.org/wiki/Polygon_mesh"><em>3D Mesh</em></a> on the screen that we can begin adding things to it. In the <em>Project Window</em>, right-click on the word <em>Assets</em> and create two new folders, <em>Materials</em> and <em>Shaders</em>. Double click into the Materials folder, right-click and Create is right at the top -&gt; click Material. Materials are similar to skins we can apply to 3D objects. We will use this new material to add our new shader to the 3D Mesh. After that, drag our new material into the <em>Scene Window</em> where our sphere is and onto the sphere we made. Now right-click our Shaders folder scroll to Create -&gt; Shader -&gt; Standard Surface Shader. Click the sphere in the Scene window to bring up the <em>Inspector Window</em>. Finally, drag the shader file over to the inspector window with our sphere covered in our new material. We have just applied our shader to the materials. You should see this in the Inspector Window.</p>
 
-<p>After that, I put together some simple logic to return some information on the resource we are looking for. In our case, we were trying to get access to a bucket where we will store images. This solution is enough to satisfy me that the resource exists, and I can communicate with it. Below is the code I used for S3.</p>
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2021-11-21-shenanigans-in-shaders/test_material.png" alt="Test Material inspector window" /></p>
 
-<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2021-03-03-checking-health-in-s3-and-dynamodb/s3.png" alt="S3" /></p>
+<p>Now go back to the Project window and double click our new Shader file. Unity will launch an IDE for use to check out the code. You can configure your choice of IDE; I have VSCode configured. Open the Shader file, and let’s check out the code. I created some basic shader code you can use.</p>
 
-<p>The code above sets up a new client instance and utilizes the <a href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.head_bucket"><em>head_bucket()</em> function</a>. This is great for seeing if a bucket exists and if the entity polling it has permissions to access it. In my case, I only need to be able to see if I get a message back. So, I pass in the bucket name, and I can receive a 200 message back from the server if the resource is there and I have access to it. I like this approach because it is dead simple, and I also get to utilize the custom exception that we get access to using the client object, which is the <em>NoSuchBucket</em> exception. Using this exception allows us to be concise with our exceptions.</p>
+<h3 id="shader-code-">Shader Code <a name="shader_code"></a></h3>
 
-<p>There were some questions about the limitations on being able to use something like this. We expect to use this frequently to pole S3 and make sure that we can talk to our bucket. If AWS is not available, we need to turn off the spigot and stop our software from sending stuff to AWS and not lose messages in the void of space. That said, we will be polling a few times a second at least; luckily for us, <a href="https://aws.amazon.com/about-aws/whats-new/2018/07/amazon-s3-announces-increased-request-rate-performance/">S3 upped their request rate to 3500 to add data and 5500 for retrieving data</a>. This gives us plenty of room to be able to pole what we need.</p>
+<p>Here is the complete, minimal shader code:</p>
 
-<h3 id="dynamodb-solution-">DynamoDB Solution <a name="dynamo_solution"></a></h3>
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2021-11-21-shenanigans-in-shaders/code.png" alt="Full Shader Code" /></p>
 
-<p>With the client object that we created above, we can also use that to access DynamoDB. As such, the code is below:</p>
+<p>It looks a bit much to anyone new to this, including myself, so let’s take it a section at a time. The first thing at the top, starting with “Shader,” is the <em>Shader Block</em>. This is used to define our Shader Object. You can use this to define your properties, create many shaders using the <em>SubShader</em> blocks, assign custom options, and assign a <em>fallback</em> shader object. Here you can see the name of our shader and that it is in the “Custom” directory.</p>
 
-<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2021-03-03-checking-health-in-s3-and-dynamodb/dynamo.png" alt="Dynamo" /></p>
+<p>Within the Shader block curly brackets, we have our other sections. The first is our <em>Properties</em>. The properties box is where we define the properties for our materials. A material property is what Unity stores along with our materials. This allows for different configurations within Unity by creating things like sliders and inputs within the Inspector window for us to play around with. We defined two properties, the <em>MainColor</em> and the <em>MainTexture</em>. Using square brackets, I outlined which property was the default color and default texture. We also defined the default values for these properties. There’s a bit to these values but suffice it to say, both values are default white.</p>
 
-<p>The above code snippet does the same thing as the S3 code does. We create a new instance, and we use the <a href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html#DynamoDB.Client.describe_table"><em>describe_table()</em> function while passing in the table name</a>. This function returns information about the table, including the status. Also, note that the <em>ResourceNotFoundException</em> is another custom exception provided by the Dynamo Client object. This bit of code satisfies what I need to be able to check the status of a table. Yay!</p>
+<p>The second block is our SubShader; this is where our shader logic goes. You can define multiple sub shaders for many different uses. For example, depending on the graphics hardware you want to support, you can make shaders for the various graphics APIs. Within our block, you can see some code for assigning <a href="https://docs.unity3d.com/Manual/SL-SubShaderTags.html"><em>tags</em></a>, assigning <a href="https://docs.unity3d.com/Manual/SL-ShaderLOD.html"><em>levels of detail (LOD)</em></a>, and the <a href="https://en.wikibooks.org/wiki/Cg_Programming/Unity"><em>CGPROGRAM</em></a> block. I want to draw your attention to this section of the code:</p>
 
-<p>Using this method also has similar challenges. The <em>decribe_table()</em> function uses up an eventually consistent read on your table. So, getting out-of-date data is possible if you are polling something you just created, so give it a second. If you are using a provisioned table in Dynamo, this method will take up one of your reads per second. We will need to make sure this is accounted for when we start designing our database.</p>
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2021-11-21-shenanigans-in-shaders/output.png" alt="Output function" /></p>
+
+<p>First, we define the data types for our inputs and outputs and create a function for us to serve the outputs into unity. Our Input we set up as <em>uv_Maintex</em>; this allows for us to input a texture object. Then we create a <em>fixed4</em> variable for our <em>_Color</em> attribute. The <em>o.Albedo</em> parameter is what is used to control the base color of the surface. Here we are taking the values of our texture and multiplying them by our color input. The code above gets you something similar to this:</p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2021-11-21-shenanigans-in-shaders/color.png" alt="Output function" /></p>
+
+<p>I was proud of myself the first time I made this from memory. Our coded shader lets us control the color of the material and add basic textures to it. Working in graphics does not lead to instant gratification, as anything you do requires a ton of setup. However, this and <a href="https://www.shadertoy.com/">ShaderToy</a> get you that dopamine hit.</p>
 
 <h3 id="conclusion-">Conclusion <a name="conclusion"></a></h3>
 
-<p>The above simple bit of code was a brief spike for a solution we needed to explore. This write-up was inspired by a lot of the help I received from my fellow AWS Community Builders. Checking the health and status of services is one of many things that we will build out using AWS. I am excited to keep up my learning and building. If you have seen or made other stuff to accomplish this type of work, let me know! I would love to learn more.</p>
+<p>Above I went through some fundamentals of shaders in Unity. I skipped over a ton of information as I’m still learning a lot, and a full informed explainer would be twenty pages long. There is a lot to programming graphics and shaders specifically. I suggest you check out stuff like <a href="https://github.com/Xibanya/ShaderTutorials">Team Dogpit’s shader tutorial</a> for a way better deep dive. I’m excited to dig into this world. I want to learn to create some of the incredible stories I see in animation, and any first step is a step in the right direction. Thanks for reading.</p>
+
+<p>-George</p>
 
     </div>
 
     <footer class="post-footer">
         <div class="share">Share
             <ul class="social-networks">
-                <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Health Checking S3 and DynamoDB in AWS&p[summary]=
+                <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Shenanigans with Shaders&p[summary]=
     
 
 
 Table Of Contents
 
   Introduction
-  Problem
-  S3 Solution
-  DynamoDB Solution
+  Shaders
+  Setup
+  Shader Code
   Conclusion
 
 
-Introduction 
-
-A hybrid infrastructu...&p[url]=https://georgeoffley.com/blog/checking-health-in-s3-and-dynamodb.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></li>
-                <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/blog/checking-health-in-s3-and-dynamodb.html&text=
+For those of you who love rabbit holes, learning...&p[url]=https://georgeoffley.com/blog/shinanigans-with-shaders.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></li>
+                <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/blog/shinanigans-with-shaders.html&text=
     
 
 
 Table Of Contents
 
   Introduction
-  Problem
-  S3 Solution
-  DynamoDB Solution
+  Shaders
+  Setup
+  Shader Code
   Conclusion
 
 
-Introduction 
-
-A hybrid infrastructu...&hashtags=AWS,Python," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+For those of you who love rabbit holes, learning...&hashtags=Graphics,Unity,ShaderLab," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
             </ul>
         </div>
         
         <div class="tags">
             <ul>
                 
-                <li><a href="https://georgeoffley.com/tag/AWS">AWS</a></li>
+                <li><a href="https://georgeoffley.com/tag/Graphics">Graphics</a></li>
                 
-                <li><a href="https://georgeoffley.com/tag/Python">Python</a></li>
+                <li><a href="https://georgeoffley.com/tag/Unity">Unity</a></li>
+                
+                <li><a href="https://georgeoffley.com/tag/ShaderLab">ShaderLab</a></li>
                 
             </ul>
         </div>

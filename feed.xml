@@ -5,9 +5,87 @@
     <description>I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!</description>
     <link>https://georgeoffley.com/</link>
     <atom:link href="https://georgeoffley.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 03 Nov 2021 13:15:29 -0400</pubDate>
-    <lastBuildDate>Wed, 03 Nov 2021 13:15:29 -0400</lastBuildDate>
+    <pubDate>Sun, 21 Nov 2021 18:13:37 -0500</pubDate>
+    <lastBuildDate>Sun, 21 Nov 2021 18:13:37 -0500</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
+    
+      <item>
+        <title>Shenanigans with Shaders</title>
+        <description>&lt;figure&gt;
+    &lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-11-21-shenanigans-in-shaders/cover.jpg&quot; /&gt;
+&lt;/figure&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#shaders&quot;&gt;Shaders&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#setup&quot;&gt;Setup&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#shader_code&quot;&gt;Shader Code&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#conslusion&quot;&gt;Conclusion&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;For those of you who love rabbit holes, learning graphics programming is a pretty deep one. There’s always some new thing to learn, there’s a bunch of different new languages and toolsets to know, and on top of all that, &lt;a href=&quot;https://www.youtube.com/watch?v=tt_gPXpx0eo&amp;amp;t=101s&amp;amp;ab_channel=SamwellTarly&quot;&gt;there’s math&lt;/a&gt;. Like anything else in programming, you pick up momentum with each new thing you build, so I &lt;a href=&quot;https://github.com/Xibanya/ShaderTutorials&quot;&gt;found a tutorial&lt;/a&gt; and started making shaders. I know very little about this. However, I’m writing what I’m learning, so don’t come for me if I’m off on anything.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h3 id=&quot;shaders-&quot;&gt;Shaders &lt;a name=&quot;shaders&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;A shader is a program that runs on the GPU as part of the &lt;a href=&quot;https://en.wikipedia.org/wiki/Graphics_pipeline&quot;&gt;graphics pipeline&lt;/a&gt;. We’re going to focus primarily on shaders in Unity. There are other ways to tackle this, but Unity gives an easy setup to get started quickly. For the context of Unity, a shader is a small script containing logic and calculations for determining the colors of a pixel.&lt;/p&gt;
+
+&lt;p&gt;In Unity, we create &lt;em&gt;shader objects&lt;/em&gt; which act as wrappers for our shader program. A shader object exists in a &lt;em&gt;shader asset&lt;/em&gt; which is just the script we are writing. Creating these in Unity allows for a great deal of freedom in what we make. What we’ll focus on is adding some basic functionality to a shader. We’ll be focusing on using &lt;a href=&quot;https://docs.unity3d.com/Manual/SL-Reference.html&quot;&gt;&lt;em&gt;ShaderLab&lt;/em&gt;&lt;/a&gt; to create shaders.&lt;/p&gt;
+
+&lt;h3 id=&quot;setup-&quot;&gt;Setup &lt;a name=&quot;setup&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;The first thing to set yourself up making shaders in Unity is Unity. So &lt;a href=&quot;https://unity3d.com/get-unity/download&quot;&gt;download it&lt;/a&gt;, and create a new project.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-11-21-shenanigans-in-shaders/new_scene.png&quot; alt=&quot;New Scene in Unity&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I won’t give a full rundown of Unity and the stuff you can do. I leave that to &lt;a href=&quot;https://learn.unity.com/&quot;&gt;better minds&lt;/a&gt;. In the &lt;em&gt;Hierarchy Window&lt;/em&gt;, right-click and scroll to &lt;em&gt;3D Object&lt;/em&gt; and click whichever object grabs your fancy. I always pick sphere for testing stuff. Now we have a &lt;a href=&quot;https://en.wikipedia.org/wiki/Polygon_mesh&quot;&gt;&lt;em&gt;3D Mesh&lt;/em&gt;&lt;/a&gt; on the screen that we can begin adding things to it. In the &lt;em&gt;Project Window&lt;/em&gt;, right-click on the word &lt;em&gt;Assets&lt;/em&gt; and create two new folders, &lt;em&gt;Materials&lt;/em&gt; and &lt;em&gt;Shaders&lt;/em&gt;. Double click into the Materials folder, right-click and Create is right at the top -&amp;gt; click Material. Materials are similar to skins we can apply to 3D objects. We will use this new material to add our new shader to the 3D Mesh. After that, drag our new material into the &lt;em&gt;Scene Window&lt;/em&gt; where our sphere is and onto the sphere we made. Now right-click our Shaders folder scroll to Create -&amp;gt; Shader -&amp;gt; Standard Surface Shader. Click the sphere in the Scene window to bring up the &lt;em&gt;Inspector Window&lt;/em&gt;. Finally, drag the shader file over to the inspector window with our sphere covered in our new material. We have just applied our shader to the materials. You should see this in the Inspector Window.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-11-21-shenanigans-in-shaders/test_material.png&quot; alt=&quot;Test Material inspector window&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now go back to the Project window and double click our new Shader file. Unity will launch an IDE for use to check out the code. You can configure your choice of IDE; I have VSCode configured. Open the Shader file, and let’s check out the code. I created some basic shader code you can use.&lt;/p&gt;
+
+&lt;h3 id=&quot;shader-code-&quot;&gt;Shader Code &lt;a name=&quot;shader_code&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Here is the complete, minimal shader code:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-11-21-shenanigans-in-shaders/code.png&quot; alt=&quot;Full Shader Code&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;It looks a bit much to anyone new to this, including myself, so let’s take it a section at a time. The first thing at the top, starting with “Shader,” is the &lt;em&gt;Shader Block&lt;/em&gt;. This is used to define our Shader Object. You can use this to define your properties, create many shaders using the &lt;em&gt;SubShader&lt;/em&gt; blocks, assign custom options, and assign a &lt;em&gt;fallback&lt;/em&gt; shader object. Here you can see the name of our shader and that it is in the “Custom” directory.&lt;/p&gt;
+
+&lt;p&gt;Within the Shader block curly brackets, we have our other sections. The first is our &lt;em&gt;Properties&lt;/em&gt;. The properties box is where we define the properties for our materials. A material property is what Unity stores along with our materials. This allows for different configurations within Unity by creating things like sliders and inputs within the Inspector window for us to play around with. We defined two properties, the &lt;em&gt;MainColor&lt;/em&gt; and the &lt;em&gt;MainTexture&lt;/em&gt;. Using square brackets, I outlined which property was the default color and default texture. We also defined the default values for these properties. There’s a bit to these values but suffice it to say, both values are default white.&lt;/p&gt;
+
+&lt;p&gt;The second block is our SubShader; this is where our shader logic goes. You can define multiple sub shaders for many different uses. For example, depending on the graphics hardware you want to support, you can make shaders for the various graphics APIs. Within our block, you can see some code for assigning &lt;a href=&quot;https://docs.unity3d.com/Manual/SL-SubShaderTags.html&quot;&gt;&lt;em&gt;tags&lt;/em&gt;&lt;/a&gt;, assigning &lt;a href=&quot;https://docs.unity3d.com/Manual/SL-ShaderLOD.html&quot;&gt;&lt;em&gt;levels of detail (LOD)&lt;/em&gt;&lt;/a&gt;, and the &lt;a href=&quot;https://en.wikibooks.org/wiki/Cg_Programming/Unity&quot;&gt;&lt;em&gt;CGPROGRAM&lt;/em&gt;&lt;/a&gt; block. I want to draw your attention to this section of the code:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-11-21-shenanigans-in-shaders/output.png&quot; alt=&quot;Output function&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;First, we define the data types for our inputs and outputs and create a function for us to serve the outputs into unity. Our Input we set up as &lt;em&gt;uv_Maintex&lt;/em&gt;; this allows for us to input a texture object. Then we create a &lt;em&gt;fixed4&lt;/em&gt; variable for our &lt;em&gt;_Color&lt;/em&gt; attribute. The &lt;em&gt;o.Albedo&lt;/em&gt; parameter is what is used to control the base color of the surface. Here we are taking the values of our texture and multiplying them by our color input. The code above gets you something similar to this:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-11-21-shenanigans-in-shaders/color.png&quot; alt=&quot;Output function&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I was proud of myself the first time I made this from memory. Our coded shader lets us control the color of the material and add basic textures to it. Working in graphics does not lead to instant gratification, as anything you do requires a ton of setup. However, this and &lt;a href=&quot;https://www.shadertoy.com/&quot;&gt;ShaderToy&lt;/a&gt; get you that dopamine hit.&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusion-&quot;&gt;Conclusion &lt;a name=&quot;conclusion&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Above I went through some fundamentals of shaders in Unity. I skipped over a ton of information as I’m still learning a lot, and a full informed explainer would be twenty pages long. There is a lot to programming graphics and shaders specifically. I suggest you check out stuff like &lt;a href=&quot;https://github.com/Xibanya/ShaderTutorials&quot;&gt;Team Dogpit’s shader tutorial&lt;/a&gt; for a way better deep dive. I’m excited to dig into this world. I want to learn to create some of the incredible stories I see in animation, and any first step is a step in the right direction. Thanks for reading.&lt;/p&gt;
+
+&lt;p&gt;-George&lt;/p&gt;
+</description>
+        <pubDate>Sun, 21 Nov 2021 12:00:00 -0500</pubDate>
+        <link>https://georgeoffley.com/blog/shinanigans-with-shaders.html</link>
+        <guid isPermaLink="true">https://georgeoffley.com/blog/shinanigans-with-shaders.html</guid>
+        
+        <category>Graphics</category>
+        
+        <category>Unity</category>
+        
+        <category>ShaderLab</category>
+        
+        
+        <category>Blog</category>
+        
+      </item>
     
       <item>
         <title>Messaging and Madness: Sending Messages with AMQP and Amazon MQ</title>
@@ -78,8 +156,8 @@ via &lt;a href=&quot;https://www.rabbitmq.com/tutorials/amqp-concepts.html&quot;
 &lt;p&gt;-George&lt;/p&gt;
 </description>
         <pubDate>Sat, 30 Oct 2021 12:00:00 -0400</pubDate>
-        <link>https://georgeoffley.com/blog/messaging-and-madness-sending-messages-with-amqp-and-amazon-mq.html</link>
-        <guid isPermaLink="true">https://georgeoffley.com/blog/messaging-and-madness-sending-messages-with-amqp-and-amazon-mq.html</guid>
+        <link>https://georgeoffley.com/blog/messaging-and-madness-sending-messages-with-amqp-and-amazon-mq-copy.html</link>
+        <guid isPermaLink="true">https://georgeoffley.com/blog/messaging-and-madness-sending-messages-with-amqp-and-amazon-mq-copy.html</guid>
         
         <category>AWS</category>
         
