@@ -67,7 +67,7 @@ var index = lunr(function () {
 var store = [{
     "title": "Shenanigans with Shaders",
     "link": "/blog/shinanigans-with-shaders.html",
-    "image": "https://georgeoffley-blog-images.s3.amazonaws.com/2021-10-30-messaging-and-madness/title_card.png",
+    "image": "https://georgeoffley-blog-images.s3.amazonaws.com/2021-11-21-shenanigans-in-shaders/cover.jpg",
     "date": "November 21, 2021",
     "category": ["Blog"],
     "excerpt": "Table Of Contents Introduction Shaders Setup Shader Code Conclusion For those of you who love rabbit holes, learning graphics programming..."
