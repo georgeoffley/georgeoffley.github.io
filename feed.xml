@@ -5,8 +5,8 @@
     <description>I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!</description>
     <link>https://georgeoffley.com/</link>
     <atom:link href="https://georgeoffley.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 09 Feb 2022 21:05:51 -0500</pubDate>
-    <lastBuildDate>Wed, 09 Feb 2022 21:05:51 -0500</lastBuildDate>
+    <pubDate>Wed, 09 Feb 2022 21:10:19 -0500</pubDate>
+    <lastBuildDate>Wed, 09 Feb 2022 21:10:19 -0500</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
     
       <item>
@@ -114,6 +114,8 @@
 &lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-02-09-using-api-gateway-with-lambda/data.png&quot; alt=&quot;Data!&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;conclusion-&quot;&gt;Conclusion &lt;a name=&quot;conclusion&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Now I have a working API for grabbing my data. React confuses me, as I thought I’d be able just to pull data like I would a Python app. However, I am sure I will learn much more as I continue. And now you also have some knowledge of setting up endpoints in Amazon API Gateway.&lt;/p&gt;
 </description>
         <pubDate>Wed, 09 Feb 2022 12:00:00 -0500</pubDate>
         <link>https://georgeoffley.com/blog/using-api-gateway-with-lambda.html</link>
