@@ -21,8 +21,12 @@
 <lastmod>2021-10-30T12:00:00-04:00</lastmod>
 </url>
 <url>
-<loc>https://georgeoffley.com/blog/shinanigans-with-shaders.html</loc>
+<loc>https://georgeoffley.com/blog/shinanigans-with-shaders-copy.html</loc>
 <lastmod>2021-11-21T12:00:00-05:00</lastmod>
+</url>
+<url>
+<loc>https://georgeoffley.com/blog/using-api-gateway-with-lambda.html</loc>
+<lastmod>2022-02-09T12:00:00-05:00</lastmod>
 </url>
 <url>
 <loc>https://georgeoffley.com/404</loc>
@@ -68,6 +72,9 @@
 </url>
 <url>
 <loc>https://georgeoffley.com/tag/ShaderLab/</loc>
+</url>
+<url>
+<loc>https://georgeoffley.com/tag/API%20Gateway/</loc>
 </url>
 <url>
 <loc>https://georgeoffley.com/categories/Blog/</loc>
