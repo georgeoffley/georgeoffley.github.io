@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Posts Tagged - concurrency | George Offley &mdash; Software Engineer </title>
-    <meta property="og:title" content="Posts Tagged - concurrency | George Offley &mdash; Software Engineer " />
+    <title>Shared Memory in Docker | George Offley &mdash; Software Engineer </title>
+    <meta property="og:title" content="Shared Memory in Docker | George Offley &mdash; Software Engineer " />
 
     <meta name="description" content="I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!">
     <meta name="description" property="og:description" content="I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!" />
@@ -14,19 +14,19 @@
     <!-- Twitter cards -->
     <meta name="twitter:site"    content="@georgeoffley">
     <meta name="twitter:creator" content="@georgeoffley">
-    <meta name="twitter:title"   content="Posts Tagged - concurrency">
+    <meta name="twitter:title"   content="Shared Memory in Docker">
 
     
-    <meta name="twitter:description" content="I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!">
+    <meta name="twitter:description" content="What does /dev/shm/ mean in Docker? Let's find out!">
     
 
     
     <meta name="twitter:card"  content="summary_large_image">
-    <meta name="twitter:image" content="https://georgeoffley.com/assets/images/flat-laptop-cover.png">
+    <meta name="twitter:image" content="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-05-shared-memory-in-docker/cover.png">
     
     <!-- end of Twitter cards -->
     
-    <meta property="og:url" content="https://georgeoffley.com/tag/concurrency/" />
+    <meta property="og:url" content="https://georgeoffley.com/blog/shared-memory-in-docker.html" />
 
     <meta property="og:image" content="" />
 
@@ -104,7 +104,7 @@
     
     <link rel="stylesheet" href="https://georgeoffley.com/assets/css/main.css">
 
-    <link rel="canonical" href="https://georgeoffley.com/tag/concurrency/">
+    <link rel="canonical" href="https://georgeoffley.com/blog/shared-memory-in-docker.html">
 
     <link rel="alternate" type="application/rss+xml" title="" href="https://georgeoffley.com/feed.xml">
 </head>
@@ -213,153 +213,129 @@
 </div>
 
 
-                <h1>Posts Tagged - concurrency</h1>
-
-
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-        <article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
-            <header class="post-header">
-                <ul>
-                    <li><time datetime="2020-08-17T21:00:00-04:00" itemprop="datePublished">17 Aug, 2020</time></li>
+                <article class="post single" role="article" itemscope itemtype="http://schema.org/BlogPosting">
+    <header class="post-header">
+        <ul>
+            <li><time datetime="2022-03-05T12:00:00-05:00" itemprop="datePublished">5 Mar, 2022</time></li>
+            
+                
+                <li class="cats">
                     
-                    <li class="cats">
-                        
-                            <a href="/categories/Blog/">Blog</a>
-                        
-                    </li>
+                        <a href="/categories/Blog/">Blog</a>
                     
-                </ul>
-                <h2 itemprop="name headline"><a href="https://georgeoffley.com/blog/working-with-context-in-go.html">Working with Context in Go</a></h2>
-            </header>
+                </li>
+                
+            
+        </ul>
+        <h2 itemprop="name headline">Shared Memory in Docker</h2>
+    </header>
 
-            <div class="post-content">
-                <figure>
-    <img src="/assets/images/working-with-context-in-go.jpg" />
+    <div class="post-content">
+        <figure>
+    <img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-05-shared-memory-in-docker/cover.png" />
 </figure>
 
 <h2 id="table-of-contents">Table Of Contents</h2>
 <ul>
   <li><a href="#introduction">Introduction</a></li>
-  <li><a href="#context_interface">Context Interface</a></li>
-  <li><a href="#context_in_context">Context in context</a></li>
-  <li><a href="#context_background">Context.Background</a></li>
-  <li><a href="#context_todo">Context.TODO</a></li>
-  <li><a href="#context_withcancel">Context.WithCancel</a></li>
-  <li><a href="#context_withDeadline">Context.WithDeadline</a></li>
-  <li><a href="#context_withtimeout">Context.WithTimeout</a></li>
-  <li><a href="#context_withvalue">Context.WithValue</a></li>
+  <li><a href="#shared_memory_device">Shared Memory Device</a></li>
+  <li><a href="#use_in_docker">Use in Docker</a></li>
   <li><a href="#conclusion">Conclusion</a></li>
 </ul>
 
 <h3 id="introduction-">Introduction <a name="introduction"></a></h3>
 
-<p>When you’re having a breakdown caused by the combination of burnout and existential pain, do you get annoyed that your harried cries into the void go unanswered? Well, I can’t help with that, but I can suggest some methods for timing out calls to external or internal services. I’ve been doing research and playing with some of the standard libraries in Go and one of them I find most useful is the context library. Used to get some control over a system that might be running slowly for whatever reason or to enforce a certain level of quality for service calls this small library is a standard for a reason. For any production level systems to keep good flow control the context library is going to be necessary.
-<!--This is a test--></p>
+<p>Recently, I was experimenting with system testing on a new stack. While working with <a href="https://www.selenium.dev/documentation/webdriver/remote_webdriver/">Selenium Remote Driver</a> to create <a href="https://en.wikipedia.org/wiki/Headless_browser">headless web browsers</a> (more on that later) to run against my app, I came across a Docker option I had not known. This Docker feature allowed for easily accessible and fast file reading and writing between the host and the container. It was being used as a volume, but I learned it was much more. When I looked it up, it was referred to as a <a href="https://en.wikipedia.org/wiki/Shared_memory"><em>Shared Memory Device</em></a>.</p>
 
+<!--more-->
 
+<h3 id="shared-memory-device-">Shared Memory Device <a name="shared_memory_device"></a></h3>
 
-                
-                    <p><a href="/blog/working-with-context-in-go.html" role="button">Read More</a></p>
-                
-            </div>
+<p>Turns out that this is an old Linux staple. The shared memory device, located in the <code class="highlighter-rouge">/dev/shm/</code> directory in the file system, utilizes temporary storage using RAM rather than disk storage. Using a shared volume available on the RAM and not the disk makes for a much faster read/write speeds. These devices also allows for <a href="https://en.wikipedia.org/wiki/Inter-process_communication">inter-process communication</a>.</p>
 
-            <footer class="post-footer">
-                <div class="share">Share
-                    <ul class="social-networks">
-                        <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Working with Context in Go&p[summary]=
+<h3 id="use-in-docker-">Use in Docker <a name="use_in_docker"></a></h3>
+
+<p>Docker allows for the use of this device. When conducting my testing, I used the volume mapping feature to easily map local directories with directories inside the containers we’re working on. As seen below.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">--rm</span> <span class="nt">-it</span> <span class="nt">-v</span> /dev/shm/:/dev/shm/ <span class="nt">--name</span> ubuntu ubuntu
+</code></pre></div></div>
+
+<p>This mapped the local shared memory device to the Docker device. Docker, by default, allows for up to 64 MB of storage space using the shared memory device. You can see the default allocation when searching for the shared storage device within the container. As seen below.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker inspect ubuntu | <span class="nb">grep</span> <span class="nt">-i</span> shm
+            <span class="s2">"ShmSize"</span>: 67108864,
+</code></pre></div></div>
+
+<p>I was saving screenshots just to ensure that I was looking at the thing I was hoping to look at. Although I was only doing some foundational work, I could find myself in a pickle with only 64 MB of space available if this work ends up scaling. Should we need to, Docker lets us change the size of this device using the <em>–shm-size</em> option. As seen below.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">--rm</span> <span class="nt">-it</span> <span class="nt">-v</span> /dev/shm/:/dev/shm <span class="nt">--shm-size</span><span class="o">=</span>2gb <span class="nt">--name</span> ubuntu ubuntu
+</code></pre></div></div>
+
+<p>Above we add in the <em>–shm-size</em> option and we can specify all the space we need! Let’s look one more time to confirm that it works.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker inspect ubuntu | <span class="nb">grep</span> <span class="nt">-i</span> shm
+            <span class="s2">"ShmSize"</span>: 2147483648,
+</code></pre></div></div>
+
+<p>Shazam! We have more storage in our shared memory device to play around with.</p>
+
+<h3 id="conclusion-">Conclusion <a name="conclusion"></a></h3>
+
+<p>There is more to come about my adventures in Dockerizing system testing, but for now, I was able to learn a new thing about Linux and Docker. I hope it helps someone who came across it without knowing as I did.</p>
+
+<p>-George</p>
+
+    </div>
+
+    <footer class="post-footer">
+        <div class="share">Share
+            <ul class="social-networks">
+                <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Shared Memory in Docker&p[summary]=
     
 
 
 Table Of Contents
 
   Introduction
-  Context Interface
-  Context in context
-  Context.Background
-  Context.TODO
-  Context.WithCanc...&p[url]=https://georgeoffley.com/blog/working-with-context-in-go.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>
-                        <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/blog/working-with-context-in-go.html&text=
+  Shared Memory Device
+  Use in Docker
+  Conclusion
+
+
+Introduction 
+
+Recently, I was experiment...&p[url]=https://georgeoffley.com/blog/shared-memory-in-docker.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></li>
+                <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/blog/shared-memory-in-docker.html&text=
     
 
 
 Table Of Contents
 
   Introduction
-  Context Interface
-  Context in context
-  Context.Background
-  Context.TODO
-  Context.WithCanc...&hashtags=concurrency,Go," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
-                    </ul>
-                </div>
-                
-                <div class="tags">
-                    <ul>
-                        
-                        <li><a href="https://georgeoffley.com/tag/concurrency">concurrency</a></li>
-                        
-                        <li><a href="https://georgeoffley.com/tag/Go">Go</a></li>
-                        
-                    </ul>
-                </div>
-                
-            </footer>
-        </article>
-        
-    
-        
-    
+  Shared Memory Device
+  Use in Docker
+  Conclusion
 
-    
+
+Introduction 
+
+Recently, I was experiment...&hashtags=Docker,Intermediate," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+            </ul>
+        </div>
         
-    
+        <div class="tags">
+            <ul>
+                
+                <li><a href="https://georgeoffley.com/tag/Docker">Docker</a></li>
+                
+                <li><a href="https://georgeoffley.com/tag/Intermediate">Intermediate</a></li>
+                
+            </ul>
+        </div>
         
-    
+    </footer>
+</article>
+
 
             </main>
         </div>

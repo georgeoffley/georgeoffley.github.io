@@ -5,9 +5,78 @@
     <description>I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!</description>
     <link>https://georgeoffley.com/</link>
     <atom:link href="https://georgeoffley.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 09 Feb 2022 21:10:19 -0500</pubDate>
-    <lastBuildDate>Wed, 09 Feb 2022 21:10:19 -0500</lastBuildDate>
+    <pubDate>Sat, 05 Mar 2022 21:14:05 -0500</pubDate>
+    <lastBuildDate>Sat, 05 Mar 2022 21:14:05 -0500</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
+    
+      <item>
+        <title>Shared Memory in Docker</title>
+        <description>&lt;figure&gt;
+    &lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-05-shared-memory-in-docker/cover.png&quot; /&gt;
+&lt;/figure&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#shared_memory_device&quot;&gt;Shared Memory Device&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#use_in_docker&quot;&gt;Use in Docker&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#conclusion&quot;&gt;Conclusion&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;introduction-&quot;&gt;Introduction &lt;a name=&quot;introduction&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Recently, I was experimenting with system testing on a new stack. While working with &lt;a href=&quot;https://www.selenium.dev/documentation/webdriver/remote_webdriver/&quot;&gt;Selenium Remote Driver&lt;/a&gt; to create &lt;a href=&quot;https://en.wikipedia.org/wiki/Headless_browser&quot;&gt;headless web browsers&lt;/a&gt; (more on that later) to run against my app, I came across a Docker option I had not known. This Docker feature allowed for easily accessible and fast file reading and writing between the host and the container. It was being used as a volume, but I learned it was much more. When I looked it up, it was referred to as a &lt;a href=&quot;https://en.wikipedia.org/wiki/Shared_memory&quot;&gt;&lt;em&gt;Shared Memory Device&lt;/em&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h3 id=&quot;shared-memory-device-&quot;&gt;Shared Memory Device &lt;a name=&quot;shared_memory_device&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Turns out that this is an old Linux staple. The shared memory device, located in the &lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/shm/&lt;/code&gt; directory in the file system, utilizes temporary storage using RAM rather than disk storage. Using a shared volume available on the RAM and not the disk makes for a much faster read/write speeds. These devices also allows for &lt;a href=&quot;https://en.wikipedia.org/wiki/Inter-process_communication&quot;&gt;inter-process communication&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;use-in-docker-&quot;&gt;Use in Docker &lt;a name=&quot;use_in_docker&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Docker allows for the use of this device. When conducting my testing, I used the volume mapping feature to easily map local directories with directories inside the containers we’re working on. As seen below.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run &lt;span class=&quot;nt&quot;&gt;--rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-it&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; /dev/shm/:/dev/shm/ &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt; ubuntu ubuntu
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This mapped the local shared memory device to the Docker device. Docker, by default, allows for up to 64 MB of storage space using the shared memory device. You can see the default allocation when searching for the shared storage device within the container. As seen below.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker inspect ubuntu | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; shm
+            &lt;span class=&quot;s2&quot;&gt;&quot;ShmSize&quot;&lt;/span&gt;: 67108864,
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I was saving screenshots just to ensure that I was looking at the thing I was hoping to look at. Although I was only doing some foundational work, I could find myself in a pickle with only 64 MB of space available if this work ends up scaling. Should we need to, Docker lets us change the size of this device using the &lt;em&gt;–shm-size&lt;/em&gt; option. As seen below.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run &lt;span class=&quot;nt&quot;&gt;--rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-it&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; /dev/shm/:/dev/shm &lt;span class=&quot;nt&quot;&gt;--shm-size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;2gb &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt; ubuntu ubuntu
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Above we add in the &lt;em&gt;–shm-size&lt;/em&gt; option and we can specify all the space we need! Let’s look one more time to confirm that it works.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker inspect ubuntu | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; shm
+            &lt;span class=&quot;s2&quot;&gt;&quot;ShmSize&quot;&lt;/span&gt;: 2147483648,
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Shazam! We have more storage in our shared memory device to play around with.&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusion-&quot;&gt;Conclusion &lt;a name=&quot;conclusion&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;There is more to come about my adventures in Dockerizing system testing, but for now, I was able to learn a new thing about Linux and Docker. I hope it helps someone who came across it without knowing as I did.&lt;/p&gt;
+
+&lt;p&gt;-George&lt;/p&gt;
+</description>
+        <pubDate>Sat, 05 Mar 2022 12:00:00 -0500</pubDate>
+        <link>https://georgeoffley.com/blog/shared-memory-in-docker.html</link>
+        <guid isPermaLink="true">https://georgeoffley.com/blog/shared-memory-in-docker.html</guid>
+        
+        <category>Docker</category>
+        
+        <category>Intermediate</category>
+        
+        
+        <category>Blog</category>
+        
+      </item>
     
       <item>
         <title>Using Amazon API Gateway with Lambda</title>

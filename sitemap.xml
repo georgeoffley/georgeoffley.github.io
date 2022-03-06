@@ -29,6 +29,10 @@
 <lastmod>2022-02-09T12:00:00-05:00</lastmod>
 </url>
 <url>
+<loc>https://georgeoffley.com/blog/shared-memory-in-docker.html</loc>
+<lastmod>2022-03-05T12:00:00-05:00</lastmod>
+</url>
+<url>
 <loc>https://georgeoffley.com/404</loc>
 </url>
 <url>
@@ -75,6 +79,12 @@
 </url>
 <url>
 <loc>https://georgeoffley.com/tag/API%20Gateway/</loc>
+</url>
+<url>
+<loc>https://georgeoffley.com/tag/Docker/</loc>
+</url>
+<url>
+<loc>https://georgeoffley.com/tag/Intermediate/</loc>
 </url>
 <url>
 <loc>https://georgeoffley.com/categories/Blog/</loc>
