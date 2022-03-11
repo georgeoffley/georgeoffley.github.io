@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Posts Tagged - Go | George Offley &mdash; Software Engineer </title>
-    <meta property="og:title" content="Posts Tagged - Go | George Offley &mdash; Software Engineer " />
+    <title>Posts Tagged - Testing | George Offley &mdash; Software Engineer </title>
+    <meta property="og:title" content="Posts Tagged - Testing | George Offley &mdash; Software Engineer " />
 
     <meta name="description" content="I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!">
     <meta name="description" property="og:description" content="I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!" />
@@ -14,7 +14,7 @@
     <!-- Twitter cards -->
     <meta name="twitter:site"    content="@georgeoffley">
     <meta name="twitter:creator" content="@georgeoffley">
-    <meta name="twitter:title"   content="Posts Tagged - Go">
+    <meta name="twitter:title"   content="Posts Tagged - Testing">
 
     
     <meta name="twitter:description" content="I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!">
@@ -26,7 +26,7 @@
     
     <!-- end of Twitter cards -->
     
-    <meta property="og:url" content="https://georgeoffley.com/tag/Go/" />
+    <meta property="og:url" content="https://georgeoffley.com/tag/Testing/" />
 
     <meta property="og:image" content="" />
 
@@ -104,7 +104,7 @@
     
     <link rel="stylesheet" href="https://georgeoffley.com/assets/css/main.css">
 
-    <link rel="canonical" href="https://georgeoffley.com/tag/Go/">
+    <link rel="canonical" href="https://georgeoffley.com/tag/Testing/">
 
     <link rel="alternate" type="application/rss+xml" title="" href="https://georgeoffley.com/feed.xml">
 </head>
@@ -215,60 +215,8 @@
 </div>
 
 
-                <h1>Posts Tagged - Go</h1>
+                <h1>Posts Tagged - Testing</h1>
 
-
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
 
     
         
@@ -277,7 +225,7 @@
         <article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
             <header class="post-header">
                 <ul>
-                    <li><time datetime="2020-08-17T21:00:00-04:00" itemprop="datePublished">17 Aug, 2020</time></li>
+                    <li><time datetime="2022-03-10T12:00:00-05:00" itemprop="datePublished">10 Mar, 2022</time></li>
                     
                     <li class="cats">
                         
@@ -286,76 +234,83 @@
                     </li>
                     
                 </ul>
-                <h2 itemprop="name headline"><a href="https://georgeoffley.com/blog/working-with-context-in-go.html">Working with Context in Go</a></h2>
+                <h2 itemprop="name headline"><a href="https://georgeoffley.com/blog/dockerizing-system-tests-with-selenium.html">Dockerizing System Tests With Selenium</a></h2>
             </header>
 
             <div class="post-content">
                 <figure>
-    <img src="/assets/images/working-with-context-in-go.jpg" />
+    <img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-10-dockerizing-system-tests-with-selenium/selenium.png" />
 </figure>
 
 <h2 id="table-of-contents">Table Of Contents</h2>
 <ul>
   <li><a href="#introduction">Introduction</a></li>
-  <li><a href="#context_interface">Context Interface</a></li>
-  <li><a href="#context_in_context">Context in context</a></li>
-  <li><a href="#context_background">Context.Background</a></li>
-  <li><a href="#context_todo">Context.TODO</a></li>
-  <li><a href="#context_withcancel">Context.WithCancel</a></li>
-  <li><a href="#context_withDeadline">Context.WithDeadline</a></li>
-  <li><a href="#context_withtimeout">Context.WithTimeout</a></li>
-  <li><a href="#context_withvalue">Context.WithValue</a></li>
+  <li><a href="#selenium_webdriver">Selenium WebDriver</a></li>
+  <li><a href="#setup">Setup</a></li>
+  <li><a href="#running_tests">Running Tests</a></li>
+  <li><a href="#notes">Notes</a></li>
   <li><a href="#conclusion">Conclusion</a></li>
 </ul>
 
 <h3 id="introduction-">Introduction <a name="introduction"></a></h3>
 
-<p>When you’re having a breakdown caused by the combination of burnout and existential pain, do you get annoyed that your harried cries into the void go unanswered? Well, I can’t help with that, but I can suggest some methods for timing out calls to external or internal services. I’ve been doing research and playing with some of the standard libraries in Go and one of them I find most useful is the context library. Used to get some control over a system that might be running slowly for whatever reason or to enforce a certain level of quality for service calls this small library is a standard for a reason. For any production level systems to keep good flow control the context library is going to be necessary.
-<!--This is a test--></p>
+<p>We are spinning up a new application for some end users to enter data, so we need to build a robust testing system. Unit tests are a must, but those only test to ensure that all the classes, methods, and functions do what we expect. On top of that, we also need to verify that the web app as a whole looks and behaves how we hope it does to have a complete end-to-end testing apparatus. My goal for these first few spikes in the project was to find a tool for system testing and see if we could make it modular and easily automate it to not interfere with our workflow. I believe I found the solution. <a href="https://www.selenium.dev/">Selenium</a> is a suite of tools for creating and automating browser tests, and I think it is what I was looking for. Let’s dive in.</p>
 
 
 
                 
-                    <p><a href="/blog/working-with-context-in-go.html" role="button">Read More</a></p>
+                    <p><a href="/blog/dockerizing-system-tests-with-selenium.html" role="button">Read More</a></p>
                 
             </div>
 
             <footer class="post-footer">
                 <div class="share">Share
                     <ul class="social-networks">
-                        <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Working with Context in Go&p[summary]=
+                        <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Dockerizing System Tests With Selenium&p[summary]=
     
 
 
 Table Of Contents
 
   Introduction
-  Context Interface
-  Context in context
-  Context.Background
-  Context.TODO
-  Context.WithCanc...&p[url]=https://georgeoffley.com/blog/working-with-context-in-go.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>
-                        <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/blog/working-with-context-in-go.html&text=
+  Selenium WebDriver
+  Setup
+  Running Tests
+  Notes
+  Conclusion
+
+
+Introduction 
+
+We are spinn...&p[url]=https://georgeoffley.com/blog/dockerizing-system-tests-with-selenium.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>
+                        <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/blog/dockerizing-system-tests-with-selenium.html&text=
     
 
 
 Table Of Contents
 
   Introduction
-  Context Interface
-  Context in context
-  Context.Background
-  Context.TODO
-  Context.WithCanc...&hashtags=concurrency,Go," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+  Selenium WebDriver
+  Setup
+  Running Tests
+  Notes
+  Conclusion
+
+
+Introduction 
+
+We are spinn...&hashtags=Docker,Testing,Intermediate," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
                     </ul>
                 </div>
                 
                 <div class="tags">
                     <ul>
                         
-                        <li><a href="https://georgeoffley.com/tag/concurrency">concurrency</a></li>
+                        <li><a href="https://georgeoffley.com/tag/Docker">Docker</a></li>
                         
-                        <li><a href="https://georgeoffley.com/tag/Go">Go</a></li>
+                        <li><a href="https://georgeoffley.com/tag/Testing">Testing</a></li>
+                        
+                        <li><a href="https://georgeoffley.com/tag/Intermediate">Intermediate</a></li>
                         
                     </ul>
                 </div>
@@ -364,97 +319,62 @@ Table Of Contents
         </article>
         
     
+        
+    
 
     
         
     
         
-        <article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
-            <header class="post-header">
-                <ul>
-                    <li><time datetime="2020-08-08T23:56:00-04:00" itemprop="datePublished">8 Aug, 2020</time></li>
-                    
-                    <li class="cats">
-                        
-                            <a href="/categories/Blog/">Blog</a>
-                        
-                    </li>
-                    
-                </ul>
-                <h2 itemprop="name headline"><a href="https://georgeoffley.com/blog/creating-a-twitter-bot-using-aws-lambda-and-go.html">Creating a Twitter Bot Using AWS Lambda and Go</a></h2>
-            </header>
-
-            <div class="post-content">
-                <figure>
-    <img src="/assets/images/twitter-bot-aws-lambda.jpg" />
-</figure>
-
-<h2 id="table-of-contents">Table Of Contents</h2>
-<ul>
-  <li><a href="#introduction">Introduction</a></li>
-  <li><a href="#twitter_setup">Twitter App Set-Up</a></li>
-  <li><a href="#twitter_bot_code">Twitter Bot Code</a></li>
-  <li><a href="#lambda_function">Setting up a Lambda Function</a></li>
-  <li><a href="#conclusion">Conclusion</a></li>
-</ul>
-
-<h3 id="introduction-">Introduction <a name="introduction"></a></h3>
-
-<p>Most people have heard of AWS and developers have started learning how they can use it to further augment the quality of their projects. Recently I have begun the process of becoming one of those people. So far it has been an enlightening deep dive into the different services they offer. It’s hard to get your bearings with something as huge as AWS so for my learning journey I decided to focus on projects I thought would be cool and see how AWS might help facilitate what I build.</p>
-
-
-
-                
-                    <p><a href="/blog/creating-a-twitter-bot-using-aws-lambda-and-go.html" role="button">Read More</a></p>
-                
-            </div>
-
-            <footer class="post-footer">
-                <div class="share">Share
-                    <ul class="social-networks">
-                        <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Creating a Twitter Bot Using AWS Lambda and Go&p[summary]=
     
 
-
-Table Of Contents
-
-  Introduction
-  Twitter App Set-Up
-  Twitter Bot Code
-  Setting up a Lambda Function
-  Conclusion
-
-
-Introduct...&p[url]=https://georgeoffley.com/blog/creating-a-twitter-bot-using-aws-lambda-and-go.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>
-                        <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/blog/creating-a-twitter-bot-using-aws-lambda-and-go.html&text=
+    
+        
+    
+        
+    
+        
     
 
+    
+        
+    
+        
+    
+        
+    
 
-Table Of Contents
+    
+        
+    
+        
+    
+        
+    
 
-  Introduction
-  Twitter App Set-Up
-  Twitter Bot Code
-  Setting up a Lambda Function
-  Conclusion
+    
+        
+    
+        
+    
 
+    
+        
+    
+        
+    
+        
+    
 
-Introduct...&hashtags=AWS,Go," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
-                    </ul>
-                </div>
-                
-                <div class="tags">
-                    <ul>
-                        
-                        <li><a href="https://georgeoffley.com/tag/AWS">AWS</a></li>
-                        
-                        <li><a href="https://georgeoffley.com/tag/Go">Go</a></li>
-                        
-                    </ul>
-                </div>
-                
-            </footer>
-        </article>
+    
+        
+    
+        
+    
+
+    
+        
+    
         
     
 

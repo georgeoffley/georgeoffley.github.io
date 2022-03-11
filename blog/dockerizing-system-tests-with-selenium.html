@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Shenanigans with Shaders | George Offley &mdash; Software Engineer </title>
-    <meta property="og:title" content="Shenanigans with Shaders | George Offley &mdash; Software Engineer " />
+    <title>Dockerizing System Tests With Selenium | George Offley &mdash; Software Engineer </title>
+    <meta property="og:title" content="Dockerizing System Tests With Selenium | George Offley &mdash; Software Engineer " />
 
     <meta name="description" content="I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!">
     <meta name="description" property="og:description" content="I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!" />
@@ -14,19 +14,19 @@
     <!-- Twitter cards -->
     <meta name="twitter:site"    content="@georgeoffley">
     <meta name="twitter:creator" content="@georgeoffley">
-    <meta name="twitter:title"   content="Shenanigans with Shaders">
+    <meta name="twitter:title"   content="Dockerizing System Tests With Selenium">
 
     
-    <meta name="twitter:description" content="How do Shaders in Unity work? Let's find out!">
+    <meta name="twitter:description" content="How can you make an end-to-end testing solution for webapps? Let's find out!">
     
 
     
     <meta name="twitter:card"  content="summary_large_image">
-    <meta name="twitter:image" content="https://georgeoffley-blog-images.s3.amazonaws.com/2021-11-21-shenanigans-in-shaders/cover.jpg">
+    <meta name="twitter:image" content="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-10-dockerizing-system-tests-with-selenium/selenium.png">
     
     <!-- end of Twitter cards -->
     
-    <meta property="og:url" content="https://georgeoffley.com/blog/shinanigans-with-shaders-copy.html" />
+    <meta property="og:url" content="https://georgeoffley.com/blog/dockerizing-system-tests-with-selenium.html" />
 
     <meta property="og:image" content="" />
 
@@ -104,7 +104,7 @@
     
     <link rel="stylesheet" href="https://georgeoffley.com/assets/css/main.css">
 
-    <link rel="canonical" href="https://georgeoffley.com/blog/shinanigans-with-shaders-copy.html">
+    <link rel="canonical" href="https://georgeoffley.com/blog/dockerizing-system-tests-with-selenium.html">
 
     <link rel="alternate" type="application/rss+xml" title="" href="https://georgeoffley.com/feed.xml">
 </head>
@@ -218,7 +218,7 @@
                 <article class="post single" role="article" itemscope itemtype="http://schema.org/BlogPosting">
     <header class="post-header">
         <ul>
-            <li><time datetime="2021-11-21T12:00:00-05:00" itemprop="datePublished">21 Nov, 2021</time></li>
+            <li><time datetime="2022-03-10T12:00:00-05:00" itemprop="datePublished">10 Mar, 2022</time></li>
             
                 
                 <li class="cats">
@@ -229,68 +229,85 @@
                 
             
         </ul>
-        <h2 itemprop="name headline">Shenanigans with Shaders</h2>
+        <h2 itemprop="name headline">Dockerizing System Tests With Selenium</h2>
     </header>
 
     <div class="post-content">
         <figure>
-    <img src="https://georgeoffley-blog-images.s3.amazonaws.com/2021-11-21-shenanigans-in-shaders/cover.jpg" />
+    <img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-10-dockerizing-system-tests-with-selenium/selenium.png" />
 </figure>
 
 <h2 id="table-of-contents">Table Of Contents</h2>
 <ul>
   <li><a href="#introduction">Introduction</a></li>
-  <li><a href="#shaders">Shaders</a></li>
+  <li><a href="#selenium_webdriver">Selenium WebDriver</a></li>
   <li><a href="#setup">Setup</a></li>
-  <li><a href="#shader_code">Shader Code</a></li>
-  <li><a href="#conslusion">Conclusion</a></li>
+  <li><a href="#running_tests">Running Tests</a></li>
+  <li><a href="#notes">Notes</a></li>
+  <li><a href="#conclusion">Conclusion</a></li>
 </ul>
 
-<p>For those of you who love rabbit holes, learning graphics programming is a pretty deep one. There’s always some new thing to learn, there’s a bunch of different new languages and toolsets to know, and on top of all that, <a href="https://www.youtube.com/watch?v=tt_gPXpx0eo&amp;t=101s&amp;ab_channel=SamwellTarly">there’s math</a>. Like anything else in programming, you pick up momentum with each new thing you build, so I <a href="https://github.com/Xibanya/ShaderTutorials">found a tutorial</a> and started making shaders. I know very little about this. However, I’m writing what I’m learning, so don’t come for me if I’m off on anything.</p>
+<h3 id="introduction-">Introduction <a name="introduction"></a></h3>
+
+<p>We are spinning up a new application for some end users to enter data, so we need to build a robust testing system. Unit tests are a must, but those only test to ensure that all the classes, methods, and functions do what we expect. On top of that, we also need to verify that the web app as a whole looks and behaves how we hope it does to have a complete end-to-end testing apparatus. My goal for these first few spikes in the project was to find a tool for system testing and see if we could make it modular and easily automate it to not interfere with our workflow. I believe I found the solution. <a href="https://www.selenium.dev/">Selenium</a> is a suite of tools for creating and automating browser tests, and I think it is what I was looking for. Let’s dive in.</p>
 
 <!--more-->
 
-<h3 id="shaders-">Shaders <a name="shaders"></a></h3>
+<h3 id="selenium-webdriver-">Selenium WebDriver <a name="selenium_webdriver"></a></h3>
 
-<p>A shader is a program that runs on the GPU as part of the <a href="https://en.wikipedia.org/wiki/Graphics_pipeline">graphics pipeline</a>. We’re going to focus primarily on shaders in Unity. There are other ways to tackle this, but Unity gives an easy setup to get started quickly. For the context of Unity, a shader is a small script containing logic and calculations for determining the colors of a pixel.</p>
+<p>Selenium is a multi-language suite of tools for creating browser-based automation tests. This tool will automate opening a browser, looking for a test condition, and reporting a pass or fail. Selenium is a whole suite of tools, but I decided to focus on <a href="https://www.selenium.dev/documentation/webdriver/">Selenium Web Driver</a>.</p>
 
-<p>In Unity, we create <em>shader objects</em> which act as wrappers for our shader program. A shader object exists in a <em>shader asset</em> which is just the script we are writing. Creating these in Unity allows for a great deal of freedom in what we make. What we’ll focus on is adding some basic functionality to a shader. We’ll be focusing on using <a href="https://docs.unity3d.com/Manual/SL-Reference.html"><em>ShaderLab</em></a> to create shaders.</p>
+<p>Much like in the name, the software “drives” the web browser. Much like humans, we can bring up the webpage in a browser, enter in data, look up tags, and utilize all these capabilities to write tests using the API Selenium provides. A test opens a browser, <a href="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-10-dockerizing-system-tests-with-selenium/selenium_video.mp4">and like magic, many things happen</a>.</p>
+
+<p>My goal is to automate as much of this process as possible. So it would not be ideal to have a bunch of browsers launch with with ghosts running tests. A better solution was to run <a href="https://github.com/SeleniumHQ/docker-selenium"><em>headless browsers</em></a> using container images provided by Selenium. This solution gives us a container with a built-in web browser which we don’t see that our script runs a test against. The results we can see in the terminal.</p>
+
+<p>As our project utilizes <a href="https://www.docker.com/">Docker</a>, the easiest way to start is to grab the <a href="https://github.com/SeleniumHQ/docker-selenium">Docker image for the browser</a> and start making some scripts. How this will look in the final solution is still to be determined, but I can replicate what I did for the sake of this write-up.</p>
 
 <h3 id="setup-">Setup <a name="setup"></a></h3>
 
-<p>The first thing to set yourself up making shaders in Unity is Unity. So <a href="https://unity3d.com/get-unity/download">download it</a>, and create a new project.</p>
+<p>To begin, I set up a <code class="highlighter-rouge">docker-compose.yml</code> file with the following:</p>
 
-<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2021-11-21-shenanigans-in-shaders/new_scene.png" alt="New Scene in Unity" /></p>
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-10-dockerizing-system-tests-with-selenium/docker-compose.png" alt="docker-compose.yml file" /></p>
 
-<p>I won’t give a full rundown of Unity and the stuff you can do. I leave that to <a href="https://learn.unity.com/">better minds</a>. In the <em>Hierarchy Window</em>, right-click and scroll to <em>3D Object</em> and click whichever object grabs your fancy. I always pick sphere for testing stuff. Now we have a <a href="https://en.wikipedia.org/wiki/Polygon_mesh"><em>3D Mesh</em></a> on the screen that we can begin adding things to it. In the <em>Project Window</em>, right-click on the word <em>Assets</em> and create two new folders, <em>Materials</em> and <em>Shaders</em>. Double click into the Materials folder, right-click and Create is right at the top -&gt; click Material. Materials are similar to skins we can apply to 3D objects. We will use this new material to add our new shader to the 3D Mesh. After that, drag our new material into the <em>Scene Window</em> where our sphere is and onto the sphere we made. Now right-click our Shaders folder scroll to Create -&gt; Shader -&gt; Standard Surface Shader. Click the sphere in the Scene window to bring up the <em>Inspector Window</em>. Finally, drag the shader file over to the inspector window with our sphere covered in our new material. We have just applied our shader to the materials. You should see this in the Inspector Window.</p>
+<p>This gave us two containers, our browser using the Chrome-based selenium image and a Ruby-based container to run the script. Our new stack uses a lot of Ruby. The system container is built using an image from the docker file in the test directory.</p>
 
-<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2021-11-21-shenanigans-in-shaders/test_material.png" alt="Test Material inspector window" /></p>
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-10-dockerizing-system-tests-with-selenium/ruby-dockerfile.png" alt="Dockerfile for Ruby based system" /></p>
 
-<p>Now go back to the Project window and double click our new Shader file. Unity will launch an IDE for use to check out the code. You can configure your choice of IDE; I have VSCode configured. Open the Shader file, and let’s check out the code. I created some basic shader code you can use.</p>
+<p>This build handles installing the gems we need, including selenium-webdriver and the chromedriver-helper. Both are used to run our Web Driver script and utilize Chrome capabilities.</p>
 
-<h3 id="shader-code-">Shader Code <a name="shader_code"></a></h3>
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-10-dockerizing-system-tests-with-selenium/gemfile.png" alt="Gemfile" /></p>
 
-<p>Here is the complete, minimal shader code:</p>
+<p>Finally, the last bit is the script itself.</p>
 
-<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2021-11-21-shenanigans-in-shaders/code.png" alt="Full Shader Code" /></p>
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-10-dockerizing-system-tests-with-selenium/test-script.png" alt="Test Script" /></p>
 
-<p>It looks a bit much to anyone new to this, including myself, so let’s take it a section at a time. The first thing at the top, starting with “Shader,” is the <em>Shader Block</em>. This is used to define our Shader Object. You can use this to define your properties, create many shaders using the <em>SubShader</em> blocks, assign custom options, and assign a <em>fallback</em> shader object. Here you can see the name of our shader and that it is in the “Custom” directory.</p>
+<h3 id="running-tests-">Running Tests <a name="running_tests"></a></h3>
 
-<p>Within the Shader block curly brackets, we have our other sections. The first is our <em>Properties</em>. The properties box is where we define the properties for our materials. A material property is what Unity stores along with our materials. This allows for different configurations within Unity by creating things like sliders and inputs within the Inspector window for us to play around with. We defined two properties, the <em>MainColor</em> and the <em>MainTexture</em>. Using square brackets, I outlined which property was the default color and default texture. We also defined the default values for these properties. There’s a bit to these values but suffice it to say, both values are default white.</p>
+<p>Let’s look at this script. My Ruby is rusty, but I tried my best. We set all our requirements, set a timer to make the thread sleep (more on that later), and then we write our test. In the script, we are writing the tests using the <a href="https://rspec.info/">RSpec</a>. RSpec is a <a href="https://www.jetbrains.com/mps/concepts/domain-specific-languages/">domain-specific language</a> built using Ruby to test Ruby code. We use this to test our behaviors using the describe and it blocks.</p>
 
-<p>The second block is our SubShader; this is where our shader logic goes. You can define multiple sub shaders for many different uses. For example, depending on the graphics hardware you want to support, you can make shaders for the various graphics APIs. Within our block, you can see some code for assigning <a href="https://docs.unity3d.com/Manual/SL-SubShaderTags.html"><em>tags</em></a>, assigning <a href="https://docs.unity3d.com/Manual/SL-ShaderLOD.html"><em>levels of detail (LOD)</em></a>, and the <a href="https://en.wikibooks.org/wiki/Cg_Programming/Unity"><em>CGPROGRAM</em></a> block. I want to draw your attention to this section of the code:</p>
+<p>We start by defining the <a href="https://www.selenium.dev/documentation/webdriver/capabilities/">capabilities</a> we are looking for; in this case, we are testing a chrome browser, so we need to specify that.</p>
 
-<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2021-11-21-shenanigans-in-shaders/output.png" alt="Output function" /></p>
+<p>Then we use a variant of WebDriver called the <a href="https://www.selenium.dev/documentation/webdriver/remote_webdriver/">Remote WebDriver</a>. Remote Driver is written identically to WebDriver, just with the caveat of the driver logic looking for the browser in another system. Here we set the address for the Chrome Selenium container so that our WebDriver knows to look for this remote machine to run the test against.</p>
 
-<p>First, we define the data types for our inputs and outputs and create a function for us to serve the outputs into unity. Our Input we set up as <em>uv_Maintex</em>; this allows for us to input a texture object. Then we create a <em>fixed4</em> variable for our <em>_Color</em> attribute. The <em>o.Albedo</em> parameter is what is used to control the base color of the surface. Here we are taking the values of our texture and multiplying them by our color input. The code above gets you something similar to this:</p>
+<p>Both containers are in the same network provided by Docker Compose, so we use the hostnames. Also, note that we are <a href="https://docs.docker.com/compose/networking/">mapping port 4444</a> as the WebDriver will use this port to communicate.</p>
 
-<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2021-11-21-shenanigans-in-shaders/color.png" alt="Output function" /></p>
+<p>We then set the driver to navigate to our chosen website as an action. The following line sets what we expect to see using RSpec’s handy <a href="https://relishapp.com/rspec/rspec-expectations/docs/built-in-matchers"><em>expect function</em></a>. We expect the page’s title to be equal to a string we provide and fail if the title is mismatched. Then we’ll just take a screenshot and save the image to a local drive using one of the built-in save_screenshot functions. Finally, and this was important, use the <em>quit</em> function.</p>
 
-<p>I was proud of myself the first time I made this from memory. Our coded shader lets us control the color of the material and add basic textures to it. Working in graphics does not lead to instant gratification, as anything you do requires a ton of setup. However, this and <a href="https://www.shadertoy.com/">ShaderToy</a> get you that dopamine hit.</p>
+<p>We run this just by running <code class="highlighter-rouge">docker-compose up</code>, and we can see the test passed as going to Google does indeed yield a page title of “Google.”</p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-10-dockerizing-system-tests-with-selenium/test-results.png" alt="Test results in terminal" /></p>
+
+<p>We can also see the screenshot taken from the remote browser.</p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-10-dockerizing-system-tests-with-selenium/test_image.png" alt="Resulting image from test" /></p>
+
+<h3 id="notes-">Notes <a name="notes"></a></h3>
+
+<p>Using the <em>quit</em> function was essential to kill the connection, but it also closed the browser we can’t see. Additionally, I mentioned I would come back to using the sleep function in Ruby. It turns out using the <a href="https://docs.docker.com/compose/startup-order/"><em>depends_on</em></a> feature in Docker Compose is not enough to ensure services are available to each other. When I began running the network, the remote driver would continually fail to connect. It turns out we just needed a moment for everything to boot. <a href="https://docs.docker.com/compose/startup-order/">Docker recommends creating a wait script</a> but pausing the thread for a moment worked just as well.</p>
 
 <h3 id="conclusion-">Conclusion <a name="conclusion"></a></h3>
 
-<p>Above I went through some fundamentals of shaders in Unity. I skipped over a ton of information as I’m still learning a lot, and a full informed explainer would be twenty pages long. There is a lot to programming graphics and shaders specifically. I suggest you check out stuff like <a href="https://github.com/Xibanya/ShaderTutorials">Team Dogpit’s shader tutorial</a> for a way better deep dive. I’m excited to dig into this world. I want to learn to create some of the incredible stories I see in animation, and any first step is a step in the right direction. Thanks for reading.</p>
+<p>This was a pretty simple example, but it answered my questions. We can use this to test website behavior, make it modular, and automate the tests. That checks enough boxes for me to keep going down this rabbit hole. The next goal is to develop an automated solution and possibly clean up the deployment a little. I’m thinking of having these two containers not run with the rest of the project and boot up the containers using a bash script specifically for testing. I might write about that too.</p>
 
 <p>-George</p>
 
@@ -299,45 +316,51 @@
     <footer class="post-footer">
         <div class="share">Share
             <ul class="social-networks">
-                <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Shenanigans with Shaders&p[summary]=
+                <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Dockerizing System Tests With Selenium&p[summary]=
     
 
 
 Table Of Contents
 
   Introduction
-  Shaders
+  Selenium WebDriver
   Setup
-  Shader Code
+  Running Tests
+  Notes
   Conclusion
 
 
-For those of you who love rabbit holes, learning...&p[url]=https://georgeoffley.com/blog/shinanigans-with-shaders-copy.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></li>
-                <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/blog/shinanigans-with-shaders-copy.html&text=
+Introduction 
+
+We are spinn...&p[url]=https://georgeoffley.com/blog/dockerizing-system-tests-with-selenium.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></li>
+                <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/blog/dockerizing-system-tests-with-selenium.html&text=
     
 
 
 Table Of Contents
 
   Introduction
-  Shaders
+  Selenium WebDriver
   Setup
-  Shader Code
+  Running Tests
+  Notes
   Conclusion
 
 
-For those of you who love rabbit holes, learning...&hashtags=Graphics,Unity,ShaderLab," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+Introduction 
+
+We are spinn...&hashtags=Docker,Testing,Intermediate," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
             </ul>
         </div>
         
         <div class="tags">
             <ul>
                 
-                <li><a href="https://georgeoffley.com/tag/Graphics">Graphics</a></li>
+                <li><a href="https://georgeoffley.com/tag/Docker">Docker</a></li>
                 
-                <li><a href="https://georgeoffley.com/tag/Unity">Unity</a></li>
+                <li><a href="https://georgeoffley.com/tag/Testing">Testing</a></li>
                 
-                <li><a href="https://georgeoffley.com/tag/ShaderLab">ShaderLab</a></li>
+                <li><a href="https://georgeoffley.com/tag/Intermediate">Intermediate</a></li>
                 
             </ul>
         </div>
