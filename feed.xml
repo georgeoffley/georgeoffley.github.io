@@ -5,9 +5,87 @@
     <description>I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!</description>
     <link>https://georgeoffley.com/</link>
     <atom:link href="https://georgeoffley.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 10 Mar 2022 21:50:09 -0500</pubDate>
-    <lastBuildDate>Thu, 10 Mar 2022 21:50:09 -0500</lastBuildDate>
+    <pubDate>Sat, 12 Mar 2022 21:41:33 -0500</pubDate>
+    <lastBuildDate>Sat, 12 Mar 2022 21:41:33 -0500</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
+    
+      <item>
+        <title>Implementing Routing in React</title>
+        <description>&lt;figure&gt;
+    &lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-12-implementing-routing-in-react/cover.png&quot; /&gt;
+&lt;/figure&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#react_router_dom&quot;&gt;React Router Dom&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#setup&quot;&gt;Setup&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#explainer&quot;&gt;Explainer&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#conclusion&quot;&gt;Conclusion&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;introduction-&quot;&gt;Introduction &lt;a name=&quot;introduction&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Implementing routing in React applications can be one of the first tasks you undertake in the coding part of the development lifecycle. This was true for my team when we sat down to a mob programming session to go through a couple of our stories for a project. We brought in some help from people who know React to help us get started. I am not a React developer, so this is the first time I had actual exposure to people with expertise, so I am grateful it was a group programming session. I don’t know what I was doing when the rest of the world learned React, but I can only guess it had something to do with playing the Sims. Regardless I use the right tool for the job, and I need to learn it now. The first thing we did was implement some routing, and I will implement a much more simplified version of what we did below to show what I learned.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h3 id=&quot;react-router-dom-&quot;&gt;React Router Dom &lt;a name=&quot;react_router_dom&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;I understand React is a set of APIs and libraries used in different ways to implement cool stuff on your screen. We got more into using TypeScript on top of React, but I like to write about things even if I only have a cursory knowledge of them, and my understanding of TypeScript doesn’t even measure up to that. So I’ll stick with React only for now.&lt;/p&gt;
+
+&lt;p&gt;Routing in a React app is what the app does when a user goes to a specific URL. As we’re dealing with React, we need to create components that make up our pages, and we’ll use a library to route to those components. In our case, we used the ever-popular &lt;a href=&quot;https://reactrouter.com/&quot;&gt;React Router Dom&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;setup-&quot;&gt;Setup &lt;a name=&quot;setup&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;An easy bit of setup. I created a new app using &lt;code class=&quot;highlighter-rouge&quot;&gt;npx create-react-app react-router&lt;/code&gt;, which gave me a basic app. I then ran &lt;code class=&quot;highlighter-rouge&quot;&gt;npm install react-router-dom&lt;/code&gt; to install the needed package. Then I was off to the races.&lt;/p&gt;
+
+&lt;p&gt;I created two simple page components to then import into my main App.js.&lt;/p&gt;
+
+&lt;p&gt;The Home component.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-12-implementing-routing-in-react/home.png&quot; alt=&quot;Home component&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And the About component.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-12-implementing-routing-in-react/about.png&quot; alt=&quot;About component&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Finally, I went through some of the docs and found an easy way to get basic routing. All of which is reflected in my main App.js file.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-12-implementing-routing-in-react/app.png&quot; alt=&quot;App.js file&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;explainer-&quot;&gt;Explainer &lt;a name=&quot;explainer&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;This needs explaining. I created a basic component for the home and the about pages. Both of them just return a header with the name in the tag. I imported them into app.js and imported BrowserRouter, Routes, and Route from the React Router Dom package. Each of these is going to help us create routing.&lt;/p&gt;
+
+&lt;p&gt;First, we create the router using the BrowserRouter tag. Then nested in there, we make the Routes block. The routes block, which took the place of the Switch block in v6 of the React Router Package, looks at our nested routes and tells the app where to go. Finally, we have the “links” in the Route tags. We specify the path to look for in the Route tag and which element to point at. It’s also good to remember that the element should take the form of curly brackets and an open and closing tag (the &lt;code class=&quot;highlighter-rouge&quot;&gt;{&amp;lt;Home/&amp;gt;}&lt;/code&gt; you see in my code). I mention this as most tutorials I looked up about this used Switch, Links, and the elements used the &lt;code class=&quot;highlighter-rouge&quot;&gt;{Home}&lt;/code&gt; syntax.&lt;/p&gt;
+
+&lt;p&gt;And that is it. If I navigate to &lt;code class=&quot;highlighter-rouge&quot;&gt;localhost:3000/&lt;/code&gt;, we see the below image.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-12-implementing-routing-in-react/home_page.png&quot; alt=&quot;Home Page after implementing routing&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And the same thing on the about page at &lt;code class=&quot;highlighter-rouge&quot;&gt;localhost:3000/about&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-12-implementing-routing-in-react/about_page.png&quot; alt=&quot;About Page after implementing routing&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusion-&quot;&gt;Conclusion &lt;a name=&quot;conclusion&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;It is a simple thing but something I learned while working with a team of React people. Using React is still akin to reading an upsidedown French map of Germany. However, I am starting to grasp the basics. Everything seems just to be something that’s been imported from somewhere else. Next time I think I’ll write about how you can create React packages similar to Python for easy and clean importing.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 12 Mar 2022 12:00:00 -0500</pubDate>
+        <link>https://georgeoffley.com/blog/implementing-routing-in-react.html</link>
+        <guid isPermaLink="true">https://georgeoffley.com/blog/implementing-routing-in-react.html</guid>
+        
+        <category>Docker</category>
+        
+        <category>Testing</category>
+        
+        <category>Intermediate</category>
+        
+        
+        <category>Blog</category>
+        
+      </item>
     
       <item>
         <title>Dockerizing System Tests With Selenium</title>
