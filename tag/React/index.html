@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Implementing Routing in React | George Offley &mdash; Software Engineer </title>
-    <meta property="og:title" content="Implementing Routing in React | George Offley &mdash; Software Engineer " />
+    <title>Posts Tagged - React | George Offley &mdash; Software Engineer </title>
+    <meta property="og:title" content="Posts Tagged - React | George Offley &mdash; Software Engineer " />
 
     <meta name="description" content="I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!">
     <meta name="description" property="og:description" content="I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!" />
@@ -14,19 +14,19 @@
     <!-- Twitter cards -->
     <meta name="twitter:site"    content="@georgeoffley">
     <meta name="twitter:creator" content="@georgeoffley">
-    <meta name="twitter:title"   content="Implementing Routing in React">
+    <meta name="twitter:title"   content="Posts Tagged - React">
 
     
-    <meta name="twitter:description" content="How do you get the basic parts of a React app up and running? Let's find out!">
+    <meta name="twitter:description" content="I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!">
     
 
     
     <meta name="twitter:card"  content="summary_large_image">
-    <meta name="twitter:image" content="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-12-implementing-routing-in-react/cover.png">
+    <meta name="twitter:image" content="https://georgeoffley.com/assets/images/flat-laptop-cover.png">
     
     <!-- end of Twitter cards -->
     
-    <meta property="og:url" content="https://georgeoffley.com/blog/implementing-routing-in-react.html" />
+    <meta property="og:url" content="https://georgeoffley.com/tag/React/" />
 
     <meta property="og:image" content="" />
 
@@ -104,7 +104,7 @@
     
     <link rel="stylesheet" href="https://georgeoffley.com/assets/css/main.css">
 
-    <link rel="canonical" href="https://georgeoffley.com/blog/implementing-routing-in-react.html">
+    <link rel="canonical" href="https://georgeoffley.com/tag/React/">
 
     <link rel="alternate" type="application/rss+xml" title="" href="https://georgeoffley.com/feed.xml">
 </head>
@@ -219,25 +219,28 @@
 </div>
 
 
-                <article class="post single" role="article" itemscope itemtype="http://schema.org/BlogPosting">
-    <header class="post-header">
-        <ul>
-            <li><time datetime="2022-03-12T12:00:00-05:00" itemprop="datePublished">12 Mar, 2022</time></li>
-            
-                
-                <li class="cats">
-                    
-                        <a href="/categories/Blog/">Blog</a>
-                    
-                </li>
-                
-            
-        </ul>
-        <h2 itemprop="name headline">Implementing Routing in React</h2>
-    </header>
+                <h1>Posts Tagged - React</h1>
 
-    <div class="post-content">
-        <figure>
+
+    
+        
+        <article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
+            <header class="post-header">
+                <ul>
+                    <li><time datetime="2022-03-12T12:00:00-05:00" itemprop="datePublished">12 Mar, 2022</time></li>
+                    
+                    <li class="cats">
+                        
+                            <a href="/categories/Blog/">Blog</a>
+                        
+                    </li>
+                    
+                </ul>
+                <h2 itemprop="name headline"><a href="https://georgeoffley.com/blog/implementing-routing-in-react.html">Implementing Routing in React</a></h2>
+            </header>
+
+            <div class="post-content">
+                <figure>
     <img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-12-implementing-routing-in-react/cover.png" />
 </figure>
 
@@ -254,56 +257,17 @@
 
 <p>Implementing routing in React applications can be one of the first tasks you undertake in the coding part of the development lifecycle. This was true for my team when we sat down to a mob programming session to go through a couple of our stories for a project. We brought in some help from people who know React to help us get started. I am not a React developer, so this is the first time I had actual exposure to people with expertise, so I am grateful it was a group programming session. I don’t know what I was doing when the rest of the world learned React, but I can only guess it had something to do with playing the Sims. Regardless I use the right tool for the job, and I need to learn it now. The first thing we did was implement some routing, and I will implement a much more simplified version of what we did below to show what I learned.</p>
 
-<!--more-->
 
-<h3 id="react-router-dom-">React Router Dom <a name="react_router_dom"></a></h3>
 
-<p>I understand React is a set of APIs and libraries used in different ways to implement cool stuff on your screen. We got more into using TypeScript on top of React, but I like to write about things even if I only have a cursory knowledge of them, and my understanding of TypeScript doesn’t even measure up to that. So I’ll stick with React only for now.</p>
+                
+                    <p><a href="/blog/implementing-routing-in-react.html" role="button">Read More</a></p>
+                
+            </div>
 
-<p>Routing in a React app is what the app does when a user goes to a specific URL. As we’re dealing with React, we need to create components that make up our pages, and we’ll use a library to route to those components. In our case, we used the ever-popular <a href="https://reactrouter.com/">React Router Dom</a>.</p>
-
-<h3 id="setup-">Setup <a name="setup"></a></h3>
-
-<p>An easy bit of setup. I created a new app using <code class="highlighter-rouge">npx create-react-app react-router</code>, which gave me a basic app. I then ran <code class="highlighter-rouge">npm install react-router-dom</code> to install the needed package. Then I was off to the races.</p>
-
-<p>I created two simple page components to then import into my main App.js.</p>
-
-<p>The Home component.</p>
-
-<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-12-implementing-routing-in-react/home.png" alt="Home component" /></p>
-
-<p>And the About component.</p>
-
-<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-12-implementing-routing-in-react/about.png" alt="About component" /></p>
-
-<p>Finally, I went through some of the docs and found an easy way to get basic routing. All of which is reflected in my main App.js file.</p>
-
-<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-12-implementing-routing-in-react/app.png" alt="App.js file" /></p>
-
-<h3 id="explainer-">Explainer <a name="explainer"></a></h3>
-
-<p>This needs explaining. I created a basic component for the home and the about pages. Both of them just return a header with the name in the tag. I imported them into app.js and imported BrowserRouter, Routes, and Route from the React Router Dom package. Each of these is going to help us create routing.</p>
-
-<p>First, we create the router using the BrowserRouter tag. Then nested in there, we make the Routes block. The routes block, which took the place of the Switch block in v6 of the React Router Package, looks at our nested routes and tells the app where to go. Finally, we have the “links” in the Route tags. We specify the path to look for in the Route tag and which element to point at. It’s also good to remember that the element should take the form of curly brackets and an open and closing tag (the <code class="highlighter-rouge">{&lt;Home/&gt;}</code> you see in my code). I mention this as most tutorials I looked up about this used Switch, Links, and the elements used the <code class="highlighter-rouge">{Home}</code> syntax.</p>
-
-<p>And that is it. If I navigate to <code class="highlighter-rouge">localhost:3000/</code>, we see the below image.</p>
-
-<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-12-implementing-routing-in-react/home_page.png" alt="Home Page after implementing routing" /></p>
-
-<p>And the same thing on the about page at <code class="highlighter-rouge">localhost:3000/about</code>.</p>
-
-<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-12-implementing-routing-in-react/about_page.png" alt="About Page after implementing routing" /></p>
-
-<h3 id="conclusion-">Conclusion <a name="conclusion"></a></h3>
-
-<p>It is a simple thing but something I learned while working with a team of React people. Using React is still akin to reading an upsidedown French map of Germany. However, I am starting to grasp the basics. Everything seems just to be something that’s been imported from somewhere else. Next time I think I’ll write about how you can create React packages similar to Python for easy and clean importing.</p>
-
-    </div>
-
-    <footer class="post-footer">
-        <div class="share">Share
-            <ul class="social-networks">
-                <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Implementing Routing in React&p[summary]=
+            <footer class="post-footer">
+                <div class="share">Share
+                    <ul class="social-networks">
+                        <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Implementing Routing in React&p[summary]=
     
 
 
@@ -318,8 +282,8 @@ Table Of Contents
 
 Introduction 
 
-Implementing routing in Re...&p[url]=https://georgeoffley.com/blog/implementing-routing-in-react.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></li>
-                <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/blog/implementing-routing-in-react.html&text=
+Implementing routing in Re...&p[url]=https://georgeoffley.com/blog/implementing-routing-in-react.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>
+                        <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/blog/implementing-routing-in-react.html&text=
     
 
 
@@ -335,22 +299,89 @@ Table Of Contents
 Introduction 
 
 Implementing routing in Re...&hashtags=React,Newbie," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
-            </ul>
-        </div>
+                    </ul>
+                </div>
+                
+                <div class="tags">
+                    <ul>
+                        
+                        <li><a href="https://georgeoffley.com/tag/React">React</a></li>
+                        
+                        <li><a href="https://georgeoffley.com/tag/Newbie">Newbie</a></li>
+                        
+                    </ul>
+                </div>
+                
+            </footer>
+        </article>
         
-        <div class="tags">
-            <ul>
-                
-                <li><a href="https://georgeoffley.com/tag/React">React</a></li>
-                
-                <li><a href="https://georgeoffley.com/tag/Newbie">Newbie</a></li>
-                
-            </ul>
-        </div>
+    
         
-    </footer>
-</article>
+    
 
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
 
             </main>
         </div>
