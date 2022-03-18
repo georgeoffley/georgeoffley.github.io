@@ -192,6 +192,8 @@
             
                 
             
+                
+            
         </div>
         
     
@@ -220,6 +222,155 @@
 
 
                 
+<article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
+    <header class="post-header">
+        <ul>
+            <li><time datetime="2022-03-18T12:00:00-04:00" itemprop="datePublished">18 Mar, 2022</time></li>
+            
+                <li class="cats">
+                    
+                        <a href="/categories/Blog/">Blog</a>
+                    
+                </li>
+            
+        </ul>
+        <h2 itemprop="name headline"><a href="https://georgeoffley.com/blog/modules-in-react.html">Modules in React</a></h2>
+    </header>
+
+    <div class="post-content">
+        <figure>
+    <img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-18-modules-in-react/cover.png" />
+</figure>
+
+<h2 id="table-of-contents">Table Of Contents</h2>
+<ul>
+  <li><a href="#introduction">Introduction</a></li>
+  <li><a href="#react-modules">React Modules</a></li>
+  <li><a href="#in-app-example">In-App Example</a></li>
+  <li><a href="#named-v-default">Named Imports vs. Default Imports</a></li>
+  <li><a href="#conclusion">Conclusion</a></li>
+</ul>
+
+<h3 id="introduction-">Introduction <a name="introduction"></a></h3>
+
+<p>The organization of your apps is one of the most effortless quality of life improvements you can make. Recently I’ve been deep-diving into React for a work project, and I was able to get a crash course in how you organize one such app. Including how React treats its files and how we’re importing them. So today, I’d like to get into how React handles modules and how importing is done.</p>
+
+<h3 id="react-modules-">React Modules <a name="react-modules"></a></h3>
+
+<p><a href="https://reactjs.org/docs/faq-structure.html#is-there-a-recommended-way-to-structure-react-projects">React has no opinions on how you organize your code</a>. This is fine as engineers usually have plenty of views on this, and the subject matter expert we’re working with was no exception. After talking it through, we decided to organize our app where each feature was organized into its own directory. This also gives us a choice to utilize <code class="highlighter-rouge">index.js</code> files to handle exports.</p>
+
+<p>The most straightforward analogy coming from Python was that React lets you put your files into a directory and then create an <code class="highlighter-rouge">index.js</code> file that exports everything. This is similar to how Python will utilize an <code class="highlighter-rouge">__init__.py</code> file to export everything into the main logic files.</p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-18-modules-in-react/react_modules.jpeg" alt="React Modules diagram" /></p>
+
+<p>So if I have one or more modules I need to import into the <code class="highlighter-rouge">App.js</code> file for a feature, I can utilize the <code class="highlighter-rouge">index.js</code> file to import all of them and serve as one export point for your <code class="highlighter-rouge">App.js</code> or wherever you are utilizing said feature.</p>
+
+<h3 id="in-app-example-">In-App Example <a name="in-app-example"></a></h3>
+
+<p>Let’s go through a quick example. I created a small React application to demonstrate what I am talking about. I organized it as such.</p>
+
+<ul>
+  <li>Src
+    <ul>
+      <li>App Feature
+        <ul>
+          <li>Hello.js</li>
+          <li>Worlds.js</li>
+          <li>Index.js</li>
+        </ul>
+      </li>
+      <li>App.js</li>
+    </ul>
+  </li>
+</ul>
+
+<p>I created a directory named AppFeature to hold the modules I want to organize under there. The Hello and World modules look similar; they are only components that render a new div tag with some words. See the code below.</p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-18-modules-in-react/hello.png" alt="hello.png" /></p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-18-modules-in-react/world.png" alt="world.png" /></p>
+
+<p>The AppFeature directory will have an <code class="highlighter-rouge">index.js</code> file that will handle exporting. This file will be used as a “central hub” where we can export all our modules into different parts of the application. You can see the code below.</p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-18-modules-in-react/indexjs.png" alt="indexjs.png" /></p>
+
+<p>In the code above I put in two export statements. From here is where our modules will be exported from. This makes for cleaner imports into our <code class="highlighter-rouge">App.js</code> file. As seen below.</p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-18-modules-in-react/appjs.png" alt="appjs.png" /></p>
+
+<p>At the top, you can see a clean import statement where we import a list of modules from the AppFeature directory. After that, we can apply them right into our application. It comes out looking like this.</p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-18-modules-in-react/app_page.png" alt="app_page.png" /></p>
+
+<h3 id="named-imports-vs-default-imports-">Named Imports vs. Default Imports <a name="named-v-default"></a></h3>
+
+<p>The above example details what are referred to as Named Imports, but that is not the only way to handle exporting and importing. There are other ways to export/import your needed modules. For example, suppose we are building components with multiple modules that do not need to be imported into the main application files. In that case, we can organize them so our main module can import all it needs and serve as the main component or class module to be exported. As demonstrated below.</p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-18-modules-in-react/defualt_hello_world.png" alt="defaulthelloworld.png" /></p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-18-modules-in-react/default_indexjs.png" alt="default_index.js" /></p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-18-modules-in-react/default_appjs.png" alt="default_app.js" /></p>
+
+<p>If we organize our code such that we want to keep internal modules internal, we can explore this type of organization. Using Default Imports, we’re still doing the same thing: we use our <code class="highlighter-rouge">index.js</code> file to handle our exports. The difference is that we’re organizing everything into one module and only exporting that one module. This makes everything even cleaner.</p>
+
+<h3 id="conclusion-">Conclusion <a name="conclusion"></a></h3>
+
+<p>One of the goals for the application we are building is to optimize our workflow. Organizing your code by utilizing modules in React is just one way in which we are meeting that goal. There are many things to consider, but I believe we are headed in the right direction. I hope this helps someone looking to organize their React projects.</p>
+
+<p>-George</p>
+
+
+        
+    </div>
+
+    <footer class="post-footer">
+        <div class="share">Share
+            <ul class="social-networks">
+               <!-- <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Modules in React&p[summary]=
+    
+
+
+Table Of Contents
+
+  Introduction
+  React Modules
+  In-App Example
+  Named Imports vs. Default Imports
+  Conclusion
+
+
+Introductio...&p[url]=https://georgeoffley.com/blog/modules-in-react.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>-->
+                <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/blog/modules-in-react.html&text=
+    
+
+
+Table Of Contents
+
+  Introduction
+  React Modules
+  In-App Example
+  Named Imports vs. Default Imports
+  Conclusion
+
+
+Introductio...&hashtags=React,Newbie," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+            </ul>
+        </div>
+        
+        <div class="tags">
+            <ul>
+                
+                <li><a href="https://georgeoffley.com/tag/React">React</a></li>
+                
+                <li><a href="https://georgeoffley.com/tag/Newbie">Newbie</a></li>
+                
+            </ul>
+        </div>
+        
+    </footer>
+</article>
+
 <article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
     <header class="post-header">
         <ul>
@@ -1027,94 +1178,18 @@ Table Of Contents
     </footer>
 </article>
 
-<article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
-    <header class="post-header">
-        <ul>
-            <li><time datetime="2020-08-08T23:56:00-04:00" itemprop="datePublished">8 Aug, 2020</time></li>
-            
-                <li class="cats">
-                    
-                        <a href="/categories/Blog/">Blog</a>
-                    
-                </li>
-            
-        </ul>
-        <h2 itemprop="name headline"><a href="https://georgeoffley.com/blog/creating-a-twitter-bot-using-aws-lambda-and-go.html">Creating a Twitter Bot Using AWS Lambda and Go</a></h2>
-    </header>
-
-    <div class="post-content">
-        <figure>
-    <img src="/assets/images/twitter-bot-aws-lambda.jpg" />
-</figure>
-
-<h2 id="table-of-contents">Table Of Contents</h2>
-<ul>
-  <li><a href="#introduction">Introduction</a></li>
-  <li><a href="#twitter_setup">Twitter App Set-Up</a></li>
-  <li><a href="#twitter_bot_code">Twitter Bot Code</a></li>
-  <li><a href="#lambda_function">Setting up a Lambda Function</a></li>
-  <li><a href="#conclusion">Conclusion</a></li>
-</ul>
-
-<h3 id="introduction-">Introduction <a name="introduction"></a></h3>
-
-<p>Most people have heard of AWS and developers have started learning how they can use it to further augment the quality of their projects. Recently I have begun the process of becoming one of those people. So far it has been an enlightening deep dive into the different services they offer. It’s hard to get your bearings with something as huge as AWS so for my learning journey I decided to focus on projects I thought would be cool and see how AWS might help facilitate what I build.</p>
 
 
 
-        
-            <p><a href="https://georgeoffley.com/blog/creating-a-twitter-bot-using-aws-lambda-and-go.html" role="button">Read More</a></p>
-        
-    </div>
-
-    <footer class="post-footer">
-        <div class="share">Share
-            <ul class="social-networks">
-               <!-- <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Creating a Twitter Bot Using AWS Lambda and Go&p[summary]=
+<div class="pagination next" role="navigation" aria-label="pagination">
     
 
+    <span class="page_number">Page 1 of 2</span>
 
-Table Of Contents
-
-  Introduction
-  Twitter App Set-Up
-  Twitter Bot Code
-  Setting up a Lambda Function
-  Conclusion
-
-
-Introduct...&p[url]=https://georgeoffley.com/blog/creating-a-twitter-bot-using-aws-lambda-and-go.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>-->
-                <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/blog/creating-a-twitter-bot-using-aws-lambda-and-go.html&text=
     
-
-
-Table Of Contents
-
-  Introduction
-  Twitter App Set-Up
-  Twitter Bot Code
-  Setting up a Lambda Function
-  Conclusion
-
-
-Introduct...&hashtags=AWS,Go," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
-            </ul>
-        </div>
-        
-        <div class="tags">
-            <ul>
-                
-                <li><a href="https://georgeoffley.com/tag/AWS">AWS</a></li>
-                
-                <li><a href="https://georgeoffley.com/tag/Go">Go</a></li>
-                
-            </ul>
-        </div>
-        
-    </footer>
-</article>
-
-
+        <a href="/page2/" class="next">Next &rarr;</a>
+    
+</div>
 
             </main>
         </div>
