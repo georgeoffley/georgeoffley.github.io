@@ -5,9 +5,86 @@
     <description>I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!</description>
     <link>https://georgeoffley.com/</link>
     <atom:link href="https://georgeoffley.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 18 Mar 2022 09:18:34 -0400</pubDate>
-    <lastBuildDate>Fri, 18 Mar 2022 09:18:34 -0400</lastBuildDate>
+    <pubDate>Sat, 19 Mar 2022 21:11:01 -0400</pubDate>
+    <lastBuildDate>Sat, 19 Mar 2022 21:11:01 -0400</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
+    
+      <item>
+        <title>Table Resource VS Client in AWS</title>
+        <description>&lt;figure&gt;
+    &lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-19-table-resource-vs-client-in-aws/cover.png&quot; /&gt;
+&lt;/figure&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#the_problem&quot;&gt;The Problem&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#the_answer&quot;&gt;The Answer&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#conclusion&quot;&gt;The Answer&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;introduction-&quot;&gt;Introduction &lt;a name=&quot;introduction&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;DynamoDB provides an excellent way to store data in a flexible and scalable way. Add it to Lambda and API Gateway, and you have a powerful group of tools, &lt;a href=&quot;https://georgeoffley.com/blog/using-api-gateway-with-lambda.html&quot;&gt;which I have written about&lt;/a&gt;. It was for these reasons that I chose to use it for a side project I am building to familiarize myself with React. It was in these features that I struggled with an issue in how &lt;a href=&quot;https://github.com/boto/boto3&quot;&gt;boto3&lt;/a&gt;, the SDK for talking with AWS in Python, implements their libraries.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h3 id=&quot;the-problem-&quot;&gt;The Problem &lt;a name=&quot;the_problem&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;I have a personal rule; if it takes a certain amount of time to debug an issue, then there is something about the underlying technology that I do not understand. As it happens, I spent some time trying to get the APIs to work correctly in my side app recently. The problem boiled down to how my return data from the API was displayed in the application. It confounded me for some time. So I stepped back and challenged my assumptions about the tech. I followed the rabbit hole back to the API I wrote, where I found the problem.&lt;/p&gt;
+
+&lt;p&gt;It turned out the problem was in using the &lt;a href=&quot;https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html#client&quot;&gt;Client class&lt;/a&gt; in boto3. From their docs, Amazon calls the Client class a “low-level client representing Amazon DynamoDB.” So this made sense when I started seeing how the API would interact with my app.&lt;/p&gt;
+
+&lt;p&gt;When making a call to the API, the JSON returned would have all these extra tags on them. Below is an example.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-19-table-resource-vs-client-in-aws/client_resp.png&quot; alt=&quot;client_resp.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;It seems that DynamoDB was tagging the data types, as string types would have the type “S” for string values and “N” for number values. It made little sense to me. There are possible solutions available in the library that will help &lt;a href=&quot;https://towardsaws.com/making-use-of-boto3-out-of-the-box-dynamodb-serializers-1dffbc7deafe&quot;&gt;unmarshal the data and clean it up a little&lt;/a&gt;, but these tools are &lt;a href=&quot;https://github.com/boto/boto3/blob/e353ecc219497438b955781988ce7f5cf7efae25/boto3/dynamodb/types.py#L233&quot;&gt;buried in the source code for boto3&lt;/a&gt; and don’t seem to have official documentation. There’s a &lt;a href=&quot;https://github.com/boto/boto3/issues/1630&quot;&gt;yet unresolved GitHub issue about it&lt;/a&gt;. So I had to look deeper for a solution.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-answer-&quot;&gt;The Answer &lt;a name=&quot;the_answer&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;After a while of searching through the AWS docs and trying various solutions, I was able to come up with a fix. I rewrote my API to grab all the records using the &lt;a href=&quot;https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html#table&quot;&gt;Table&lt;/a&gt; class rather than the Client class.&lt;/p&gt;
+
+&lt;p&gt;It turns out that the Client class works precisely like a low-level abstraction should, returning all the stuff that’s stashed into DynamoDB data tags and all. Not very reader-friendly.&lt;/p&gt;
+
+&lt;p&gt;Here you can see what the code looks like using the Client class.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-19-table-resource-vs-client-in-aws/client_code.png&quot; alt=&quot;client_code.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And here is the updated code for the Table resource.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-19-table-resource-vs-client-in-aws/table_code.png&quot; alt=&quot;table_code.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Very little in the logic changed. We are still creating a connection to AWS using a Lambda function. We are still returning the response to that function.&lt;/p&gt;
+
+&lt;p&gt;There are, however, a couple of differences. We call the Table resource a little differently from the client, and I added some pagination to the table code. As boto3 will only return everything up to 1 MB, you need to put in pagination to get all your results.&lt;/p&gt;
+
+&lt;p&gt;Making that change makes the API returns a cleaner response.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-19-table-resource-vs-client-in-aws/table_resp.png&quot; alt=&quot;table_resp.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;No data tags and no messy nesting in our API data anymore.&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusion-&quot;&gt;Conclusion &lt;a name=&quot;conclusion&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;I like challenging my assumptions. Being outside my comfort zone is how I learn best. I’ve been making small scripts similar to that using the Client class for a while now, so it was good to understand the limitations in the tool and the tradeoffs using others. How this discomfort shakes out in the React app remains to be seen, but I am sure I’ll figure those problems out too. I hope this helps someone.&lt;/p&gt;
+
+&lt;p&gt;-George&lt;/p&gt;
+</description>
+        <pubDate>Sat, 19 Mar 2022 12:00:00 -0400</pubDate>
+        <link>https://georgeoffley.com/blog/table-resource-vs-client-in-aws.html</link>
+        <guid isPermaLink="true">https://georgeoffley.com/blog/table-resource-vs-client-in-aws.html</guid>
+        
+        <category>AWS</category>
+        
+        <category>Lambda</category>
+        
+        <category>Intermediate</category>
+        
+        
+        <category>Blog</category>
+        
+      </item>
     
       <item>
         <title>Modules in React</title>
@@ -848,150 +925,6 @@ aws kms enable-key-rotation - enables automatic rotation of the key material for
         <category>AWS</category>
         
         <category>Lambda</category>
-        
-        
-        <category>Blog</category>
-        
-      </item>
-    
-      <item>
-        <title>Working with Context in Go</title>
-        <description>&lt;figure&gt;
-    &lt;img src=&quot;/assets/images/working-with-context-in-go.jpg&quot; /&gt;
-&lt;/figure&gt;
-
-&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#context_interface&quot;&gt;Context Interface&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#context_in_context&quot;&gt;Context in context&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#context_background&quot;&gt;Context.Background&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#context_todo&quot;&gt;Context.TODO&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#context_withcancel&quot;&gt;Context.WithCancel&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#context_withDeadline&quot;&gt;Context.WithDeadline&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#context_withtimeout&quot;&gt;Context.WithTimeout&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#context_withvalue&quot;&gt;Context.WithValue&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#conclusion&quot;&gt;Conclusion&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;introduction-&quot;&gt;Introduction &lt;a name=&quot;introduction&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;When you’re having a breakdown caused by the combination of burnout and existential pain, do you get annoyed that your harried cries into the void go unanswered? Well, I can’t help with that, but I can suggest some methods for timing out calls to external or internal services. I’ve been doing research and playing with some of the standard libraries in Go and one of them I find most useful is the context library. Used to get some control over a system that might be running slowly for whatever reason or to enforce a certain level of quality for service calls this small library is a standard for a reason. For any production level systems to keep good flow control the context library is going to be necessary.
-&lt;!--This is a test--&gt;
-&lt;!--more--&gt;&lt;/p&gt;
-
-&lt;p&gt;Created by &lt;a href=&quot;https://twitter.com/Sajma&quot;&gt;Sameer Ajmani&lt;/a&gt; and &lt;a href=&quot;https://vimeo.com/115309491&quot;&gt;introduced in 2014&lt;/a&gt;, the context library become a standard library with Go 1.7. If you have looked through some Go library source code you can find tons of examples &lt;a href=&quot;https://github.com/mongodb/mongo-go-driver/blob/v1.4.0/mongo/client.go#L96&quot;&gt;requiring a context to be passed along&lt;/a&gt;. This is just one I’ve used recently. A &lt;em&gt;context&lt;/em&gt; is a deadline you can pass into a running process in your code. This deadline can indicate to a process to stop running and return after a condition is met. This becomes useful when reaching out to external APIs, databases as shown above, or system commands.&lt;/p&gt;
-
-&lt;p&gt;The following supposes that the reader knows about goroutines and channels and how they work together. I am going to deep dive into concurrency after writing about context as the context library is part of concurrency. For now, though, goroutines are lightweight threads that can be started for processes and channels are the pipelines used to pass data between these new processes.&lt;/p&gt;
-
-&lt;h3 id=&quot;context-interface-&quot;&gt;Context Interface &lt;a name=&quot;context_interface&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;The context library defines a new interface called Context. The Context interface has some interesting fields laid out below:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://dev-to-uploads.s3.amazonaws.com/i/3zgq8cmkrprdfgo66niv.png&quot; alt=&quot;Context Interface&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The &lt;em&gt;Deadline&lt;/em&gt; field returns the expected time the work is finished and indicates when the context should be canceled.&lt;/p&gt;
-
-&lt;p&gt;The &lt;em&gt;Done&lt;/em&gt; field is a channel that is closed when work done for the context should be canceled. This operation can happen asynchronously. The channel can return as nil if the associated context can never be canceled. Different context types will arrange for work to be canceled depending on the circumstances, which we will get into.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Err&lt;/em&gt; will return nil until Done is closed. After which &lt;em&gt;Err&lt;/em&gt; will either return &lt;em&gt;Canceled&lt;/em&gt; if the context was canceled or &lt;em&gt;DealineExceeded&lt;/em&gt; if the context’s deadline has passed.&lt;/p&gt;
-
-&lt;p&gt;The Value field is a key-value interface which will return a value associated with the context as a key or nil if there was no value associated. Values should be used carefully as they are not for passing parameters into a function but for &lt;a href=&quot;https://github.com/golang/go/blob/master/src/context/context.go#L185&quot;&gt;request-scoped data transits processes and API boundaries&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h3 id=&quot;context-in-context-&quot;&gt;Context in context &lt;a name=&quot;context_in_context&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;When creating a context in Go it is easy to write out a static context to store and reuse. So far as I can tell from my research this is not the optimal way to work with the context library. Context should take the form needed for each use. It should be shapeless, or in the words of &lt;a href=&quot;https://youtu.be/cJMwBwFj5nQ&quot;&gt;Bruce Lee be like water&lt;/a&gt;. Your context should flow through your code and evolve depending on the need.&lt;/p&gt;
-
-&lt;p&gt;There are some exceptions to this. For higher-level processes, you can pass in an empty context when you do not yet have a context in which to pass. These can work as placeholders before being refactored.&lt;/p&gt;
-
-&lt;h3 id=&quot;contextbackground-&quot;&gt;Context.Background &lt;a name=&quot;context_background&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;The “Background” function returns an empty non-nil context. There is no associated deadline and no cancelation to speak of. This can be typically used in the main function, for testing, or for creating a top-level context to be made into something else. Looking into the source code you can see that it doesn’t have any logic other than returning an &lt;a href=&quot;https://github.com/golang/go/blob/master/src/context/context.go#L208&quot;&gt;empty context&lt;/a&gt;:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://dev-to-uploads.s3.amazonaws.com/i/8g9hh8bxgsybws10ftld.png&quot; alt=&quot;Context Background&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;QuickNote:&lt;/em&gt;
-Typically, the context is named &lt;em&gt;ctx&lt;/em&gt; when it is declared. I’ve seen this in most implementations of context so if you come across &lt;em&gt;ctx&lt;/em&gt; in random spots in source code there’s a good chance that it is referring to a context.&lt;/p&gt;
-
-&lt;h3 id=&quot;contexttodo-&quot;&gt;Context.TODO &lt;a name=&quot;context_todo&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;The &lt;em&gt;TODO&lt;/em&gt; function does the same thing. It returns an empty non-nil context. This again is a use case for higher-level functions that may not yet have a function available to use them. In many cases, this would be used as a placeholder when extending your program to use the context library. If you checked out the talk by Sameer Ajmani about the introduction of the context library while refactoring their code at Google they would use the &lt;em&gt;context.TODO&lt;/em&gt; to start introducing context into the Google code base without breaking anything.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;QuickNote:&lt;/em&gt;
-One thing I will also mention is that somewhere along the way it was suggested that the &lt;em&gt;TODO&lt;/em&gt; would be compatible for use in static analysis tools for seeing context propagation across a program. This from what I can tell might have been an off-hand comment from the person who wrote out the notes in the source code. I’ve been looking for the last couple of days and &lt;a href=&quot;https://go-review.googlesource.com/c/go/+/130876/&quot;&gt;from what I can tell no such tool yet exists&lt;/a&gt;. I would investigate how to create such a tool but I’m going to go watch a movie instead.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://dev-to-uploads.s3.amazonaws.com/i/iu484psunf8fgrlgqwe8.png&quot; alt=&quot;Context.TODO&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;contextwithcancel-&quot;&gt;Context.WithCancel &lt;a name=&quot;context_withcancel&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;Let’s say I’m building a website to review movies. There is a myriad of APIs designed for serving movie information. One of the recent ones I’ve come across is the &lt;a href=&quot;https://ghibliapi.herokuapp.com/#section/Studio-Ghibli-API&quot;&gt;Studio Ghibli API&lt;/a&gt; which is a public API we can just grab stuff from. So, for the special section of the website for Studio Ghibli movies, we’ll use this. The &lt;em&gt;WithCancel&lt;/em&gt; function returns a copy of the parent context passed into it with a new &lt;em&gt;Done&lt;/em&gt; channel. The new &lt;em&gt;Done&lt;/em&gt; channel is closed either when the cancel function is called or when the parent context’s &lt;em&gt;Done&lt;/em&gt; channel is closed. Whichever event happens first.&lt;/p&gt;
-
-&lt;p&gt;Below is an example in action:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://dev-to-uploads.s3.amazonaws.com/i/vk990lim7irgfmgqjm4w.png&quot; alt=&quot;Context.WithCancel&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Here we are going to simulate a process that is hanging up using the &lt;em&gt;longRunningProcess&lt;/em&gt; function. In this example, the function is screwing up but we must run it before we request the JSON data from the API. The “longRunningProcess* function will return an error that will cause the &lt;em&gt;cancel()&lt;/em&gt; function within the context to fire.&lt;/p&gt;
-
-&lt;p&gt;For the &lt;em&gt;ghibliReq&lt;/em&gt; function we will set up a simple HTTP request using the API and pass a string for locating stuff from the API. Once we set up the request, we have a case statement which will receive channel data. Depending on what happens first the select statement will be sent either the current time or the “Done” channel from the passed in context. If the &lt;em&gt;Done&lt;/em&gt; channel is closed we error out, if not we will return the status code from our request.&lt;/p&gt;
-
-&lt;p&gt;Our main code starts with setting up the context with a new &lt;em&gt;Background()&lt;/em&gt; context which is then passed into a &lt;em&gt;WithCancel()&lt;/em&gt; context. The new &lt;em&gt;ctx&lt;/em&gt; was passed in an empty context so nothing has happened yet. We then create a new goroutine to create a new thread and call our &lt;em&gt;longRunningProcess&lt;/em&gt;. Once that is called we check for errors, which will return since we engineered it that way, and if there are errors we can call the &lt;em&gt;cancel()&lt;/em&gt; function in our context. Finally, we use our context to call our request. After we run this we find that the request errored out since it took too long and the &lt;em&gt;cancel()&lt;/em&gt; function was called.&lt;/p&gt;
-
-&lt;p&gt;In this example, we are running our &lt;em&gt;longRunningProcess&lt;/em&gt; before our request because that is needed before we call our request. If the function errors out we need to be able to call “cancel()” so that we can error out the &lt;em&gt;ghibliReq()&lt;/em&gt; function. The way we set it up we are calling &lt;em&gt;cancel&lt;/em&gt; for our context before the function has a chance to run. This is intentional to show how the cancel works. We could easily change the &lt;em&gt;time.Sleep()&lt;/em&gt; in &lt;em&gt;longRunningProcess&lt;/em&gt; to say 1000 milliseconds and our request function will run before &lt;em&gt;cancel()&lt;/em&gt; is called but in a production environment if the goal is to make sure we maintain the flow of the call stack we would make sure we’re not returning errors and not calling &lt;em&gt;cancel()&lt;/em&gt; for this context.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;QuickNote:&lt;/em&gt;
-Keep in mind that a context-specific call shouldn’t be a blocking action unless necessary. It’s all about keeping stuff running.&lt;/p&gt;
-
-&lt;h3 id=&quot;contextwithdeadline-&quot;&gt;Context.WithDeadline &lt;a name=&quot;context_withDeadline&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;The &lt;em&gt;WithDeadline&lt;/em&gt; function requires two arguments. One is the parent context and the other is a new time object. The function will take the parent context and adjust it to meet the new time object which was passed in. There are a couple of caveats. If you pass in a context that is already earlier than the passed in the time object then the source code will pass just return a &lt;em&gt;WithCancel&lt;/em&gt; context with the same cancellation requirements as the parent which you can see &lt;a href=&quot;https://github.com/golang/go/blob/master/src/context/context.go#L430&quot;&gt;in the source&lt;/a&gt;. The &lt;em&gt;Done&lt;/em&gt; channel is closed after the new deadline expires. You can also manually return the &lt;em&gt;cancel&lt;/em&gt; function or it will close when the parent context’s &lt;em&gt;Done&lt;/em&gt; channel is closed. Whichever of those events happens first.&lt;/p&gt;
-
-&lt;p&gt;Below we can go through how the &lt;em&gt;WithDeadline&lt;/em&gt; works:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://dev-to-uploads.s3.amazonaws.com/i/nwwcwgh95cejnb5kjdsh.png&quot; alt=&quot;Context.WithDeadline&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;We’re going to continue with the idea that we are putting together a movie review site. To be honest it would not be far off character of me to start a website dedicated to talking exclusively about Studio Ghibli movies. The example above is doing something like the &lt;em&gt;withCancel&lt;/em&gt; example. We are going to reuse a function to demonstrate our context. Reuse the stuff that works, save yourself some time. We are going to make a request and return the status of said request. The difference is how we handle our context.&lt;/p&gt;
-
-&lt;p&gt;Hypothetically, we need to create a whole bunch of these cascading requests and we want to make sure that everything is happening on time throughout the call stack. To keep track of time and gracefully error out when needed we can continue to use the deadlines and augment the time for the additional calls. In our example, we create a &lt;em&gt;Background&lt;/em&gt; context, then pass that in along with a new time. Now we get a returned context in our &lt;em&gt;ctx&lt;/em&gt; variable for about 1 second. In our example, if the request process takes longer than 1 second our context calls the cancel function and closes the &lt;em&gt;Done&lt;/em&gt; channel causing the request to error out.&lt;/p&gt;
-
-&lt;p&gt;We can see that this is dependent on the standards that we set. Setting a time implies that you have a decent idea about how long something should take. Which can be dependent on your server availability, internet connection, hardware constraints, etc. I have also seen people grumble about certain service level agreements guaranteeing the return of assets within a certain time frame. With the aim of usability in mind using context, deadlines can help to ensure that we can pull information at a reasonable amount of time and return if not.&lt;/p&gt;
-
-&lt;h3 id=&quot;contextwithtimeout-&quot;&gt;Context.WithTimeout &lt;a name=&quot;context_withtimeout&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;The next relevant function is the &lt;em&gt;WithTimeout&lt;/em&gt; function. This is a slight variation from the &lt;em&gt;WithDeadline&lt;/em&gt; function. With a need to make something original in mind the &lt;em&gt;WithTimeout&lt;/em&gt; simply returns a &lt;em&gt;WithDeadline&lt;/em&gt; context with the time argument passed in added to the deadline. In other words, it acts similar to the &lt;em&gt;WithDeadline&lt;/em&gt; in that it will take the parent and augment the time to return a derived context with the new time added to the time before the &lt;em&gt;cancel&lt;/em&gt; function is called and the &lt;em&gt;Done&lt;/em&gt; channel is closed. I’ll make this example even simpler:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://dev-to-uploads.s3.amazonaws.com/i/dcw4vhshlsephh1c19na.png&quot; alt=&quot;Context.WithTimeout&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Same as the example before we set the timeout to close the “Done” channel after the allotted time. In our case, if after a half-second, we’re still waiting for the call we timeout. I love the HTTP go library because it has a built-in function for returning a shadow copy of the request with the &lt;a href=&quot;https://golang.org/src/net/http/request.go?s=12980:13039#L341&quot;&gt;new context added&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h3 id=&quot;contextwithvalue-&quot;&gt;Context.WithValue &lt;a name=&quot;context_withvalue&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;The last bit of the source I am going to touch on is the &lt;em&gt;ContextWithValue&lt;/em&gt; function. This one is a bit controversial since the nature of it, from what I can tell, goes against what the context should be. A context should be a way to ensure that we keep data flowing to and from our programs. The value part of the context though can be used to carry information back and forth. The function allows you to pass in a key-value interface to pass around with your calls.&lt;/p&gt;
-
-&lt;p&gt;From the original post about context &lt;a href=&quot;https://blog.golang.org/context&quot;&gt;“WithValue provides a way to associate request-scoped values with a context”&lt;/a&gt;. I’m going to talk a little about what it shouldn’t be used for. Most articles or tutorials I came across seem to agree that passing information that lives outside of the request itself was a bad idea. DB connections, function arguments, anything that is not created and destroyed within that request is probably not a great design pattern. That said passing values along your context can be useful.&lt;/p&gt;
-
-&lt;p&gt;Let’s check out some code:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://dev-to-uploads.s3.amazonaws.com/i/nrbebpw31tc4nmwjj285.png&quot; alt=&quot;Context.WithValue&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;We’re going to use the same code from the last example. Only in this case, we are going to create a new function which will calculate a fake request ID. Say I want to keep a database of all my requests, because… I don’t know, I’m a psychopath. Or I work for the NSA and I’m making some spyware to look in on my ex in the name of national security. And because they don’t train me in operational intelligence, I don’t know how to discern the data that indicates something and white noise, so I collect everything. Even innocuous calls to an open API for looking up animated movie information. I’m very tired right now.&lt;/p&gt;
-
-&lt;p&gt;In our example we do the same as above; set up a context with a timeout for half a second. Only now we have a helper method that will calculate a new request ID and we will use the context to pass that ID along within the context as a new interface that we can access and do stuff with. In this fake scenario, we would log this and close out the context. This will conform to our self-imposed standard of keeping only information relevant to that call. Yay information!&lt;/p&gt;
-
-&lt;p&gt;There is a lot more to be explored about passing along values within a context. I have seen articles where middleware is used to do stuff in between two services to make something work better. I might dig deeper into this and since it’s a bit outside the scope of this I might write about it later. Who knows, I need sleep.&lt;/p&gt;
-
-&lt;h3 id=&quot;conclusion-&quot;&gt;Conclusion &lt;a name=&quot;conclusion&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;The context library helps to add some sanity to calls in our program. When designing a program incorporating a context in our functions should happen as early as possible. As mentioned, before it is easy to create our function with a &lt;em&gt;TODO&lt;/em&gt; as a placeholder and go back when refactoring. It was also mentioned that programs should be created to fail gracefully as well. Take it from someone who spent a long time creating vague fail messages which no one can understand including me. A user should not have to know that a call to something failed just that they aren’t getting their movie title in half a second.&lt;/p&gt;
-
-&lt;p&gt;A cool way to picture how useful these contexts can be was touched on in Sameer’s talk. He spoke about the practice of hedged calls where you call out redundant services and take the one which takes less time. It’s all about speed and optimization with them Google people. That is one way in which creating a context to flow through your program would be helpful. When one comes back you cancel out the other which releases the resources that thread might have been using up. The context is a small but very powerful library, it should be used often and with plenty of thought and planning into how it should flow into your program. My hope after reading this is that we all come away with a better understanding of context and how we can use it! If you liked this, had questions and or comments, or you just want to berate me on how much the Last Jedi sucked (it was an imperfect but powerful movie for a world not yet ready for it) hit me up on &lt;a href=&quot;https://twitter.com/georgeoffley&quot;&gt;Twitter&lt;/a&gt;! I love topical references.&lt;/p&gt;
-</description>
-        <pubDate>Mon, 17 Aug 2020 21:00:00 -0400</pubDate>
-        <link>https://georgeoffley.com/blog/working-with-context-in-go.html</link>
-        <guid isPermaLink="true">https://georgeoffley.com/blog/working-with-context-in-go.html</guid>
-        
-        <category>concurrency</category>
-        
-        <category>Go</category>
         
         
         <category>Blog</category>

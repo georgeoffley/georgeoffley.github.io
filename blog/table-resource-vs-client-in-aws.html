@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Posts Tagged - KMS | George Offley &mdash; Software Engineer </title>
-    <meta property="og:title" content="Posts Tagged - KMS | George Offley &mdash; Software Engineer " />
+    <title>Table Resource VS Client in AWS | George Offley &mdash; Software Engineer </title>
+    <meta property="og:title" content="Table Resource VS Client in AWS | George Offley &mdash; Software Engineer " />
 
     <meta name="description" content="I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!">
     <meta name="description" property="og:description" content="I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!" />
@@ -14,19 +14,19 @@
     <!-- Twitter cards -->
     <meta name="twitter:site"    content="@georgeoffley">
     <meta name="twitter:creator" content="@georgeoffley">
-    <meta name="twitter:title"   content="Posts Tagged - KMS">
+    <meta name="twitter:title"   content="Table Resource VS Client in AWS">
 
     
-    <meta name="twitter:description" content="I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!">
+    <meta name="twitter:description" content="Using the Client class in boto3 might not be the best solution for DynamoDB. Let's find out why!">
     
 
     
     <meta name="twitter:card"  content="summary_large_image">
-    <meta name="twitter:image" content="https://georgeoffley.com/assets/images/flat-laptop-cover.png">
+    <meta name="twitter:image" content="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-19-table-resource-vs-client-in-aws/cover.png">
     
     <!-- end of Twitter cards -->
     
-    <meta property="og:url" content="https://georgeoffley.com/tag/KMS/" />
+    <meta property="og:url" content="https://georgeoffley.com/blog/table-resource-vs-client-in-aws.html" />
 
     <meta property="og:image" content="" />
 
@@ -104,7 +104,7 @@
     
     <link rel="stylesheet" href="https://georgeoffley.com/assets/css/main.css">
 
-    <link rel="canonical" href="https://georgeoffley.com/tag/KMS/">
+    <link rel="canonical" href="https://georgeoffley.com/blog/table-resource-vs-client-in-aws.html">
 
     <link rel="alternate" type="application/rss+xml" title="" href="https://georgeoffley.com/feed.xml">
 </head>
@@ -221,178 +221,137 @@
 </div>
 
 
-                <h1>Posts Tagged - KMS</h1>
-
-
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-
-    
-        
-        <article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
-            <header class="post-header">
-                <ul>
-                    <li><time datetime="2020-09-04T16:30:00-04:00" itemprop="datePublished">4 Sep, 2020</time></li>
+                <article class="post single" role="article" itemscope itemtype="http://schema.org/BlogPosting">
+    <header class="post-header">
+        <ul>
+            <li><time datetime="2022-03-19T12:00:00-04:00" itemprop="datePublished">19 Mar, 2022</time></li>
+            
+                
+                <li class="cats">
                     
-                    <li class="cats">
-                        
-                            <a href="/categories/Blog/">Blog</a>
-                        
-                    </li>
+                        <a href="/categories/Blog/">Blog</a>
                     
-                </ul>
-                <h2 itemprop="name headline"><a href="https://georgeoffley.com/blog/encrypting-your-envioronment-variables-in-lambda-with-kms.html">Encrypting Your Environment Variables in Lambda with KMS</a></h2>
-            </header>
+                </li>
+                
+            
+        </ul>
+        <h2 itemprop="name headline">Table Resource VS Client in AWS</h2>
+    </header>
 
-            <div class="post-content">
-                <figure>
-    <img src="/assets/images/encrypt-lambda-envs.jpg" />
+    <div class="post-content">
+        <figure>
+    <img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-19-table-resource-vs-client-in-aws/cover.png" />
 </figure>
 
 <h2 id="table-of-contents">Table Of Contents</h2>
 <ul>
   <li><a href="#introduction">Introduction</a></li>
-  <li><a href="#key_management_system_in_aws">Key Management System in AWS</a></li>
-  <li><a href="#customer_master_keys">Customer Master Keys</a></li>
-  <li><a href="#kms_and_lambda">KMS and Lambda</a></li>
-  <li><a href="#conclusion">Conclusion</a></li>
-  <li><a href="#additional_notes">Additional Notes</a></li>
+  <li><a href="#the_problem">The Problem</a></li>
+  <li><a href="#the_answer">The Answer</a></li>
+  <li><a href="#conclusion">The Answer</a></li>
 </ul>
 
 <h3 id="introduction-">Introduction <a name="introduction"></a></h3>
 
-<p>Do you hate when <a href="https://youtu.be/tO5sxLapAts">gnomes steal your underpants</a> for profit? I know I hate when those guys come out to steal my stuff. Unfortunately, I cannot help you prevent the theft of your undergarments, but I can help you protect some assets in AWS. Specifically, we are going to talk about encrypting environment variables in Lambda.</p>
+<p>DynamoDB provides an excellent way to store data in a flexible and scalable way. Add it to Lambda and API Gateway, and you have a powerful group of tools, <a href="https://georgeoffley.com/blog/using-api-gateway-with-lambda.html">which I have written about</a>. It was for these reasons that I chose to use it for a side project I am building to familiarize myself with React. It was in these features that I struggled with an issue in how <a href="https://github.com/boto/boto3">boto3</a>, the SDK for talking with AWS in Python, implements their libraries.</p>
 
+<!--more-->
 
+<h3 id="the-problem-">The Problem <a name="the_problem"></a></h3>
 
-                
-                    <p><a href="/blog/encrypting-your-envioronment-variables-in-lambda-with-kms.html" role="button">Read More</a></p>
-                
-            </div>
+<p>I have a personal rule; if it takes a certain amount of time to debug an issue, then there is something about the underlying technology that I do not understand. As it happens, I spent some time trying to get the APIs to work correctly in my side app recently. The problem boiled down to how my return data from the API was displayed in the application. It confounded me for some time. So I stepped back and challenged my assumptions about the tech. I followed the rabbit hole back to the API I wrote, where I found the problem.</p>
 
-            <footer class="post-footer">
-                <div class="share">Share
-                    <ul class="social-networks">
-                        <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Encrypting Your Environment Variables in Lambda with KMS&p[summary]=
+<p>It turned out the problem was in using the <a href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html#client">Client class</a> in boto3. From their docs, Amazon calls the Client class a “low-level client representing Amazon DynamoDB.” So this made sense when I started seeing how the API would interact with my app.</p>
+
+<p>When making a call to the API, the JSON returned would have all these extra tags on them. Below is an example.</p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-19-table-resource-vs-client-in-aws/client_resp.png" alt="client_resp.png" /></p>
+
+<p>It seems that DynamoDB was tagging the data types, as string types would have the type “S” for string values and “N” for number values. It made little sense to me. There are possible solutions available in the library that will help <a href="https://towardsaws.com/making-use-of-boto3-out-of-the-box-dynamodb-serializers-1dffbc7deafe">unmarshal the data and clean it up a little</a>, but these tools are <a href="https://github.com/boto/boto3/blob/e353ecc219497438b955781988ce7f5cf7efae25/boto3/dynamodb/types.py#L233">buried in the source code for boto3</a> and don’t seem to have official documentation. There’s a <a href="https://github.com/boto/boto3/issues/1630">yet unresolved GitHub issue about it</a>. So I had to look deeper for a solution.</p>
+
+<h3 id="the-answer-">The Answer <a name="the_answer"></a></h3>
+
+<p>After a while of searching through the AWS docs and trying various solutions, I was able to come up with a fix. I rewrote my API to grab all the records using the <a href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html#table">Table</a> class rather than the Client class.</p>
+
+<p>It turns out that the Client class works precisely like a low-level abstraction should, returning all the stuff that’s stashed into DynamoDB data tags and all. Not very reader-friendly.</p>
+
+<p>Here you can see what the code looks like using the Client class.</p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-19-table-resource-vs-client-in-aws/client_code.png" alt="client_code.png" /></p>
+
+<p>And here is the updated code for the Table resource.</p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-19-table-resource-vs-client-in-aws/table_code.png" alt="table_code.png" /></p>
+
+<p>Very little in the logic changed. We are still creating a connection to AWS using a Lambda function. We are still returning the response to that function.</p>
+
+<p>There are, however, a couple of differences. We call the Table resource a little differently from the client, and I added some pagination to the table code. As boto3 will only return everything up to 1 MB, you need to put in pagination to get all your results.</p>
+
+<p>Making that change makes the API returns a cleaner response.</p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-19-table-resource-vs-client-in-aws/table_resp.png" alt="table_resp.png" /></p>
+
+<p>No data tags and no messy nesting in our API data anymore.</p>
+
+<h3 id="conclusion-">Conclusion <a name="conclusion"></a></h3>
+
+<p>I like challenging my assumptions. Being outside my comfort zone is how I learn best. I’ve been making small scripts similar to that using the Client class for a while now, so it was good to understand the limitations in the tool and the tradeoffs using others. How this discomfort shakes out in the React app remains to be seen, but I am sure I’ll figure those problems out too. I hope this helps someone.</p>
+
+<p>-George</p>
+
+    </div>
+
+    <footer class="post-footer">
+        <div class="share">Share
+            <ul class="social-networks">
+                <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Table Resource VS Client in AWS&p[summary]=
     
 
 
 Table Of Contents
 
   Introduction
-  Key Management System in AWS
-  Customer Master Keys
-  KMS and Lambda
-  Conclusion
-  Additiona...&p[url]=https://georgeoffley.com/blog/encrypting-your-envioronment-variables-in-lambda-with-kms.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>
-                        <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/blog/encrypting-your-envioronment-variables-in-lambda-with-kms.html&text=
+  The Problem
+  The Answer
+  The Answer
+
+
+Introduction 
+
+DynamoDB provides an excellent way to ...&p[url]=https://georgeoffley.com/blog/table-resource-vs-client-in-aws.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></li>
+                <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/blog/table-resource-vs-client-in-aws.html&text=
     
 
 
 Table Of Contents
 
   Introduction
-  Key Management System in AWS
-  Customer Master Keys
-  KMS and Lambda
-  Conclusion
-  Additiona...&hashtags=KMS,AWS,Lambda," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
-                    </ul>
-                </div>
-                
-                <div class="tags">
-                    <ul>
-                        
-                        <li><a href="https://georgeoffley.com/tag/KMS">KMS</a></li>
-                        
-                        <li><a href="https://georgeoffley.com/tag/AWS">AWS</a></li>
-                        
-                        <li><a href="https://georgeoffley.com/tag/Lambda">Lambda</a></li>
-                        
-                    </ul>
-                </div>
-                
-            </footer>
-        </article>
-        
-    
-        
-    
-        
-    
+  The Problem
+  The Answer
+  The Answer
 
-    
-        
-    
-        
-    
 
-    
+Introduction 
+
+DynamoDB provides an excellent way to ...&hashtags=AWS,Lambda,Intermediate," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+            </ul>
+        </div>
         
-    
+        <div class="tags">
+            <ul>
+                
+                <li><a href="https://georgeoffley.com/tag/AWS">AWS</a></li>
+                
+                <li><a href="https://georgeoffley.com/tag/Lambda">Lambda</a></li>
+                
+                <li><a href="https://georgeoffley.com/tag/Intermediate">Intermediate</a></li>
+                
+            </ul>
+        </div>
         
-    
+    </footer>
+</article>
+
 
             </main>
         </div>
