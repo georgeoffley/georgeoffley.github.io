@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Posts Tagged - concurrency | George Offley &mdash; Software Engineer </title>
-    <meta property="og:title" content="Posts Tagged - concurrency | George Offley &mdash; Software Engineer " />
+    <title>Using SWR for Easy API Calls in React | George Offley &mdash; Software Engineer </title>
+    <meta property="og:title" content="Using SWR for Easy API Calls in React | George Offley &mdash; Software Engineer " />
 
     <meta name="description" content="I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!">
     <meta name="description" property="og:description" content="I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!" />
@@ -14,19 +14,19 @@
     <!-- Twitter cards -->
     <meta name="twitter:site"    content="@georgeoffley">
     <meta name="twitter:creator" content="@georgeoffley">
-    <meta name="twitter:title"   content="Posts Tagged - concurrency">
+    <meta name="twitter:title"   content="Using SWR for Easy API Calls in React">
 
     
-    <meta name="twitter:description" content="I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!">
+    <meta name="twitter:description" content="Let's look at some of the ways we can easily call API endpoints!">
     
 
     
     <meta name="twitter:card"  content="summary_large_image">
-    <meta name="twitter:image" content="https://georgeoffley.com/assets/images/flat-laptop-cover.png">
+    <meta name="twitter:image" content="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-25-using-swr-for-easy-api-calls-in-react/cover.png">
     
     <!-- end of Twitter cards -->
     
-    <meta property="og:url" content="https://georgeoffley.com/tag/concurrency/" />
+    <meta property="og:url" content="https://georgeoffley.com/blog/using-swr-for-easy-api-calls-in-react.html" />
 
     <meta property="og:image" content="" />
 
@@ -104,7 +104,7 @@
     
     <link rel="stylesheet" href="https://georgeoffley.com/assets/css/main.css">
 
-    <link rel="canonical" href="https://georgeoffley.com/tag/concurrency/">
+    <link rel="canonical" href="https://georgeoffley.com/blog/using-swr-for-easy-api-calls-in-react.html">
 
     <link rel="alternate" type="application/rss+xml" title="" href="https://georgeoffley.com/feed.xml">
 </head>
@@ -223,187 +223,133 @@
 </div>
 
 
-                <h1>Posts Tagged - concurrency</h1>
-
-
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-        <article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
-            <header class="post-header">
-                <ul>
-                    <li><time datetime="2020-08-17T21:00:00-04:00" itemprop="datePublished">17 Aug, 2020</time></li>
+                <article class="post single" role="article" itemscope itemtype="http://schema.org/BlogPosting">
+    <header class="post-header">
+        <ul>
+            <li><time datetime="2022-03-25T12:00:00-04:00" itemprop="datePublished">25 Mar, 2022</time></li>
+            
+                
+                <li class="cats">
                     
-                    <li class="cats">
-                        
-                            <a href="/categories/Blog/">Blog</a>
-                        
-                    </li>
+                        <a href="/categories/Blog/">Blog</a>
                     
-                </ul>
-                <h2 itemprop="name headline"><a href="https://georgeoffley.com/blog/working-with-context-in-go.html">Working with Context in Go</a></h2>
-            </header>
+                </li>
+                
+            
+        </ul>
+        <h2 itemprop="name headline">Using SWR for Easy API Calls in React</h2>
+    </header>
 
-            <div class="post-content">
-                <figure>
-    <img src="/assets/images/working-with-context-in-go.jpg" />
+    <div class="post-content">
+        <figure>
+    <img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-25-using-swr-for-easy-api-calls-in-react/cover.png" />
 </figure>
 
 <h2 id="table-of-contents">Table Of Contents</h2>
 <ul>
   <li><a href="#introduction">Introduction</a></li>
-  <li><a href="#context_interface">Context Interface</a></li>
-  <li><a href="#context_in_context">Context in context</a></li>
-  <li><a href="#context_background">Context.Background</a></li>
-  <li><a href="#context_todo">Context.TODO</a></li>
-  <li><a href="#context_withcancel">Context.WithCancel</a></li>
-  <li><a href="#context_withDeadline">Context.WithDeadline</a></li>
-  <li><a href="#context_withtimeout">Context.WithTimeout</a></li>
-  <li><a href="#context_withvalue">Context.WithValue</a></li>
-  <li><a href="#conclusion">Conclusion</a></li>
+  <li><a href="#swr">SWR</a></li>
+  <li><a href="#Conclusion">Conclusion</a></li>
 </ul>
 
 <h3 id="introduction-">Introduction <a name="introduction"></a></h3>
 
-<p>When you’re having a breakdown caused by the combination of burnout and existential pain, do you get annoyed that your harried cries into the void go unanswered? Well, I can’t help with that, but I can suggest some methods for timing out calls to external or internal services. I’ve been doing research and playing with some of the standard libraries in Go and one of them I find most useful is the context library. Used to get some control over a system that might be running slowly for whatever reason or to enforce a certain level of quality for service calls this small library is a standard for a reason. For any production level systems to keep good flow control the context library is going to be necessary.
-<!--This is a test--></p>
+<p>React gives us the ability to create powerful and scalable apps. We need to quickly implement API calls to get our data displayed in our App for them to run. That’s where <a href="https://swr.vercel.app/">SWR</a> comes in handy.</p>
 
+<!--more-->
 
+<h3 id="swr-">SWR <a name="swr"></a></h3>
 
-                
-                    <p><a href="/blog/working-with-context-in-go.html" role="button">Read More</a></p>
-                
-            </div>
+<p>My company embarked on a journey to create a new app for stakeholders. This included React for the frontend. Since then, I’ve been working on some React side projects to reinforce my learning from work. I struggled to use some built-in hooks to no avail. Then came SWR, which was mentioned as a way to do API calls in our work app. After integrating SWR into one of my side projects, I am sold.</p>
 
-            <footer class="post-footer">
-                <div class="share">Share
-                    <ul class="social-networks">
-                        <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Working with Context in Go&p[summary]=
+<p>SWR is a react library used for easily fetching information from an API endpoint. SWR stands for “stale while revalidate.” According to their site, they derive the name from the practice of invalidating the cache. They use the cache to return data then send the fetch request to get up-to-date data. This makes sense seeing how the library seems to fetch data without user intervention.</p>
+
+<p>I was impressed seeing what is essentially a stream of data on my app as the data seamlessly updating when adding data. Plus, it’s lightweight and easy to implement. It also boasts some features over the built-in <code class="highlighter-rouge">useEffect</code> hook as it also passes in errors for better exception handling and a more seamless experience maintaining the code.</p>
+
+<h3 id="example-">Example <a name="example"></a></h3>
+
+<p>I’ll take us through how I implementedSWR it into my app. I already have a  React app, and I ran the install for SWR detailed below.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install </span>swr
+</code></pre></div></div>
+
+<p>Once that finished installing, I went to work. The first thing was to import the <code class="highlighter-rouge">useSWR</code> function into one of the components.</p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-25-using-swr-for-easy-api-calls-in-react/import.png" alt="Example import statement" /></p>
+
+<p>Next was a simple fetcher function, taken right out of their docs.</p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-25-using-swr-for-easy-api-calls-in-react/fetcher.png" alt="Create fetcher function" /></p>
+
+<p>Some notes about the fetcher. SWR takes in any fetcher object you want to pass to it. You can utilize libraries like <a href="https://github.com/developit/unfetch">unfetch</a>, <a href="https://axios-http.com/docs/intro">Axios</a>, or <a href="https://graphql.org/">GraphQL</a>. I used the native fetch as I don’t have any unique logic running, and I am only returning simple JSON objects. So I configure it to use JSON for returning the data.</p>
+
+<p>SWR has three states for the data returned, <code class="highlighter-rouge">Loading</code>, <code class="highlighter-rouge">Ready</code>, and <code class="highlighter-rouge">Error</code>. These states can be used for exception handling or creating logic for loading behavior.</p>
+
+<p>The last thing we want to do is use the <code class="highlighter-rouge">useSWR</code> function we imported to grab our file.</p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-25-using-swr-for-easy-api-calls-in-react/useSWR.png" alt="useSWR example" /></p>
+
+<p>There are a couple of things of note within this call. First, we’re passing in the fetcher function we created earlier and the API endpoint. Secondly, we set the results as an array with <code class="highlighter-rouge">data</code> and <code class="highlighter-rouge">error</code> since we get back error data if we error out and want to store the message. Our returned data will go into the data variable.</p>
+
+<p>That’s easy. React treats the return values as an object. The data can be accessed using a <code class="highlighter-rouge">map()</code> function and the  <code class="highlighter-rouge">data.&lt;tag&gt;</code> syntax.</p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-25-using-swr-for-easy-api-calls-in-react/data.png" alt="Data object named access" /></p>
+
+<h3 id="conclusion-">Conclusion <a name="Conclusion"></a></h3>
+
+<p>After some <a href="https://twitter.com/georgeoffley/status/1497606201831567360?s=20&amp;t=euyltPybu9OOs5SPdChQOQ">documented time experimenting</a>, I was resigned to React’s perceived complexity. However, as I build out more and more small accomplishments, I realized React is like anything else; it takes practice and the right tools. SWR is something I’m putting into my React utility belt. I hope this helps someone who might be struggling.</p>
+
+<p>-George</p>
+
+    </div>
+
+    <footer class="post-footer">
+        <div class="share">Share
+            <ul class="social-networks">
+                <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Using SWR for Easy API Calls in React&p[summary]=
     
 
 
 Table Of Contents
 
   Introduction
-  Context Interface
-  Context in context
-  Context.Background
-  Context.TODO
-  Context.WithCanc...&p[url]=https://georgeoffley.com/blog/working-with-context-in-go.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>
-                        <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/blog/working-with-context-in-go.html&text=
+  SWR
+  Conclusion
+
+
+Introduction 
+
+React gives us the ability to create powerful and scalable ...&p[url]=https://georgeoffley.com/blog/using-swr-for-easy-api-calls-in-react.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></li>
+                <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/blog/using-swr-for-easy-api-calls-in-react.html&text=
     
 
 
 Table Of Contents
 
   Introduction
-  Context Interface
-  Context in context
-  Context.Background
-  Context.TODO
-  Context.WithCanc...&hashtags=concurrency,Go," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
-                    </ul>
-                </div>
-                
-                <div class="tags">
-                    <ul>
-                        
-                        <li><a href="https://georgeoffley.com/tag/concurrency">concurrency</a></li>
-                        
-                        <li><a href="https://georgeoffley.com/tag/Go">Go</a></li>
-                        
-                    </ul>
-                </div>
-                
-            </footer>
-        </article>
-        
-    
-        
-    
+  SWR
+  Conclusion
 
-    
+
+Introduction 
+
+React gives us the ability to create powerful and scalable ...&hashtags=React,JavaScript," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+            </ul>
+        </div>
         
-    
+        <div class="tags">
+            <ul>
+                
+                <li><a href="https://georgeoffley.com/tag/React">React</a></li>
+                
+                <li><a href="https://georgeoffley.com/tag/JavaScript">JavaScript</a></li>
+                
+            </ul>
+        </div>
         
-    
+    </footer>
+</article>
+
 
             </main>
         </div>

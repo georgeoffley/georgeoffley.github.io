@@ -5,9 +5,84 @@
     <description>I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!</description>
     <link>https://georgeoffley.com/</link>
     <atom:link href="https://georgeoffley.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 19 Mar 2022 21:11:01 -0400</pubDate>
-    <lastBuildDate>Sat, 19 Mar 2022 21:11:01 -0400</lastBuildDate>
+    <pubDate>Fri, 25 Mar 2022 18:38:30 -0400</pubDate>
+    <lastBuildDate>Fri, 25 Mar 2022 18:38:30 -0400</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
+    
+      <item>
+        <title>Using SWR for Easy API Calls in React</title>
+        <description>&lt;figure&gt;
+    &lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-25-using-swr-for-easy-api-calls-in-react/cover.png&quot; /&gt;
+&lt;/figure&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#swr&quot;&gt;SWR&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#Conclusion&quot;&gt;Conclusion&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;introduction-&quot;&gt;Introduction &lt;a name=&quot;introduction&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;React gives us the ability to create powerful and scalable apps. We need to quickly implement API calls to get our data displayed in our App for them to run. That’s where &lt;a href=&quot;https://swr.vercel.app/&quot;&gt;SWR&lt;/a&gt; comes in handy.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h3 id=&quot;swr-&quot;&gt;SWR &lt;a name=&quot;swr&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;My company embarked on a journey to create a new app for stakeholders. This included React for the frontend. Since then, I’ve been working on some React side projects to reinforce my learning from work. I struggled to use some built-in hooks to no avail. Then came SWR, which was mentioned as a way to do API calls in our work app. After integrating SWR into one of my side projects, I am sold.&lt;/p&gt;
+
+&lt;p&gt;SWR is a react library used for easily fetching information from an API endpoint. SWR stands for “stale while revalidate.” According to their site, they derive the name from the practice of invalidating the cache. They use the cache to return data then send the fetch request to get up-to-date data. This makes sense seeing how the library seems to fetch data without user intervention.&lt;/p&gt;
+
+&lt;p&gt;I was impressed seeing what is essentially a stream of data on my app as the data seamlessly updating when adding data. Plus, it’s lightweight and easy to implement. It also boasts some features over the built-in &lt;code class=&quot;highlighter-rouge&quot;&gt;useEffect&lt;/code&gt; hook as it also passes in errors for better exception handling and a more seamless experience maintaining the code.&lt;/p&gt;
+
+&lt;h3 id=&quot;example-&quot;&gt;Example &lt;a name=&quot;example&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;I’ll take us through how I implementedSWR it into my app. I already have a  React app, and I ran the install for SWR detailed below.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;swr
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Once that finished installing, I went to work. The first thing was to import the &lt;code class=&quot;highlighter-rouge&quot;&gt;useSWR&lt;/code&gt; function into one of the components.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-25-using-swr-for-easy-api-calls-in-react/import.png&quot; alt=&quot;Example import statement&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Next was a simple fetcher function, taken right out of their docs.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-25-using-swr-for-easy-api-calls-in-react/fetcher.png&quot; alt=&quot;Create fetcher function&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Some notes about the fetcher. SWR takes in any fetcher object you want to pass to it. You can utilize libraries like &lt;a href=&quot;https://github.com/developit/unfetch&quot;&gt;unfetch&lt;/a&gt;, &lt;a href=&quot;https://axios-http.com/docs/intro&quot;&gt;Axios&lt;/a&gt;, or &lt;a href=&quot;https://graphql.org/&quot;&gt;GraphQL&lt;/a&gt;. I used the native fetch as I don’t have any unique logic running, and I am only returning simple JSON objects. So I configure it to use JSON for returning the data.&lt;/p&gt;
+
+&lt;p&gt;SWR has three states for the data returned, &lt;code class=&quot;highlighter-rouge&quot;&gt;Loading&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;Ready&lt;/code&gt;, and &lt;code class=&quot;highlighter-rouge&quot;&gt;Error&lt;/code&gt;. These states can be used for exception handling or creating logic for loading behavior.&lt;/p&gt;
+
+&lt;p&gt;The last thing we want to do is use the &lt;code class=&quot;highlighter-rouge&quot;&gt;useSWR&lt;/code&gt; function we imported to grab our file.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-25-using-swr-for-easy-api-calls-in-react/useSWR.png&quot; alt=&quot;useSWR example&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;There are a couple of things of note within this call. First, we’re passing in the fetcher function we created earlier and the API endpoint. Secondly, we set the results as an array with &lt;code class=&quot;highlighter-rouge&quot;&gt;data&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;error&lt;/code&gt; since we get back error data if we error out and want to store the message. Our returned data will go into the data variable.&lt;/p&gt;
+
+&lt;p&gt;That’s easy. React treats the return values as an object. The data can be accessed using a &lt;code class=&quot;highlighter-rouge&quot;&gt;map()&lt;/code&gt; function and the  &lt;code class=&quot;highlighter-rouge&quot;&gt;data.&amp;lt;tag&amp;gt;&lt;/code&gt; syntax.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-25-using-swr-for-easy-api-calls-in-react/data.png&quot; alt=&quot;Data object named access&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusion-&quot;&gt;Conclusion &lt;a name=&quot;Conclusion&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;After some &lt;a href=&quot;https://twitter.com/georgeoffley/status/1497606201831567360?s=20&amp;amp;t=euyltPybu9OOs5SPdChQOQ&quot;&gt;documented time experimenting&lt;/a&gt;, I was resigned to React’s perceived complexity. However, as I build out more and more small accomplishments, I realized React is like anything else; it takes practice and the right tools. SWR is something I’m putting into my React utility belt. I hope this helps someone who might be struggling.&lt;/p&gt;
+
+&lt;p&gt;-George&lt;/p&gt;
+</description>
+        <pubDate>Fri, 25 Mar 2022 12:00:00 -0400</pubDate>
+        <link>https://georgeoffley.com/blog/using-swr-for-easy-api-calls-in-react.html</link>
+        <guid isPermaLink="true">https://georgeoffley.com/blog/using-swr-for-easy-api-calls-in-react.html</guid>
+        
+        <category>React</category>
+        
+        <category>JavaScript</category>
+        
+        
+        <category>Blog</category>
+        
+      </item>
     
       <item>
         <title>Table Resource VS Client in AWS</title>
@@ -773,158 +848,6 @@ via &lt;a href=&quot;https://www.rabbitmq.com/tutorials/amqp-concepts.html&quot;
         <category>AWS</category>
         
         <category>Python</category>
-        
-        
-        <category>Blog</category>
-        
-      </item>
-    
-      <item>
-        <title>Encrypting Your Environment Variables in Lambda with KMS</title>
-        <description>&lt;figure&gt;
-    &lt;img src=&quot;/assets/images/encrypt-lambda-envs.jpg&quot; /&gt;
-&lt;/figure&gt;
-
-&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#key_management_system_in_aws&quot;&gt;Key Management System in AWS&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#customer_master_keys&quot;&gt;Customer Master Keys&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#kms_and_lambda&quot;&gt;KMS and Lambda&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#conclusion&quot;&gt;Conclusion&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#additional_notes&quot;&gt;Additional Notes&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;introduction-&quot;&gt;Introduction &lt;a name=&quot;introduction&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;Do you hate when &lt;a href=&quot;https://youtu.be/tO5sxLapAts&quot;&gt;gnomes steal your underpants&lt;/a&gt; for profit? I know I hate when those guys come out to steal my stuff. Unfortunately, I cannot help you prevent the theft of your undergarments, but I can help you protect some assets in AWS. Specifically, we are going to talk about encrypting environment variables in Lambda.&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;p&gt;In a previous article, I talked through about how to create a &lt;a href=&quot;https://georgeoffley.com//aws/go/creating-a-twitter-bot-using-aws-lambda-and-go.html&quot;&gt;Twitterbot using AWS Lambda&lt;/a&gt;. I mentioned that we would talk about encrypting environment variables in my last AWS article, and this is it. Encrypting stuff is a big topic and crucial for maintaining a secure environment and not just in Lambda.&lt;/p&gt;
-
-&lt;p&gt;We all know what encryption is, an ancient method for converting information into a secret code that only the correct parties would have access to. Usually, this is in the form of a key which both parties have access and can use to encrypt and decrypt. Anyone else looking at it would not be able to tell the difference between it and white noise. Records of civilization using encryption go as far back as Egyptians in 1900 B.C. using it to encode messages on the &lt;a href=&quot;http://www.cypher.com.au/crypto_history.htm&quot;&gt;walls of tombs&lt;/a&gt;. Our modern solution for this ancient technique requires us to dive into yet another service that AWS offers, Key Management Services, or KMS.&lt;/p&gt;
-
-&lt;h3 id=&quot;key-management-system-in-aws-&quot;&gt;Key Management System in AWS &lt;a name=&quot;key_management_system_in_aws&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;Key Management service, in short, is a service that allows us to manage encryption keys for various AWS services or within your AWS applications. KWS gives you a central repository to easily create, manage, and rotate your encryption keys. If you are wondering, the act of rotating encryption keys is when you generate new keys, re-encrypt all the data using the new keys, and then delete the old keys. It is an essential service in AWS.&lt;/p&gt;
-
-&lt;p&gt;KMS is considered a multi-tenant hardware security module or &lt;a href=&quot;https://en.wikipedia.org/wiki/Hardware_security_module&quot;&gt;HSM&lt;/a&gt;. It’s a blade server sitting on a rack that handles the numerous clients managing keys in AWS every day. The hardware is created in a way that many clients can use the hardware but still be virtually isolated. The keys are stored in memory and not written to disk as a security measure. This way if the hardware is powered down the keys are gone and thus inaccessible.&lt;/p&gt;
-
-&lt;p&gt;AWS does provide a single-tenant solution for enterprise businesses called &lt;a href=&quot;https://aws.amazon.com/cloudhsm/&quot;&gt;CloudHSM&lt;/a&gt;. This gives more control to the client. Now, let’s have a small discussion about the captivating subject of standards in cryptography.&lt;/p&gt;
-
-&lt;p&gt;In 1901 the National Institute of Standards and Technology was founded as a laboratory for promoting innovation and industrial competitiveness for the science and &lt;a href=&quot;https://www.nist.gov/topics/cybersecurity&quot;&gt;technology sector&lt;/a&gt;. Now a part of the U.S. Department of Commerce, these are the folks who set security standards for the stuff we use. In 2002 the E-Government Act was signed into law and then amended in 2014 to include new measures for &lt;a href=&quot;https://csrc.nist.gov/projects/risk-management/detailed-overview&quot;&gt;cybersecurity&lt;/a&gt;. This included several plans to beef up encryption standards, among them is the Federal Information Process Standards or FIPS. This program sets legal requirements for U.S. government systems and the systems for any contractors. The reason I bring all this is up is that KMS in its most basic form is compliant with FIPS 140-2 Level 2 compliant. If a client were to use the single-tenant CloudHSM solution for managing keys, then they comply with FIPS 140-2 Level 3. The different levels break down into levels of security through more aggressive security solutions. You can read about all the levels &lt;a href=&quot;https://en.wikipedia.org/wiki/FIPS_140-2&quot;&gt;here&lt;/a&gt;. A business would only need to worry about having their own CloudHSM if they are trying to comply with a specific regulation. For most of us, a regular KSM solution would work fine.&lt;/p&gt;
-
-&lt;h3 id=&quot;customer-master-keys-&quot;&gt;Customer Master Keys &lt;a name=&quot;customer_master_keys&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;Alright, so we know KMS is super cereal.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://media.giphy.com/media/100J2pbO98XSrm/giphy.gif&quot; alt=&quot;Super Cereal&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Now how does it work? The primary resources in KMS are the Customer Master Keys or CMKs which are logical representations of the master keys. These master keys are used to encrypt and decrypt our data. They use what is called envelope encryption for securing keys and enabling encryption.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://dev-to-uploads.s3.amazonaws.com/i/9gycu8qyv3gfo20e792i.png&quot; alt=&quot;Key Hierarchy&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;When you encrypt your data whatever you encrypted is protected but you also need to protect the encryption keys. Envelope encryption is the practice of encrypting plaintext data with a data key and then encrypting the data key with another key. The data keys are strings of data used to unlock crypto functions like authentication, authorization, and encryption. The role of the master key is to keep the &lt;a href=&quot;https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#enveloping&quot;&gt;data keys safe&lt;/a&gt;. The master keys are what is stored on the HSM and they are used to encrypt all the other keys. The CMKs you make also have metadata attached to them which track key ID, description, creation date, and key state. This metadata also includes the needed material for encryption and decrypting data.&lt;/p&gt;
-
-&lt;p&gt;So, let’s see what we’re talking about.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://dev-to-uploads.s3.amazonaws.com/i/hcyg7crmmnwxfuzgj1nv.png&quot; alt=&quot;KMS Dash&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;This is the KMS dashboard where you can check out your keys. On the left, you notice that it defaults to the “Customer managed keys” menu where you can create your keys. There is also the option for AWS Managed Keys. These are keys created by AWS for various services that you use. For myself, I have a key for Lambda which is a default key I can use to encrypt environment variables. And a key for the &lt;a href=&quot;https://aws.amazon.com/cloud9/&quot;&gt;Cloud9 IDE AWS offers&lt;/a&gt;. Cloud9 is an awesome cloud-based IDE where you won’t run into issues with Posix permissions for &lt;a href=&quot;https://twitter.com/cloudbart/status/1291450566879727619&quot;&gt;stuff you make&lt;/a&gt;. Mini-rant over. The last option is for any “Custom key stores” you might have. Clients using AWS CloudHSM would come here to manage the keys they control within their cluster.&lt;/p&gt;
-
-&lt;p&gt;So, let’s create a key&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://dev-to-uploads.s3.amazonaws.com/i/x0sv0evsmvjuisdl7p4n.png&quot; alt=&quot;Configure Key&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;After we hit the &lt;em&gt;Create Key&lt;/em&gt; button we are taken to the &lt;em&gt;Configure Key&lt;/em&gt; page. Here we can choose which &lt;a href=&quot;https://docs.aws.amazon.com/kms/latest/developerguide/symm-asymm-choose.html&quot;&gt;type of encryption we want&lt;/a&gt;. Here we have a couple of options, &lt;strong&gt;Symmetric&lt;/strong&gt; and &lt;strong&gt;Asymmetric&lt;/strong&gt; encryption.&lt;/p&gt;
-
-&lt;p&gt;Creating a symmetric key means we are going to create a 256-bit key that uses the same secret key to perform both the encryption and decryption processes. Something like an S4 bucket would be a great candidate for this kind of encryption which uses the &lt;a href=&quot;https://en.wikipedia.org/wiki/Advanced_Encryption_Standard&quot;&gt;AES-256 encryption standard&lt;/a&gt;. For me, I created a test key for encrypting environment variables using symmetric encryption.&lt;/p&gt;
-
-&lt;p&gt;The other option is &lt;strong&gt;Asymmetric&lt;/strong&gt; encryption also known as public-key encryption. This will create an &lt;a href=&quot;https://en.wikipedia.org/wiki/RSA_(cryptosystem)&quot;&gt;RSA key pair&lt;/a&gt; used for encryption and decryption or it can also be used for signing and verification, but not both. With an asymmetric key, we create a public key used for encryption and a private key used for decryption. This we can create for something like an EC2 key pair for logging in via &lt;a href=&quot;https://docs.aws.amazon.com/crypto/latest/userguide/concepts-algorithms.html&quot;&gt;SSH to an instance&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;The advanced options let you use a custom store from a CloudHSM a client might own or import a key from an external key management infrastructure. When importing something from an external key management service AWS lays out some rules about how you can’t use KMS to change the key material and how you assume responsibility for some of the things AWS assumes responsibility for when you use KMS to create keys. More information is &lt;a href=&quot;https://docs.aws.amazon.com/kms/latest/developerguide/importing-keys.html#importing-keys-considerations&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://dev-to-uploads.s3.amazonaws.com/i/msc48jt1kzlw1wvsg1gw.png&quot; alt=&quot;Add Label&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Here we can add aliases for the keys. We can also add a description. We can also add &lt;a href=&quot;https://docs.aws.amazon.com/kms/latest/developerguide/tagging-keys.html&quot;&gt;tags&lt;/a&gt; that we might have created for tracking these assets through our billing set up.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://dev-to-uploads.s3.amazonaws.com/i/13i5ix96zyrlqsm85fss.png&quot; alt=&quot;Key Admin Permissions&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The next screen lets us give out permissions for our key. In a large environment, you can expect to assign this key to the needed administrator. That way only that user has &lt;a href=&quot;https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html#key-policy-default-allow-administrators&quot;&gt;permissions to administer the key using the KMS API&lt;/a&gt;. Another option you also get is whether to allow admins to delete this key we are making. For any environment, I am making I would probably uncheck this. From my non-cloud sys admin perspective when you have lots of keys distributed around to many different services to have a key deleted for any reason is a recipe for potential nightmare scenarios hunting down where the key was used and redeploying the data since there’s a good chance you’re locked out of getting to it.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://dev-to-uploads.s3.amazonaws.com/i/1jnascp1p7oxz1dw00fu.png&quot; alt=&quot;Key Usage Perms&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The next screen lets us give basic permissions to use the CMK in cryptographic operations. So we can choose who can use this key to encrypt and decrypt assets. You can also add additional accounts here if we need another user that might not be on the list.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://dev-to-uploads.s3.amazonaws.com/i/ozwzl8iagix44ni9haoc.png&quot; alt=&quot;Review&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Finally, we can review and make changes to the key policy. AWS creates these rules via a JSON file. So, if you know how to navigate through the fields and understand what you are changing you are free to change the policy as you see fit. I would suggest using the GUI to do anything rather than changing the JSON directly. Unless you know what, it is you are doing. Screw around and find out at your peril.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://media.giphy.com/media/fWgwMmkmF8VUZ6iGPb/giphy.gif&quot; alt=&quot;Peril&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;kms-and-lambda-&quot;&gt;KMS and Lambda &lt;a name=&quot;kms_and_lambda&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;O.K. we spent a bunch of time talking about a bunch of nerd stuff. I just wanted to encrypt my environment variables. What is all this? We are almost there I promise.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://media.giphy.com/media/b44FwP4st6v3G/giphy.gif&quot; alt=&quot;Peril&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Now that we have a CMK set up let’s go into Lambda. Maybe we go into a new function that we created to test this out. Then we go into the environment variables. Now we can talk a little about how Lambda works and what impacts there are when we encrypt environment variables. Now Lambda is essentially a service that runs a single instance when called. So, no one sees your environment vars other than when a user is in the console. That said if you are sending API requests with keys and secrets anyone who might be listening on the line might be able to see it. Which is why we do all this stuff. So, before we send API secrets to Lambda lets encrypt it.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://dev-to-uploads.s3.amazonaws.com/i/0ctwn8zocbq8n4uuuwws.png&quot; alt=&quot;Env Var Menu&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;So, when we go to make our envs we have the option of encrypting them. This will encrypt them in transit and on the console too. If you notice I already created a variable and encrypted it. Under the value, there is just a random string of gibberish to the naked eye but with the key, I can decrypt the value and get the test key value. If we add a new variable, we can check the &lt;em&gt;Enable helpers for encryption in transit&lt;/em&gt; under the &lt;em&gt;Encryption configuration&lt;/em&gt; section which brings up the &lt;em&gt;Encrypt&lt;/em&gt; button. In that section, we also get the option of using the default Lambda key that AWS creates or one of the CMKs we made earlier. I mentioned this before, but Lambda has a default key that you can use for encrypting environment variables. Makes it easy to encrypt environment variables without setting up additional CMKs. I chose to use a CMK to demonstrate KMS but using the Lambda key would probably be fine if you only have a few. When you start to scale, and you need keys for tons of stuff is where I would say using CMKs is a good idea. It gives you a lot more options for tracking and auditing.&lt;/p&gt;
-
-&lt;p&gt;After hitting the &lt;em&gt;Encrypt&lt;/em&gt; button we get a pop up which gives us the execution policy in the form of a JSON readout. In addition to that, we get one of my favorite things AWS gives you, the code to access your keys. I’m lazy and I will always appreciate being given the code to decode rather than digging through the API.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://dev-to-uploads.s3.amazonaws.com/i/1rc2ugwev2g14dcjgoh2.png&quot; alt=&quot;Decrypt Code&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;So, I’m just going through how to decrypt and utilize your keys within your Lambda function. You can do a bit more with the API and I suggest you check out the reference &lt;a href=&quot;https://docs.aws.amazon.com/kms/latest/APIReference/Welcome.html&quot;&gt;here&lt;/a&gt;. Similar to when you’re looking for your unencrypted env variable you can use the &lt;em&gt;os.environ()&lt;/em&gt; function to grab our variable. Accept now we have just a long string of gibberish. Here is where we use the &lt;strong&gt;boto3&lt;/strong&gt; library to do some stuff.&lt;/p&gt;
-
-&lt;p&gt;Boto3 is the &lt;a href=&quot;https://github.com/boto/boto3&quot;&gt;AWS SDK for Python&lt;/a&gt;. Here we look for the &lt;em&gt;kms&lt;/em&gt; service and use the built-in &lt;a href=&quot;https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/kms.html#client&quot;&gt;client class&lt;/a&gt; for accessing the KMS functions. Then you can see we use the &lt;a href=&quot;https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/kms.html#KMS.Client.decrypt&quot;&gt;&lt;em&gt;decrypt()&lt;/em&gt; function&lt;/a&gt; for decrypting the ciphertext we pass into it. The code also imports the &lt;strong&gt;b64decode&lt;/strong&gt; class from the &lt;a href=&quot;https://docs.python.org/3/library/base64.html&quot;&gt;bas64 module&lt;/a&gt; which we use to decode the &lt;em&gt;Encrypted&lt;/em&gt; var we grabbed. After that, we need to set our &lt;em&gt;EncryptionContext&lt;/em&gt; which is a set of non-secret key-value pairs which represent additional authentication data. The options passed in need to match the same context that was used for encrypting the data.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;QuickNote&lt;/em&gt;
-You should know that these are for symmetrical CMKs which are called symmetric because they use the same shared key for encryption and decryption. A standard asymmetric key does not support an encryption context. I used symmetric encryption for these keys so that’s what I am going through.&lt;/p&gt;
-
-&lt;p&gt;Finally, we can decode the ciphertext into plaintext using the &lt;em&gt;decode()&lt;/em&gt; method. After all that we have access to our decrypted key using the &lt;em&gt;Decrypted&lt;/em&gt; variable. As mentioned in the pictured code it’s a good idea to put all this somewhere at the beginning outside the function handler. That way we can have universal access to the decrypted key.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;QuickNote&lt;/em&gt;
-You might notice that we grab some additional variables using the &lt;em&gt;os.environ()&lt;/em&gt; function. These are built-in in runtime environment variables which we can use to access some metadata from within the Lambda function. Check them out &lt;a href=&quot;https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html#configuration-envvars-runtime&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Yay, now we can do stuff with our environment variables like pass them along to API calls. Congrats. Celebrate somehow.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://media.giphy.com/media/3ornkdtVzQfIRpwfug/giphy.gif&quot; alt=&quot;Please excuse the use of light skinned Aunt Viv&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;conclusion-&quot;&gt;Conclusion &lt;a name=&quot;conclusion&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;So now you know how to &lt;a href=&quot;https://youtu.be/R0IUR4gkPIE&quot;&gt;protect ya neck&lt;/a&gt; and encrypt ya stuff. Now encryption is a big topic. This is just one small sliver that might be relevant to using AWS Lambda. There is a long history related to cryptography. There is this great book called &lt;a href=&quot;https://www.amazon.com/dp/B004IK8PLE/ref=dp-kindle-redirect?_encoding=UTF8&amp;amp;btkr=1&quot;&gt;The Code Book by Simon Singh&lt;/a&gt; which delves deep into the history and most ancient implementations of cryptography. I highly recommend it for the power nerds among us who like reading about cryptography.&lt;/p&gt;
-
-&lt;p&gt;Creating policies that include encrypting your environment variables means better security and peace of mind. Lamba is a powerful engine and I am enjoying using it so far. My &lt;a href=&quot;https://twitter.com/TheTechBruh&quot;&gt;Twittterbot&lt;/a&gt; has been running for weeks and it’s cringy as hell so I think I’m doing something right. Now I have the tools to encrypt my API keys and secrets.&lt;/p&gt;
-
-&lt;h3 id=&quot;additional-notes-&quot;&gt;Additional Notes &lt;a name=&quot;additional_notes&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;One other service that you can also check out is the &lt;a href=&quot;https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html?icmpid=docs_cloudtrail_console&quot;&gt;CloudTrail&lt;/a&gt;. You can use CloudTrail and attach them to CMKs so that they can be audited. Cloud trail can keep logs of access which can be used in audits. Very useful for clients with a lot of assets to manage.&lt;/p&gt;
-
-&lt;p&gt;One other additional note is for those who use the &lt;a href=&quot;https://aws.amazon.com/cli/&quot;&gt;AWS CLI&lt;/a&gt; there are some commands which might come in handy to know. If you are also studying for an AWS Developer certification you will also need to know these.&lt;/p&gt;
-
-&lt;p&gt;Commands:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;aws kms create-key - creates a unique customer-managed CMK in your AWS
-aws kms encrypt - encrypts plaintext into ciphertext by using a CMK
-aws kms decrypt - decrypts ciphertext that was encrypted by a KMS customer master key
-aws kms re-encrypt - decrypts ciphertext and then re-encrypts it with KMS
-aws kms enable-key-rotation - enables automatic rotation of the key material for the specified symmetric CMK. This cannot be done on a CML made by another account
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-</description>
-        <pubDate>Fri, 04 Sep 2020 16:30:00 -0400</pubDate>
-        <link>https://georgeoffley.com/blog/encrypting-your-envioronment-variables-in-lambda-with-kms.html</link>
-        <guid isPermaLink="true">https://georgeoffley.com/blog/encrypting-your-envioronment-variables-in-lambda-with-kms.html</guid>
-        
-        <category>KMS</category>
-        
-        <category>AWS</category>
-        
-        <category>Lambda</category>
         
         
         <category>Blog</category>
