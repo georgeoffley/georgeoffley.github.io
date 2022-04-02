@@ -5,9 +5,165 @@
     <description>I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!</description>
     <link>https://georgeoffley.com/</link>
     <atom:link href="https://georgeoffley.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 25 Mar 2022 18:38:30 -0400</pubDate>
-    <lastBuildDate>Fri, 25 Mar 2022 18:38:30 -0400</lastBuildDate>
+    <pubDate>Sat, 02 Apr 2022 10:22:35 -0400</pubDate>
+    <lastBuildDate>Sat, 02 Apr 2022 10:22:35 -0400</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
+    
+      <item>
+        <title>Spiking Tailwind CSS in a React APP</title>
+        <description>&lt;figure&gt;
+    &lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-02-spiking-tailwind-in-a-react-app/cover.png&quot; /&gt;
+&lt;/figure&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#tailwind&quot;&gt;Tailwind&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#setup&quot;&gt;Setup&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#using-tailwind-in-react&quot;&gt;Using Tailwind in React&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#something-a-little-more&quot;&gt;Something a Little More&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;introduction-&quot;&gt;Introduction &lt;a name=&quot;introduction&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;It’s been some time since I did any frontend development, and I don’t miss it. After a couple of years of learning the fundamentals, I would have loved to have some alternatives to manually writing CSS.&lt;/p&gt;
+
+&lt;p&gt;Now that I am diving back into it, I am happy there are tools not to replace but improve the CSS experience. In that spirit, I want to look at &lt;a href=&quot;https://tailwindcss.com/&quot;&gt;Tailwind CSS&lt;/a&gt;.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h3 id=&quot;tailwind-css-&quot;&gt;Tailwind CSS &lt;a name=&quot;tailwind&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Tailwind is different from other CSS frameworks I’ve tried. The software works on a lower level to allow easy CSS styling utilizing class names. Bootstrap works similarly, but the difference is that Tailwind does not come with predefined components. It is also different because the class names are compiled into CSS code.&lt;/p&gt;
+
+&lt;p&gt;Tailwind is also not opinionated about how you make your designs, and thus they give you the tools you need and let you create unique components. It’s the difference between &lt;a href=&quot;https://www.timberland.com/shop/CategoryDisplay?catalogId=10101&amp;amp;langId=-1&amp;amp;categoryId=13502&amp;amp;storeId=7101&amp;amp;productId=p_20355&amp;amp;audience=men&amp;amp;page=configure&quot;&gt;designing boots on a website&lt;/a&gt; and having all the materials right before you to cobble together your shoes. This alone is valuable because you can avoid falling into the &lt;a href=&quot;https://www.dagusa.com/&quot;&gt;Bootstrap design trap&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Tailwind is a &lt;a href=&quot;https://tailwindcss.com/docs/utility-first&quot;&gt;“utility-first CSS Library,”&lt;/a&gt; From what I glean from their site, it means they tried to create a framework from a set of constrained utilities. This seems to translate into the following:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;There are no more CSS class names to create in both HTML and CSS files as styles are implemented using low-level utility classes.&lt;/li&gt;
+  &lt;li&gt;You add the styles you want into the HTML classes, which the compiler uses to generate CSS (which is attractive to me).&lt;/li&gt;
+  &lt;li&gt;Your CSS files don’t grow since you’re generally not creating new styles.&lt;/li&gt;
+  &lt;li&gt;The ability to create reusable styles using things like &lt;a href=&quot;https://tailwindcss.com/docs/reusing-styles#loops&quot;&gt;loops&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Tailwind also gives you ways to easily extend their utilities by utilizing config files for adding things like custom colors, fonts, etc.&lt;/p&gt;
+
+&lt;p&gt;I’ve noticed that they seem to lean into the idea of long strings of class names in HTML over regular CSS. You’ll see what I mean.&lt;/p&gt;
+
+&lt;h3 id=&quot;setup-&quot;&gt;Setup &lt;a name=&quot;setup&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;So to try this and to learn the tech better for use in my work, I created a quick React application.&lt;/p&gt;
+
+&lt;p&gt;After the React app creation, we can run the below commands.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;tailwindcss
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This will install the needed packages.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npx tailwindcss init
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The above command will create the config files we need, the &lt;code class=&quot;highlighter-rouge&quot;&gt;tailwind.config.js&lt;/code&gt; and the &lt;code class=&quot;highlighter-rouge&quot;&gt;postcss.config.js&lt;/code&gt; files. The &lt;code class=&quot;highlighter-rouge&quot;&gt;tailwind.config.js&lt;/code&gt; is where any customization options will go. By default, Tailwind looks for this file at the root of a project to create any customizations. For example, if you want to add colors or fonts that Tailwind does not have built-in, they will go in that config file.&lt;/p&gt;
+
+&lt;p&gt;After that is installed, you replace everything in your &lt;code class=&quot;highlighter-rouge&quot;&gt;index.css&lt;/code&gt; file with the below lines.&lt;/p&gt;
+
+&lt;div class=&quot;language-css highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;@tailwind&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;@tailwind&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;components&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;@tailwind&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;utilities&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And finally, to ensure that all the template files are added to the Tailwind config, make sure the &lt;code class=&quot;highlighter-rouge&quot;&gt;tailwind.config.js&lt;/code&gt; file looks like the below code.&lt;/p&gt;
+
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;./src/**/*.{html,js}&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;theme&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;extend&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{},&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;plugins&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[],&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;It’s a bit much, but that’s essentially it. You’re now ready to start styling stuff.&lt;/p&gt;
+
+&lt;h3 id=&quot;using-tailwind-in-react-&quot;&gt;Using Tailwind in React &lt;a name=&quot;using-tailwind-in-react&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;After setting up our React project and installing Tailwind, I was ready to go. So I got rid of all the startup React stuff and started small.&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;className=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;I'm using Tailwind!&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Pretty easy, and we get a simple heading tag.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-02-spiking-tailwind-in-a-react-app/h1_no_style.png&quot; alt=&quot;H1 Tag with no style&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now let’s start small and add some styling.&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;className=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;text-red-700 text-6xl hover:text-9xl&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;I'm using Tailwind!&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now I added a couple of styling classes to the JSX, and just like we were editing a CSS file, we got some results.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-02-spiking-tailwind-in-a-react-app/h1_style_no_hover.png&quot; alt=&quot;H1 tag with some basic styles&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;You may also notice the &lt;code class=&quot;highlighter-rouge&quot;&gt;hover&lt;/code&gt; selector in there. Tailwind takes care of these, similar to how CSS does. You prepend the effect you want and the outcome, and it works just the same.And we can see the style change a little when we hover over the text.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-02-spiking-tailwind-in-a-react-app/h1_style_hover.png&quot; alt=&quot;Hover effect&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Adding these class names saved me from opening up VSCode and adding styles to a CSS file. I am already sold on Tailwind.&lt;/p&gt;
+
+&lt;p&gt;You can also see the core use of Tailwind in adding class names to the HTML tags. This is a small example, but tags can have tons of styles, so adding a class name into the HTML can get overwhelming quickly. This is the language they lean into that I mentioned above.&lt;/p&gt;
+
+&lt;h3 id=&quot;something-a-little-more-&quot;&gt;Something a Little More &lt;a name=&quot;something-a-little-more&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;I am not a designer, but I find this setup easy to create components. So let’s say I broke my app into pieces. How can I style this card component I made? Tailwind makes it simple.&lt;/p&gt;
+
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;default&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Card&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;p-20 bg-green-100&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;h3&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;text-green-300 mb-4 text-sm font-bold&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+                &lt;span class=&quot;nx&quot;&gt;This&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;some&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;cool&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Tailwind&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Stuff&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/h3&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;gt;
+&lt;/span&gt;            &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;border-4 border-green-800 bg-white p-6 rounded-lg shadow-lg&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;h2&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;text-2xl font-bold mb-2 text-gray-800&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Look&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;at&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&amp;lt;&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/h2&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;gt;
+&lt;/span&gt;                &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;text-gray-700&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;We&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;did&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;some&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Tailwind&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&amp;lt;&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/p&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;gt;
+&lt;/span&gt;            &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/div&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;gt;
+&lt;/span&gt;        &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/div&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;gt;
+&lt;/span&gt;    &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And the results.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-02-spiking-tailwind-in-a-react-app/card_styles.png&quot; alt=&quot;Basic card with styles&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I didn’t have to write a single bit of CSS for this, and now I have a perfectly usable component. There’s no ending to this rabbit hole. Design all you want.&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h3&gt;
+
+&lt;p&gt;I can’t bring myself to write CSS. It’s a doomed relationship; with too much bad blood and too much history. However, I might just get through with Tailwind as a buffer for those awkward times I have to sit with it.&lt;/p&gt;
+
+&lt;p&gt;Hyperbole aside, Tailwind is not a replacement for CSS but a fantastic addition to CSS for easily styling web components. Coupled with React, this was how we were meant to make apps. I’m excited to continue learning and hope this helped.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Small disclaimer&lt;/strong&gt;: I am not suggesting anyone reading this who might be new to frontend development jump straight into learning Tailwind. That journey starts with &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Learn/CSS/First_steps/How_CSS_works&quot;&gt;learning how CSS works&lt;/a&gt;. Much like filmmaking, learn all the fundamentals first and then break the rules at your leisure.&lt;/p&gt;
+
+&lt;p&gt;-George&lt;/p&gt;
+</description>
+        <pubDate>Sat, 02 Apr 2022 12:00:00 -0400</pubDate>
+        <link>https://georgeoffley.com/blog/spiking-tailwind-in-a-react-app.html</link>
+        <guid isPermaLink="true">https://georgeoffley.com/blog/spiking-tailwind-in-a-react-app.html</guid>
+        
+        <category>React</category>
+        
+        <category>Tailwind</category>
+        
+        <category>JavaScript</category>
+        
+        
+        <category>Blog</category>
+        
+      </item>
     
       <item>
         <title>Using SWR for Easy API Calls in React</title>
@@ -778,76 +934,6 @@ via &lt;a href=&quot;https://www.rabbitmq.com/tutorials/amqp-concepts.html&quot;
         <category>Python</category>
         
         <category>AMQP</category>
-        
-        
-        <category>Blog</category>
-        
-      </item>
-    
-      <item>
-        <title>Health Checking S3 and DynamoDB in AWS</title>
-        <description>&lt;figure&gt;
-    &lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-03-03-checking-health-in-s3-and-dynamodb/cover.jpg&quot; /&gt;
-&lt;/figure&gt;
-
-&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#problem&quot;&gt;Problem&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#s3_solution&quot;&gt;S3 Solution&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#dynamo_solution&quot;&gt;DynamoDB Solution&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#conclusion&quot;&gt;Conclusion&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;introduction-&quot;&gt;Introduction &lt;a name=&quot;introduction&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;A hybrid infrastructure has tons of exciting challenges. Although we host a great deal of our software in AWS at my company, we cannot do everything in the cloud. As such, we have tons of physical infrastructure as well. This hybrid infrastructure presents many challenges that we strive to overcome on the software team. One of the challenges we are working towards is imaging and utilizing software to detect our yields. This piece of that puzzle will focus on storage for our images.&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;p&gt;We decided that we would use a combination of services offered by AWS. The first is the Amazon Simple Storage Service or S3 for image storage and DynamoDB for holding metadata of said images. Given that we are getting information straight from hardware, many things might go wrong, from getting the pictures to when said pictures are pushed to AWS. This brings us to this evening’s question: How can I be sure these services are available for me to send stuff to?&lt;/p&gt;
-
-&lt;h3 id=&quot;problem-&quot;&gt;Problem &lt;a name=&quot;problem&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;Well, as it turns out, there are a few ways this can be done. For example, there are libraries out there that will scan health check websites to see if AWS has any service outages. This would not be a great way to do health checks for a production application. So, I decided to spike this problem and make something myself. I am not worried about AWS services being out as they have high availability using their different availability zones. I am more concerned about our endpoints failing, internet issues, or Cloverfield monsters. So, this needs to be explored.&lt;/p&gt;
-
-&lt;h3 id=&quot;s3-solution-&quot;&gt;S3 Solution &lt;a name=&quot;s3_solution&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;A simple solution for checking the health of my resources was needed. Luckily, I quickly put something together using the &lt;a href=&quot;https://boto3.amazonaws.com/v1/documentation/api/latest/index.html&quot;&gt;Boto3 library&lt;/a&gt;, which is the AWS SDK for Python. This library gives us easy access to the AWS API for configuring and managing services. The first thing I did was create an object class to utilize the Client class in Boto3.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-03-03-checking-health-in-s3-and-dynamodb/client_object.png&quot; alt=&quot;Client Object&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;We only need to pass in our access credentials and the services we want to create a client object for, and we get our client object back. Each turn in Boto3 allows for interacting with the Client class. The docs define the Client class as &lt;a href=&quot;https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#client&quot;&gt;“a low-level client representing whatever service”&lt;/a&gt;. In most cases, you would use it to access the various functions for interacting with the service.&lt;/p&gt;
-
-&lt;p&gt;After that, I put together some simple logic to return some information on the resource we are looking for. In our case, we were trying to get access to a bucket where we will store images. This solution is enough to satisfy me that the resource exists, and I can communicate with it. Below is the code I used for S3.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-03-03-checking-health-in-s3-and-dynamodb/s3.png&quot; alt=&quot;S3&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The code above sets up a new client instance and utilizes the &lt;a href=&quot;https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#S3.Client.head_bucket&quot;&gt;&lt;em&gt;head_bucket()&lt;/em&gt; function&lt;/a&gt;. This is great for seeing if a bucket exists and if the entity polling it has permissions to access it. In my case, I only need to be able to see if I get a message back. So, I pass in the bucket name, and I can receive a 200 message back from the server if the resource is there and I have access to it. I like this approach because it is dead simple, and I also get to utilize the custom exception that we get access to using the client object, which is the &lt;em&gt;NoSuchBucket&lt;/em&gt; exception. Using this exception allows us to be concise with our exceptions.&lt;/p&gt;
-
-&lt;p&gt;There were some questions about the limitations on being able to use something like this. We expect to use this frequently to pole S3 and make sure that we can talk to our bucket. If AWS is not available, we need to turn off the spigot and stop our software from sending stuff to AWS and not lose messages in the void of space. That said, we will be polling a few times a second at least; luckily for us, &lt;a href=&quot;https://aws.amazon.com/about-aws/whats-new/2018/07/amazon-s3-announces-increased-request-rate-performance/&quot;&gt;S3 upped their request rate to 3500 to add data and 5500 for retrieving data&lt;/a&gt;. This gives us plenty of room to be able to pole what we need.&lt;/p&gt;
-
-&lt;h3 id=&quot;dynamodb-solution-&quot;&gt;DynamoDB Solution &lt;a name=&quot;dynamo_solution&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;With the client object that we created above, we can also use that to access DynamoDB. As such, the code is below:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-03-03-checking-health-in-s3-and-dynamodb/dynamo.png&quot; alt=&quot;Dynamo&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The above code snippet does the same thing as the S3 code does. We create a new instance, and we use the &lt;a href=&quot;https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html#DynamoDB.Client.describe_table&quot;&gt;&lt;em&gt;describe_table()&lt;/em&gt; function while passing in the table name&lt;/a&gt;. This function returns information about the table, including the status. Also, note that the &lt;em&gt;ResourceNotFoundException&lt;/em&gt; is another custom exception provided by the Dynamo Client object. This bit of code satisfies what I need to be able to check the status of a table. Yay!&lt;/p&gt;
-
-&lt;p&gt;Using this method also has similar challenges. The &lt;em&gt;decribe_table()&lt;/em&gt; function uses up an eventually consistent read on your table. So, getting out-of-date data is possible if you are polling something you just created, so give it a second. If you are using a provisioned table in Dynamo, this method will take up one of your reads per second. We will need to make sure this is accounted for when we start designing our database.&lt;/p&gt;
-
-&lt;h3 id=&quot;conclusion-&quot;&gt;Conclusion &lt;a name=&quot;conclusion&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;The above simple bit of code was a brief spike for a solution we needed to explore. This write-up was inspired by a lot of the help I received from my fellow AWS Community Builders. Checking the health and status of services is one of many things that we will build out using AWS. I am excited to keep up my learning and building. If you have seen or made other stuff to accomplish this type of work, let me know! I would love to learn more.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 03 Mar 2021 09:00:00 -0500</pubDate>
-        <link>https://georgeoffley.com/blog/checking-health-in-s3-and-dynamodb.html</link>
-        <guid isPermaLink="true">https://georgeoffley.com/blog/checking-health-in-s3-and-dynamodb.html</guid>
-        
-        <category>AWS</category>
-        
-        <category>Python</category>
         
         
         <category>Blog</category>

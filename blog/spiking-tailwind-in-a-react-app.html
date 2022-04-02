@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta content="text/html; charset=UTF-8" name="Content-Type" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Spiking Tailwind CSS in a React APP | George Offley &mdash; Software Engineer </title>
+    <meta property="og:title" content="Spiking Tailwind CSS in a React APP | George Offley &mdash; Software Engineer " />
+
+    <meta name="description" content="I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!">
+    <meta name="description" property="og:description" content="I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!" />
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site"    content="@georgeoffley">
+    <meta name="twitter:creator" content="@georgeoffley">
+    <meta name="twitter:title"   content="Spiking Tailwind CSS in a React APP">
+
+    
+    <meta name="twitter:description" content="Does Tailwind CSS offer a way to improve the CSS experience? Let's find out!">
+    
+
+    
+    <meta name="twitter:card"  content="summary_large_image">
+    <meta name="twitter:image" content="https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-02-spiking-tailwind-in-a-react-app/cover.png">
+    
+    <!-- end of Twitter cards -->
+    
+    <meta property="og:url" content="https://georgeoffley.com/blog/spiking-tailwind-in-a-react-app.html" />
+
+    <meta property="og:image" content="" />
+
+    <meta name="author" content="George Offley" />
+
+    <meta name="copyright" content="Copyright by George Offley. All Rights Reserved." />
+
+    <style>
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 300;
+            src: local('Roboto Light'), local('Roboto-Light'), url(https://fonts.gstatic.com/s/roboto/v15/Hgo13k-tfSpn0qi1SFdUfVtXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 400;
+            src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v15/CWB0XYA8bzo0kSThX0UTuA.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 700;
+            src: local('Roboto Bold'), local('Roboto-Bold'), url(https://fonts.gstatic.com/s/roboto/v15/d-6IYplOFocCacKzxwXSOFtXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 900;
+            src: local('Roboto Black'), local('Roboto-Black'), url(https://fonts.gstatic.com/s/roboto/v15/mnpfi9pxYH-Go5UiibESIltXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 300;
+            src: local('Roboto Light Italic'), local('Roboto-LightItalic'), url(https://fonts.gstatic.com/s/roboto/v15/7m8l7TlFO-S3VkhHuR0at44P5ICox8Kq3LLUNMylGO4.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 400;
+            src: local('Roboto Italic'), local('Roboto-Italic'), url(https://fonts.gstatic.com/s/roboto/v15/vPcynSL0qHq_6dX7lKVByfesZW2xOQ-xsNqO47m55DA.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 700;
+            src: local('Roboto Bold Italic'), local('Roboto-BoldItalic'), url(https://fonts.gstatic.com/s/roboto/v15/t6Nd4cfPRhZP44Q5QAjcC44P5ICox8Kq3LLUNMylGO4.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 900;
+            src: local('Roboto Black Italic'), local('Roboto-BlackItalic'), url(https://fonts.gstatic.com/s/roboto/v15/bmC0pGMXrhphrZJmniIZpY4P5ICox8Kq3LLUNMylGO4.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+    </style>
+    
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    
+    <link rel="stylesheet" href="https://georgeoffley.com/assets/css/main.css">
+
+    <link rel="canonical" href="https://georgeoffley.com/blog/spiking-tailwind-in-a-react-app.html">
+
+    <link rel="alternate" type="application/rss+xml" title="" href="https://georgeoffley.com/feed.xml">
+</head>
+
+    <body>
+        <div class="wrapper">
+            <aside class="user-profile fixed" role="complementary">
+    <div class="burger">
+        <input class="trigger hidden" id="toggleBurger" type="checkbox" />
+        <label for="toggleBurger">
+            <span>Navigation</span>
+        </label>
+    </div>
+
+    <div class="compact-header">
+        <a class="avatar" href="https://georgeoffley.com"><img alt="Avatar" src="https://raw.githubusercontent.com/georgeoffley/georgeoffley.github.io/master/assets/images/george_headshot_small.jpg" /></a>
+        <div class="my-info">
+            <strong class="my-name">George Offley</strong>
+            <span class="my-job-title">Software Engineer</span>
+        </div>
+    </div>
+
+    
+        
+        <div class="mainmenu">
+            <a href="https://georgeoffley.com" >Home</a>
+            
+                
+            
+                
+            
+                
+            
+                
+                    <a href="https://georgeoffley.com/challenges/" >Challenges</a>
+                
+            
+                
+                    <a href="https://georgeoffley.com/blog/" >Blog</a>
+                
+            
+                
+                    <a href="https://georgeoffley.com/about_me/" >About Me</a>
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+        </div>
+        
+    
+
+    <p class="about-me">I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!</p>
+
+    <ul class="socials">
+        <li><a href="https://twitter.com/georgeoffley"><svg title="twitter" width="16" height="16" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li><li><a href="https://www.linkedin.com/in/georgeoffley/"><svg title="linkedin" width="16" height="16" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#linkedin-icon"></use></svg></a></li><li><a href="https://github.com/georgeoffley"><svg title="github" width="16" height="16" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#github-icon"></use></svg></a></li>
+
+        
+
+        
+    </ul>
+</aside>
+
+            <main class="the-content" role="main">
+                <div class="search" role="search">
+    <div>
+        <div class="show-results-count">0 Results</div>
+        <div class="search-holder">
+            <input type="text" id="search-input" placeholder="search for..." />
+        </div>
+    </div>
+    <ul id="results-container" class="results-container"></ul>
+</div>
+
+
+                <article class="post single" role="article" itemscope itemtype="http://schema.org/BlogPosting">
+    <header class="post-header">
+        <ul>
+            <li><time datetime="2022-04-02T12:00:00-04:00" itemprop="datePublished">2 Apr, 2022</time></li>
+            
+                
+                <li class="cats">
+                    
+                        <a href="/categories/Blog/">Blog</a>
+                    
+                </li>
+                
+            
+        </ul>
+        <h2 itemprop="name headline">Spiking Tailwind CSS in a React APP</h2>
+    </header>
+
+    <div class="post-content">
+        <figure>
+    <img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-02-spiking-tailwind-in-a-react-app/cover.png" />
+</figure>
+
+<h2 id="table-of-contents">Table Of Contents</h2>
+<ul>
+  <li><a href="#introduction">Introduction</a></li>
+  <li><a href="#tailwind">Tailwind</a></li>
+  <li><a href="#setup">Setup</a></li>
+  <li><a href="#using-tailwind-in-react">Using Tailwind in React</a></li>
+  <li><a href="#something-a-little-more">Something a Little More</a></li>
+</ul>
+
+<h3 id="introduction-">Introduction <a name="introduction"></a></h3>
+
+<p>It’s been some time since I did any frontend development, and I don’t miss it. After a couple of years of learning the fundamentals, I would have loved to have some alternatives to manually writing CSS.</p>
+
+<p>Now that I am diving back into it, I am happy there are tools not to replace but improve the CSS experience. In that spirit, I want to look at <a href="https://tailwindcss.com/">Tailwind CSS</a>.</p>
+
+<!--more-->
+
+<h3 id="tailwind-css-">Tailwind CSS <a name="tailwind"></a></h3>
+
+<p>Tailwind is different from other CSS frameworks I’ve tried. The software works on a lower level to allow easy CSS styling utilizing class names. Bootstrap works similarly, but the difference is that Tailwind does not come with predefined components. It is also different because the class names are compiled into CSS code.</p>
+
+<p>Tailwind is also not opinionated about how you make your designs, and thus they give you the tools you need and let you create unique components. It’s the difference between <a href="https://www.timberland.com/shop/CategoryDisplay?catalogId=10101&amp;langId=-1&amp;categoryId=13502&amp;storeId=7101&amp;productId=p_20355&amp;audience=men&amp;page=configure">designing boots on a website</a> and having all the materials right before you to cobble together your shoes. This alone is valuable because you can avoid falling into the <a href="https://www.dagusa.com/">Bootstrap design trap</a>.</p>
+
+<p>Tailwind is a <a href="https://tailwindcss.com/docs/utility-first">“utility-first CSS Library,”</a> From what I glean from their site, it means they tried to create a framework from a set of constrained utilities. This seems to translate into the following:</p>
+
+<ul>
+  <li>There are no more CSS class names to create in both HTML and CSS files as styles are implemented using low-level utility classes.</li>
+  <li>You add the styles you want into the HTML classes, which the compiler uses to generate CSS (which is attractive to me).</li>
+  <li>Your CSS files don’t grow since you’re generally not creating new styles.</li>
+  <li>The ability to create reusable styles using things like <a href="https://tailwindcss.com/docs/reusing-styles#loops">loops</a>.</li>
+</ul>
+
+<p>Tailwind also gives you ways to easily extend their utilities by utilizing config files for adding things like custom colors, fonts, etc.</p>
+
+<p>I’ve noticed that they seem to lean into the idea of long strings of class names in HTML over regular CSS. You’ll see what I mean.</p>
+
+<h3 id="setup-">Setup <a name="setup"></a></h3>
+
+<p>So to try this and to learn the tech better for use in my work, I created a quick React application.</p>
+
+<p>After the React app creation, we can run the below commands.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install </span>tailwindcss
+</code></pre></div></div>
+
+<p>This will install the needed packages.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npx tailwindcss init
+</code></pre></div></div>
+
+<p>The above command will create the config files we need, the <code class="highlighter-rouge">tailwind.config.js</code> and the <code class="highlighter-rouge">postcss.config.js</code> files. The <code class="highlighter-rouge">tailwind.config.js</code> is where any customization options will go. By default, Tailwind looks for this file at the root of a project to create any customizations. For example, if you want to add colors or fonts that Tailwind does not have built-in, they will go in that config file.</p>
+
+<p>After that is installed, you replace everything in your <code class="highlighter-rouge">index.css</code> file with the below lines.</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">@tailwind</span> <span class="n">base</span><span class="p">;</span>
+<span class="k">@tailwind</span> <span class="n">components</span><span class="p">;</span>
+<span class="k">@tailwind</span> <span class="n">utilities</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>And finally, to ensure that all the template files are added to the Tailwind config, make sure the <code class="highlighter-rouge">tailwind.config.js</code> file looks like the below code.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">content</span><span class="p">:</span> <span class="p">[</span><span class="dl">"</span><span class="s2">./src/**/*.{html,js}</span><span class="dl">"</span><span class="p">],</span>
+  <span class="na">theme</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">extend</span><span class="p">:</span> <span class="p">{},</span>
+  <span class="p">},</span>
+  <span class="na">plugins</span><span class="p">:</span> <span class="p">[],</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>It’s a bit much, but that’s essentially it. You’re now ready to start styling stuff.</p>
+
+<h3 id="using-tailwind-in-react-">Using Tailwind in React <a name="using-tailwind-in-react"></a></h3>
+
+<p>After setting up our React project and installing Tailwind, I was ready to go. So I got rid of all the startup React stuff and started small.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;h1</span> <span class="na">className=</span><span class="s">""</span><span class="nt">&gt;</span>I'm using Tailwind!<span class="nt">&lt;/h1&gt;</span>
+</code></pre></div></div>
+
+<p>Pretty easy, and we get a simple heading tag.</p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-02-spiking-tailwind-in-a-react-app/h1_no_style.png" alt="H1 Tag with no style" /></p>
+
+<p>Now let’s start small and add some styling.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;h1</span> <span class="na">className=</span><span class="s">"text-red-700 text-6xl hover:text-9xl"</span><span class="nt">&gt;</span>I'm using Tailwind!<span class="nt">&lt;/h1&gt;</span>
+</code></pre></div></div>
+
+<p>Now I added a couple of styling classes to the JSX, and just like we were editing a CSS file, we got some results.</p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-02-spiking-tailwind-in-a-react-app/h1_style_no_hover.png" alt="H1 tag with some basic styles" /></p>
+
+<p>You may also notice the <code class="highlighter-rouge">hover</code> selector in there. Tailwind takes care of these, similar to how CSS does. You prepend the effect you want and the outcome, and it works just the same.And we can see the style change a little when we hover over the text.</p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-02-spiking-tailwind-in-a-react-app/h1_style_hover.png" alt="Hover effect" /></p>
+
+<p>Adding these class names saved me from opening up VSCode and adding styles to a CSS file. I am already sold on Tailwind.</p>
+
+<p>You can also see the core use of Tailwind in adding class names to the HTML tags. This is a small example, but tags can have tons of styles, so adding a class name into the HTML can get overwhelming quickly. This is the language they lean into that I mentioned above.</p>
+
+<h3 id="something-a-little-more-">Something a Little More <a name="something-a-little-more"></a></h3>
+
+<p>I am not a designer, but I find this setup easy to create components. So let’s say I broke my app into pieces. How can I style this card component I made? Tailwind makes it simple.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">Card</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="o">&lt;</span><span class="nx">div</span> <span class="kd">class</span><span class="o">=</span><span class="dl">"</span><span class="s2">p-20 bg-green-100</span><span class="dl">"</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="nx">h3</span> <span class="kd">class</span><span class="o">=</span><span class="dl">"</span><span class="s2">text-green-300 mb-4 text-sm font-bold</span><span class="dl">"</span><span class="o">&gt;</span>
+                <span class="nx">This</span> <span class="nx">is</span> <span class="nx">some</span> <span class="nx">cool</span> <span class="nx">Tailwind</span> <span class="nx">Stuff</span><span class="o">!</span>
+            <span class="o">&lt;</span><span class="sr">/h3</span><span class="err">&gt;
+</span>            <span class="o">&lt;</span><span class="nx">div</span> <span class="kd">class</span><span class="o">=</span><span class="dl">"</span><span class="s2">border-4 border-green-800 bg-white p-6 rounded-lg shadow-lg</span><span class="dl">"</span><span class="o">&gt;</span>
+                <span class="o">&lt;</span><span class="nx">h2</span> <span class="kd">class</span><span class="o">=</span><span class="dl">"</span><span class="s2">text-2xl font-bold mb-2 text-gray-800</span><span class="dl">"</span><span class="o">&gt;</span><span class="nx">Look</span> <span class="nx">at</span> <span class="k">this</span><span class="o">!&lt;</span><span class="sr">/h2</span><span class="err">&gt;
+</span>                <span class="o">&lt;</span><span class="nx">p</span> <span class="kd">class</span><span class="o">=</span><span class="dl">"</span><span class="s2">text-gray-700</span><span class="dl">"</span><span class="o">&gt;</span><span class="nx">We</span> <span class="nx">did</span> <span class="nx">some</span> <span class="nx">Tailwind</span><span class="o">!&lt;</span><span class="sr">/p</span><span class="err">&gt;
+</span>            <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>        <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>    <span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>And the results.</p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-02-spiking-tailwind-in-a-react-app/card_styles.png" alt="Basic card with styles" /></p>
+
+<p>I didn’t have to write a single bit of CSS for this, and now I have a perfectly usable component. There’s no ending to this rabbit hole. Design all you want.</p>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>I can’t bring myself to write CSS. It’s a doomed relationship; with too much bad blood and too much history. However, I might just get through with Tailwind as a buffer for those awkward times I have to sit with it.</p>
+
+<p>Hyperbole aside, Tailwind is not a replacement for CSS but a fantastic addition to CSS for easily styling web components. Coupled with React, this was how we were meant to make apps. I’m excited to continue learning and hope this helped.</p>
+
+<p><strong>Small disclaimer</strong>: I am not suggesting anyone reading this who might be new to frontend development jump straight into learning Tailwind. That journey starts with <a href="https://developer.mozilla.org/en-US/docs/Learn/CSS/First_steps/How_CSS_works">learning how CSS works</a>. Much like filmmaking, learn all the fundamentals first and then break the rules at your leisure.</p>
+
+<p>-George</p>
+
+    </div>
+
+    <footer class="post-footer">
+        <div class="share">Share
+            <ul class="social-networks">
+                <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Spiking Tailwind CSS in a React APP&p[summary]=
+    
+
+
+Table Of Contents
+
+  Introduction
+  Tailwind
+  Setup
+  Using Tailwind in React
+  Something a Little More
+
+
+Introduction 
+
+It’s be...&p[url]=https://georgeoffley.com/blog/spiking-tailwind-in-a-react-app.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></li>
+                <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/blog/spiking-tailwind-in-a-react-app.html&text=
+    
+
+
+Table Of Contents
+
+  Introduction
+  Tailwind
+  Setup
+  Using Tailwind in React
+  Something a Little More
+
+
+Introduction 
+
+It’s be...&hashtags=React,Tailwind,JavaScript," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+            </ul>
+        </div>
+        
+        <div class="tags">
+            <ul>
+                
+                <li><a href="https://georgeoffley.com/tag/React">React</a></li>
+                
+                <li><a href="https://georgeoffley.com/tag/Tailwind">Tailwind</a></li>
+                
+                <li><a href="https://georgeoffley.com/tag/JavaScript">JavaScript</a></li>
+                
+            </ul>
+        </div>
+        
+    </footer>
+</article>
+
+
+            </main>
+        </div>
+
+        <script src="https://georgeoffley.com/assets/js/jquery-1.12.2.min.js"></script>
+<script src="https://georgeoffley.com/assets/js/backtotop.js"></script>
+<script src="https://georgeoffley.com/assets/js/lunr.min.js"></script>
+<script src="https://georgeoffley.com/assets/js/lunr-feed.js"></script>
+<script src="https://georgeoffley.com/assets/js/jquery.fitvids.js"></script>
+<script src="https://georgeoffley.com/assets/js/svg4everybody.min.js"></script>
+<script src="https://georgeoffley.com/assets/js/scripts.js"></script>
+
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-46498110-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+    </body>
+</html>
