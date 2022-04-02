@@ -5,12 +5,12 @@
     <description>I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!</description>
     <link>https://georgeoffley.com/</link>
     <atom:link href="https://georgeoffley.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 02 Apr 2022 10:22:35 -0400</pubDate>
-    <lastBuildDate>Sat, 02 Apr 2022 10:22:35 -0400</lastBuildDate>
+    <pubDate>Sat, 02 Apr 2022 10:28:22 -0400</pubDate>
+    <lastBuildDate>Sat, 02 Apr 2022 10:28:22 -0400</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
     
       <item>
-        <title>Spiking Tailwind CSS in a React APP</title>
+        <title>Spiking Tailwind CSS in a React App</title>
         <description>&lt;figure&gt;
     &lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-02-spiking-tailwind-in-a-react-app/cover.png&quot; /&gt;
 &lt;/figure&gt;
