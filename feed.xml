@@ -5,9 +5,119 @@
     <description>I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!</description>
     <link>https://georgeoffley.com/</link>
     <atom:link href="https://georgeoffley.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 02 Apr 2022 10:34:07 -0400</pubDate>
-    <lastBuildDate>Sat, 02 Apr 2022 10:34:07 -0400</lastBuildDate>
+    <pubDate>Mon, 18 Apr 2022 17:12:37 -0400</pubDate>
+    <lastBuildDate>Mon, 18 Apr 2022 17:12:37 -0400</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
+    
+      <item>
+        <title>Context In React</title>
+        <description>&lt;figure&gt;
+    &lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/cover.png&quot; /&gt;
+&lt;/figure&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#data-in-react&quot;&gt;Data In React&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#context-in-react&quot;&gt;Context In React&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#context-in-use&quot;&gt;Context In Use&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#conclusion&quot;&gt;Conclusion&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;introduction-&quot;&gt;Introduction &lt;a name=&quot;introduction&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;React offers the ability to build out web applications quickly. One of the details of this strategy includes passing data to different components in the &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction&quot;&gt;DOM&lt;/a&gt;. This can consist of needed data to build features, states of a component, and anything you can think of.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h3 id=&quot;data-in-react-&quot;&gt;Data In React &lt;a name=&quot;data-in-react&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;One great pattern in React is how data can be passed through the different components. However, this can get messy.&lt;/p&gt;
+
+&lt;p&gt;An application might be broken down like below.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/basic-app-layout.png&quot; alt=&quot;Basic layout of an app&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;A collection of components. Some of these components return other components. These are called parent components, and their children are nested components.&lt;/p&gt;
+
+&lt;p&gt;We can pass data back and forth throughout the lifetime of each component. Working with only props, for example, lets us pass data down the tree to the components that need it. However, this can present a problem.&lt;/p&gt;
+
+&lt;p&gt;Using props or properties is a great way to handle data. However, the deeper the component is buried, the more you have to pass the props down. This is called &lt;a href=&quot;https://beta.reactjs.org/learn/passing-data-deeply-with-context#the-problem-with-passing-props&quot;&gt;prop drilling&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/react-props-only.png&quot; alt=&quot;React app with only Props&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Using the workflow above, we have a couple of nested components passing the &lt;code class=&quot;highlighter-rouge&quot;&gt;Username&lt;/code&gt; prop down the tree. The &lt;code class=&quot;highlighter-rouge&quot;&gt;Page&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;MainContent&lt;/code&gt; props are just passing down the props used by the &lt;code class=&quot;highlighter-rouge&quot;&gt;UserCard&lt;/code&gt; component like a vertical &lt;a href=&quot;https://youtu.be/uviAFx4K78Y&quot;&gt;game of telephone&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now combine this with having to scale out your context to include hundreds of bits of data or state, which need to be passed down to various components at various levels of the tree, and we’ve got a problem.&lt;/p&gt;
+
+&lt;h3 id=&quot;context-in-react-&quot;&gt;Context in React &lt;a name=&quot;context-in-react&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://reactjs.org/docs/context.html&quot;&gt;Context&lt;/a&gt; solves the problem by allowing us to pass down data without relying on continually passing props through components. Context in React should be used handling global data that does not have to change often. Using context to keep track of our username state improves the workflow by allowing components to use context as needed without passing it down the tree. Pictured below.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/react-context.png&quot; alt=&quot;React with Context&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;As illustrated above, we can provide the context to one component, and the children component will be able to access the context regardless of the level they are at. All without needing to have their parent components pass the data down.&lt;/p&gt;
+
+&lt;h3 id=&quot;context-in-use-&quot;&gt;Context In Use &lt;a name=&quot;context-in-use&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;So let’s look at an example of context. I created a small React app and just made some barebones components. The first file we should check out is the &lt;code class=&quot;highlighter-rouge&quot;&gt;App&lt;/code&gt; component.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/app.js.png&quot; alt=&quot;App.js file&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;There are some lines of note, as you’ve undoubtedly seen, and then some other stuff needed for using context. The first out-of-place thing is using the React function &lt;code class=&quot;highlighter-rouge&quot;&gt;React.createContext()&lt;/code&gt;, which we use to create a context object. We also made a &lt;a href=&quot;https://reactjs.org/docs/context.html#contextprovider&quot;&gt;&lt;em&gt;provider&lt;/em&gt;&lt;/a&gt; for our context object and wrapped our &lt;code class=&quot;highlighter-rouge&quot;&gt;Page&lt;/code&gt; component in it.&lt;/p&gt;
+
+&lt;p&gt;Context works using Providers and Consumers. In this case, we are looking to provide the context to our app for consumption by the components. So we use the provider tag, which every context object has, to pass in the &lt;code class=&quot;highlighter-rouge&quot;&gt;value&lt;/code&gt; string to our nested components.&lt;/p&gt;
+
+&lt;p&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;value&lt;/code&gt; attribute is a prop that the provider accepts and can pass down the tree. Many consumers can subscribe to one provider, and we’ll talk about that more.&lt;/p&gt;
+
+&lt;p&gt;We’re not passing anything to the &lt;code class=&quot;highlighter-rouge&quot;&gt;Page&lt;/code&gt; component except the &lt;code class=&quot;highlighter-rouge&quot;&gt;Header&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;MainContent&lt;/code&gt; components.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/page.js.png&quot; alt=&quot;Page.js component&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Let’s look at the &lt;code class=&quot;highlighter-rouge&quot;&gt;Header&lt;/code&gt; component.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/header.js.png&quot; alt=&quot;Header.js component&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The header is a regular old React component. However, we use the React hook &lt;code class=&quot;highlighter-rouge&quot;&gt;React.createContent()&lt;/code&gt; to subscribe to the &lt;code class=&quot;highlighter-rouge&quot;&gt;UserContext&lt;/code&gt; object that we import into this component from the &lt;code class=&quot;highlighter-rouge&quot;&gt;App&lt;/code&gt; component. We can now use the curly brackets to pass in the &lt;code class=&quot;highlighter-rouge&quot;&gt;userNameContext&lt;/code&gt; into the JSX being returned by the component.&lt;/p&gt;
+
+&lt;p&gt;Let’s look at another example. Below we have our &lt;code class=&quot;highlighter-rouge&quot;&gt;MainContent&lt;/code&gt; component.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/maincontent.js.png&quot; alt=&quot;MainContent.js component&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Just another component with a nested component, &lt;code class=&quot;highlighter-rouge&quot;&gt;UserBox&lt;/code&gt;. Let’s look at what is in the &lt;code class=&quot;highlighter-rouge&quot;&gt;UserBox&lt;/code&gt; component.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/userbox.js.png&quot; alt=&quot;userbox.js.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;UserBox&lt;/code&gt; component can do as our header did; import the context object, subscribe to the provider using the &lt;code class=&quot;highlighter-rouge&quot;&gt;useContext&lt;/code&gt; hook and pass in the context using that context object. This is cool because we’re using context two levels below from where it was created without passing props through subsequent components.&lt;/p&gt;
+
+&lt;p&gt;The app would look something similar to the below image. We can see the username string in the &lt;code class=&quot;highlighter-rouge&quot;&gt;header&lt;/code&gt; and the &lt;code class=&quot;highlighter-rouge&quot;&gt;UserCard&lt;/code&gt; components. I am not one for styling things effectively, so hold your judgments.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/whole-app.jpg&quot; alt=&quot;The Whole App&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusion-&quot;&gt;Conclusion &lt;a name=&quot;conclusion&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Changing the value of the state would cause a render for the other components subscribed to the context. So it could cause issues if the state is constantly changing. So context fits nicely with a global state that is not likely to change often.&lt;/p&gt;
+
+&lt;p&gt;The code for the above example can be &lt;a href=&quot;https://github.com/georgeoffley/Blog-Code/tree/3f6e720bfedcc049c73e8a2fd14b8c06ec7edf78/context-in-react/context-in-react&quot;&gt;found on my GitHub&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;This has been an interesting learning experience. I’m happy to have gotten one of the fundamentals of React down on paper, so to speak. I hope this helps someone new coming into the React scene.&lt;/p&gt;
+
+&lt;p&gt;-George&lt;/p&gt;
+</description>
+        <pubDate>Mon, 18 Apr 2022 12:00:00 -0400</pubDate>
+        <link>https://georgeoffley.com/blog/context-in-react.html</link>
+        <guid isPermaLink="true">https://georgeoffley.com/blog/context-in-react.html</guid>
+        
+        <category>React</category>
+        
+        <category>JavaScript</category>
+        
+        <category>Newbie</category>
+        
+        
+        <category>Blog</category>
+        
+      </item>
     
       <item>
         <title>Spiking Tailwind CSS in a React App</title>
@@ -853,89 +963,6 @@
         <category>Unity</category>
         
         <category>ShaderLab</category>
-        
-        
-        <category>Blog</category>
-        
-      </item>
-    
-      <item>
-        <title>Messaging and Madness: Sending Messages with AMQP and Amazon MQ</title>
-        <description>&lt;figure&gt;
-    &lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-10-30-messaging-and-madness/title_card.png&quot; /&gt;
-&lt;/figure&gt;
-
-&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#amqp&quot;&gt;AMQP&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#amqp_amazon_mq&quot;&gt;AMQP and Amazon MQ&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#serialization&quot;&gt;Serialization&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#conclusion&quot;&gt;Conclusion&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;introduction-&quot;&gt;Introduction &lt;a name=&quot;introduction&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;How do software systems talk to each other? Back-end systems can scale into giant melted together &lt;a href=&quot;https://youtu.be/NH-8L1iZq20&quot;&gt;Cronenberg monsters&lt;/a&gt;, often making up different tools and languages. So, communicating between these services can become an untenable challenge without some shared vocabulary. We can communicate in many ways, but today I wanted to talk about asynchronous messaging protocols and figure out how AWS can help.&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;h3 id=&quot;amqp-&quot;&gt;AMQP &lt;a name=&quot;amqp&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;AMQP stands for Advanced Message Queuing Protocol. I’ve been working to implement it for some back-end software suites I’m building out to enable them to talk to each other. AMQP utilizes these things called &lt;em&gt;brokers&lt;/em&gt; to publish messages on, then on the other end, a receiving service subscribed to the same “channel” that we posted to can pick up that message.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-10-30-messaging-and-madness/hello-world-example-routing.png&quot; alt=&quot;Hello World Visualization&quot; /&gt;
-via &lt;a href=&quot;https://www.rabbitmq.com/tutorials/amqp-concepts.html&quot;&gt;Rabbit MQ Tutorials&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Let’s dive a little further down; the &lt;em&gt;publisher&lt;/em&gt; service publishes a message to an &lt;em&gt;exchange&lt;/em&gt; on a &lt;em&gt;broker&lt;/em&gt;. This exchange has &lt;em&gt;routes&lt;/em&gt; that lead to &lt;em&gt;queues&lt;/em&gt;, or “channels,” where the payload is published. We make sure to include the sending information with our message to be routed to the correct queue. The broker cannot see the message, although it might look into any metadata attached to the message from the publisher. This workflow asynchronously sends messages. Imagine a server version of a mail sorting machine shooting letters into the correct mail slot based on the address.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-10-30-messaging-and-madness/mail_sorting.gif&quot; alt=&quot;Mail Sorting Gif from MIB II&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;When referring to a publisher, I mean some code that we utilize to connect and send a message. AMQP is programmable, so I can shape it to fit most situations. In this case, we need to send messages to our different software suites to trigger actions to happen. Learning this took some time, but it’s been simple to implement.&lt;/p&gt;
-
-&lt;p&gt;There are different types of exchanges that we can use to make these services fit our needs. I’m going to explain what we use briefly.&lt;/p&gt;
-
-&lt;p&gt;We use a &lt;em&gt;direct exchange&lt;/em&gt; utilizing &lt;em&gt;routing keys&lt;/em&gt; to bind queues to exchanges. Our code can use direct exchanges to distribute tasks to many different endpoints, but we used these direct exchanges to make direct routes between our services. Other types of exchanges can be used to broadcast messages. More information can be found &lt;a href=&quot;https://www.rabbitmq.com/tutorials/amqp-concepts.html&quot;&gt;here&lt;/a&gt;. For now, we’re going to focus on direct exchanges.&lt;/p&gt;
-
-&lt;h3 id=&quot;amqp-and-amazon-mq-&quot;&gt;AMQP and Amazon MQ &lt;a name=&quot;amqp_amazon_mq&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;We touched on all that because I wanted to talk about &lt;a href=&quot;https://aws.amazon.com/amazon-mq/?amazon-mq.sort-by=item.additionalFields.postDateTime&amp;amp;amazon-mq.sort-order=desc&quot;&gt;Amazon MQ&lt;/a&gt;. Amazon MQ is a fully managed platform for setting up message brokers. Amazon MQ utilizes both RabbitMQ and Apache Active MQ for creating brokers. We’re sticking with Rabbit MQ for the time being.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-10-30-messaging-and-madness/amazon_mq_dash.png&quot; alt=&quot;Amazon MQ Dashboard&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Here above, you can see you can easily set up a broker in just a few clicks. I left most of the settings on default, except for choosing “RabbitMQ” for our broker engine and setting some security up for accessing our management console.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-10-30-messaging-and-madness/rabbit_mq_dash.png&quot; alt=&quot;Rabbit MQ Management Console&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Once we get that, we have access to the RabbitMQ dashboard Amazon MQ created and is managing. Now that we have a broker set up, we can play with some code.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-10-30-messaging-and-madness/code.png&quot; alt=&quot;Code&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Above I use the library &lt;a href=&quot;https://github.com/celery/kombu&quot;&gt;Kombu&lt;/a&gt; to create some connections and send some stuff. I started by setting up our environment variables. Then created exchange and queue objects. Finally, I made our connection object and the producer object, and then we sent a simple “Hello” message.&lt;/p&gt;
-
-&lt;h3 id=&quot;serialization-&quot;&gt;Serialization &lt;a name=&quot;serialization&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;Serialization is &lt;a href=&quot;https://www.tutorialspoint.com/object_oriented_python/object_oriented_python_serialization.htm&quot;&gt;another blog post&lt;/a&gt;, but I chose to use JSON to serialize the payload. In the production software, I use a combination of JSON and &lt;a href=&quot;https://docs.python.org/3/library/pickle.html&quot;&gt;Pickle&lt;/a&gt; to serialize things like image data.&lt;/p&gt;
-
-&lt;p&gt;Now we can see our message published on the queue I declared in our publisher service. An identical receiving service would be set up on the other side to read out messages sent to that queue.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-10-30-messaging-and-madness/results.png&quot; alt=&quot;Results&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;conclusion-&quot;&gt;Conclusion &lt;a name=&quot;conclusion&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;In conclusion, using Amazon MQ allows us to set up managed brokers for us to send messages. With AMQP as the broker engine, we have a lightweight message-sending workflow. Thanks for reading.&lt;/p&gt;
-
-&lt;p&gt;-George&lt;/p&gt;
-</description>
-        <pubDate>Sat, 30 Oct 2021 12:00:00 -0400</pubDate>
-        <link>https://georgeoffley.com/blog/messaging-and-madness-sending-messages-with-amqp-and-amazon-mq-copy.html</link>
-        <guid isPermaLink="true">https://georgeoffley.com/blog/messaging-and-madness-sending-messages-with-amqp-and-amazon-mq-copy.html</guid>
-        
-        <category>AWS</category>
-        
-        <category>Python</category>
-        
-        <category>AMQP</category>
         
         
         <category>Blog</category>

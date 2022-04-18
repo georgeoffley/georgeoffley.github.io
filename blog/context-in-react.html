@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta content="text/html; charset=UTF-8" name="Content-Type" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Context In React | George Offley &mdash; Software Engineer </title>
+    <meta property="og:title" content="Context In React | George Offley &mdash; Software Engineer " />
+
+    <meta name="description" content="I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!">
+    <meta name="description" property="og:description" content="I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!" />
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site"    content="@georgeoffley">
+    <meta name="twitter:creator" content="@georgeoffley">
+    <meta name="twitter:title"   content="Context In React">
+
+    
+    <meta name="twitter:description" content="How can we handle passing state around our components? Let's find out!">
+    
+
+    
+    <meta name="twitter:card"  content="summary_large_image">
+    <meta name="twitter:image" content="https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/cover.png">
+    
+    <!-- end of Twitter cards -->
+    
+    <meta property="og:url" content="https://georgeoffley.com/blog/context-in-react.html" />
+
+    <meta property="og:image" content="" />
+
+    <meta name="author" content="George Offley" />
+
+    <meta name="copyright" content="Copyright by George Offley. All Rights Reserved." />
+
+    <style>
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 300;
+            src: local('Roboto Light'), local('Roboto-Light'), url(https://fonts.gstatic.com/s/roboto/v15/Hgo13k-tfSpn0qi1SFdUfVtXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 400;
+            src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v15/CWB0XYA8bzo0kSThX0UTuA.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 700;
+            src: local('Roboto Bold'), local('Roboto-Bold'), url(https://fonts.gstatic.com/s/roboto/v15/d-6IYplOFocCacKzxwXSOFtXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 900;
+            src: local('Roboto Black'), local('Roboto-Black'), url(https://fonts.gstatic.com/s/roboto/v15/mnpfi9pxYH-Go5UiibESIltXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 300;
+            src: local('Roboto Light Italic'), local('Roboto-LightItalic'), url(https://fonts.gstatic.com/s/roboto/v15/7m8l7TlFO-S3VkhHuR0at44P5ICox8Kq3LLUNMylGO4.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 400;
+            src: local('Roboto Italic'), local('Roboto-Italic'), url(https://fonts.gstatic.com/s/roboto/v15/vPcynSL0qHq_6dX7lKVByfesZW2xOQ-xsNqO47m55DA.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 700;
+            src: local('Roboto Bold Italic'), local('Roboto-BoldItalic'), url(https://fonts.gstatic.com/s/roboto/v15/t6Nd4cfPRhZP44Q5QAjcC44P5ICox8Kq3LLUNMylGO4.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 900;
+            src: local('Roboto Black Italic'), local('Roboto-BlackItalic'), url(https://fonts.gstatic.com/s/roboto/v15/bmC0pGMXrhphrZJmniIZpY4P5ICox8Kq3LLUNMylGO4.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+    </style>
+    
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    
+    <link rel="stylesheet" href="https://georgeoffley.com/assets/css/main.css">
+
+    <link rel="canonical" href="https://georgeoffley.com/blog/context-in-react.html">
+
+    <link rel="alternate" type="application/rss+xml" title="" href="https://georgeoffley.com/feed.xml">
+</head>
+
+    <body>
+        <div class="wrapper">
+            <aside class="user-profile fixed" role="complementary">
+    <div class="burger">
+        <input class="trigger hidden" id="toggleBurger" type="checkbox" />
+        <label for="toggleBurger">
+            <span>Navigation</span>
+        </label>
+    </div>
+
+    <div class="compact-header">
+        <a class="avatar" href="https://georgeoffley.com"><img alt="Avatar" src="https://raw.githubusercontent.com/georgeoffley/georgeoffley.github.io/master/assets/images/george_headshot_small.jpg" /></a>
+        <div class="my-info">
+            <strong class="my-name">George Offley</strong>
+            <span class="my-job-title">Software Engineer</span>
+        </div>
+    </div>
+
+    
+        
+        <div class="mainmenu">
+            <a href="https://georgeoffley.com" >Home</a>
+            
+                
+            
+                
+            
+                
+            
+                
+                    <a href="https://georgeoffley.com/challenges/" >Challenges</a>
+                
+            
+                
+                    <a href="https://georgeoffley.com/blog/" >Blog</a>
+                
+            
+                
+                    <a href="https://georgeoffley.com/about_me/" >About Me</a>
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+        </div>
+        
+    
+
+    <p class="about-me">I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!</p>
+
+    <ul class="socials">
+        <li><a href="https://twitter.com/georgeoffley"><svg title="twitter" width="16" height="16" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li><li><a href="https://www.linkedin.com/in/georgeoffley/"><svg title="linkedin" width="16" height="16" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#linkedin-icon"></use></svg></a></li><li><a href="https://github.com/georgeoffley"><svg title="github" width="16" height="16" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#github-icon"></use></svg></a></li>
+
+        
+
+        
+    </ul>
+</aside>
+
+            <main class="the-content" role="main">
+                <div class="search" role="search">
+    <div>
+        <div class="show-results-count">0 Results</div>
+        <div class="search-holder">
+            <input type="text" id="search-input" placeholder="search for..." />
+        </div>
+    </div>
+    <ul id="results-container" class="results-container"></ul>
+</div>
+
+
+                <article class="post single" role="article" itemscope itemtype="http://schema.org/BlogPosting">
+    <header class="post-header">
+        <ul>
+            <li><time datetime="2022-04-18T12:00:00-04:00" itemprop="datePublished">18 Apr, 2022</time></li>
+            
+                
+                <li class="cats">
+                    
+                        <a href="/categories/Blog/">Blog</a>
+                    
+                </li>
+                
+            
+        </ul>
+        <h2 itemprop="name headline">Context In React</h2>
+    </header>
+
+    <div class="post-content">
+        <figure>
+    <img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/cover.png" />
+</figure>
+
+<h2 id="table-of-contents">Table Of Contents</h2>
+<ul>
+  <li><a href="#introduction">Introduction</a></li>
+  <li><a href="#data-in-react">Data In React</a></li>
+  <li><a href="#context-in-react">Context In React</a></li>
+  <li><a href="#context-in-use">Context In Use</a></li>
+  <li><a href="#conclusion">Conclusion</a></li>
+</ul>
+
+<h3 id="introduction-">Introduction <a name="introduction"></a></h3>
+
+<p>React offers the ability to build out web applications quickly. One of the details of this strategy includes passing data to different components in the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction">DOM</a>. This can consist of needed data to build features, states of a component, and anything you can think of.</p>
+
+<!--more-->
+
+<h3 id="data-in-react-">Data In React <a name="data-in-react"></a></h3>
+
+<p>One great pattern in React is how data can be passed through the different components. However, this can get messy.</p>
+
+<p>An application might be broken down like below.</p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/basic-app-layout.png" alt="Basic layout of an app" /></p>
+
+<p>A collection of components. Some of these components return other components. These are called parent components, and their children are nested components.</p>
+
+<p>We can pass data back and forth throughout the lifetime of each component. Working with only props, for example, lets us pass data down the tree to the components that need it. However, this can present a problem.</p>
+
+<p>Using props or properties is a great way to handle data. However, the deeper the component is buried, the more you have to pass the props down. This is called <a href="https://beta.reactjs.org/learn/passing-data-deeply-with-context#the-problem-with-passing-props">prop drilling</a>.</p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/react-props-only.png" alt="React app with only Props" /></p>
+
+<p>Using the workflow above, we have a couple of nested components passing the <code class="highlighter-rouge">Username</code> prop down the tree. The <code class="highlighter-rouge">Page</code> and <code class="highlighter-rouge">MainContent</code> props are just passing down the props used by the <code class="highlighter-rouge">UserCard</code> component like a vertical <a href="https://youtu.be/uviAFx4K78Y">game of telephone</a>.</p>
+
+<p>Now combine this with having to scale out your context to include hundreds of bits of data or state, which need to be passed down to various components at various levels of the tree, and we’ve got a problem.</p>
+
+<h3 id="context-in-react-">Context in React <a name="context-in-react"></a></h3>
+
+<p><a href="https://reactjs.org/docs/context.html">Context</a> solves the problem by allowing us to pass down data without relying on continually passing props through components. Context in React should be used handling global data that does not have to change often. Using context to keep track of our username state improves the workflow by allowing components to use context as needed without passing it down the tree. Pictured below.</p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/react-context.png" alt="React with Context" /></p>
+
+<p>As illustrated above, we can provide the context to one component, and the children component will be able to access the context regardless of the level they are at. All without needing to have their parent components pass the data down.</p>
+
+<h3 id="context-in-use-">Context In Use <a name="context-in-use"></a></h3>
+
+<p>So let’s look at an example of context. I created a small React app and just made some barebones components. The first file we should check out is the <code class="highlighter-rouge">App</code> component.</p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/app.js.png" alt="App.js file" /></p>
+
+<p>There are some lines of note, as you’ve undoubtedly seen, and then some other stuff needed for using context. The first out-of-place thing is using the React function <code class="highlighter-rouge">React.createContext()</code>, which we use to create a context object. We also made a <a href="https://reactjs.org/docs/context.html#contextprovider"><em>provider</em></a> for our context object and wrapped our <code class="highlighter-rouge">Page</code> component in it.</p>
+
+<p>Context works using Providers and Consumers. In this case, we are looking to provide the context to our app for consumption by the components. So we use the provider tag, which every context object has, to pass in the <code class="highlighter-rouge">value</code> string to our nested components.</p>
+
+<p>The <code class="highlighter-rouge">value</code> attribute is a prop that the provider accepts and can pass down the tree. Many consumers can subscribe to one provider, and we’ll talk about that more.</p>
+
+<p>We’re not passing anything to the <code class="highlighter-rouge">Page</code> component except the <code class="highlighter-rouge">Header</code> and <code class="highlighter-rouge">MainContent</code> components.</p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/page.js.png" alt="Page.js component" /></p>
+
+<p>Let’s look at the <code class="highlighter-rouge">Header</code> component.</p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/header.js.png" alt="Header.js component" /></p>
+
+<p>The header is a regular old React component. However, we use the React hook <code class="highlighter-rouge">React.createContent()</code> to subscribe to the <code class="highlighter-rouge">UserContext</code> object that we import into this component from the <code class="highlighter-rouge">App</code> component. We can now use the curly brackets to pass in the <code class="highlighter-rouge">userNameContext</code> into the JSX being returned by the component.</p>
+
+<p>Let’s look at another example. Below we have our <code class="highlighter-rouge">MainContent</code> component.</p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/maincontent.js.png" alt="MainContent.js component" /></p>
+
+<p>Just another component with a nested component, <code class="highlighter-rouge">UserBox</code>. Let’s look at what is in the <code class="highlighter-rouge">UserBox</code> component.</p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/userbox.js.png" alt="userbox.js.png" /></p>
+
+<p>The <code class="highlighter-rouge">UserBox</code> component can do as our header did; import the context object, subscribe to the provider using the <code class="highlighter-rouge">useContext</code> hook and pass in the context using that context object. This is cool because we’re using context two levels below from where it was created without passing props through subsequent components.</p>
+
+<p>The app would look something similar to the below image. We can see the username string in the <code class="highlighter-rouge">header</code> and the <code class="highlighter-rouge">UserCard</code> components. I am not one for styling things effectively, so hold your judgments.</p>
+
+<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/whole-app.jpg" alt="The Whole App" /></p>
+
+<h3 id="conclusion-">Conclusion <a name="conclusion"></a></h3>
+
+<p>Changing the value of the state would cause a render for the other components subscribed to the context. So it could cause issues if the state is constantly changing. So context fits nicely with a global state that is not likely to change often.</p>
+
+<p>The code for the above example can be <a href="https://github.com/georgeoffley/Blog-Code/tree/3f6e720bfedcc049c73e8a2fd14b8c06ec7edf78/context-in-react/context-in-react">found on my GitHub</a>.</p>
+
+<p>This has been an interesting learning experience. I’m happy to have gotten one of the fundamentals of React down on paper, so to speak. I hope this helps someone new coming into the React scene.</p>
+
+<p>-George</p>
+
+    </div>
+
+    <footer class="post-footer">
+        <div class="share">Share
+            <ul class="social-networks">
+                <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Context In React&p[summary]=
+    
+
+
+Table Of Contents
+
+  Introduction
+  Data In React
+  Context In React
+  Context In Use
+  Conclusion
+
+
+Introduction 
+
+React offers ...&p[url]=https://georgeoffley.com/blog/context-in-react.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></li>
+                <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/blog/context-in-react.html&text=
+    
+
+
+Table Of Contents
+
+  Introduction
+  Data In React
+  Context In React
+  Context In Use
+  Conclusion
+
+
+Introduction 
+
+React offers ...&hashtags=React,JavaScript,Newbie," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+            </ul>
+        </div>
+        
+        <div class="tags">
+            <ul>
+                
+                <li><a href="https://georgeoffley.com/tag/React">React</a></li>
+                
+                <li><a href="https://georgeoffley.com/tag/JavaScript">JavaScript</a></li>
+                
+                <li><a href="https://georgeoffley.com/tag/Newbie">Newbie</a></li>
+                
+            </ul>
+        </div>
+        
+    </footer>
+</article>
+
+
+            </main>
+        </div>
+
+        <script src="https://georgeoffley.com/assets/js/jquery-1.12.2.min.js"></script>
+<script src="https://georgeoffley.com/assets/js/backtotop.js"></script>
+<script src="https://georgeoffley.com/assets/js/lunr.min.js"></script>
+<script src="https://georgeoffley.com/assets/js/lunr-feed.js"></script>
+<script src="https://georgeoffley.com/assets/js/jquery.fitvids.js"></script>
+<script src="https://georgeoffley.com/assets/js/svg4everybody.min.js"></script>
+<script src="https://georgeoffley.com/assets/js/scripts.js"></script>
+
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-46498110-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+    </body>
+</html>
