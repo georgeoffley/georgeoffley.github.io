@@ -198,6 +198,8 @@
             
                 
             
+                
+            
         </div>
         
     
@@ -227,6 +229,191 @@
 
                 <h1>Posts Tagged - JavaScript</h1>
 
+
+    
+        
+    
+        
+        <article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
+            <header class="post-header">
+                <ul>
+                    <li><time datetime="2022-05-22T12:00:00-04:00" itemprop="datePublished">22 May, 2022</time></li>
+                    
+                    <li class="cats">
+                        
+                            <a href="/categories/Blog/">Blog</a>
+                        
+                    </li>
+                    
+                </ul>
+                <h2 itemprop="name headline"><a href="https://georgeoffley.com/blog/adventures-in-typescript.html">Adventures In TypeScript</a></h2>
+            </header>
+
+            <div class="post-content">
+                <figure>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/768px-Typescript_logo_2020.svg.png?20210506173343" />
+</figure>
+
+<h2 id="table-of-contents">Table Of Contents</h2>
+<ul>
+  <li><a href="#introduction">Introduction</a></li>
+  <li><a href="#ts-so-far">TypeScript So Far</a></li>
+  <li><a href="#type-definitions-in-functions">Type Definitions In Functions</a></li>
+  <li><a href="#generics">Generics</a></li>
+  <li><a href="#union-types">Union Types</a></li>
+  <li><a href="#conclusion">Conclusion</a></li>
+</ul>
+
+<h3 id="introduction-">Introduction <a name="introduction"></a></h3>
+
+<p>I started a new job, and the stack is entirely different from what I know. Allow me a moment to break it down.</p>
+
+<ul>
+  <li>First Engineering job stack: PHP, HTML/CSS, VBScript, C#,.Net, and MySQL. No JavaScript</li>
+  <li>Second job stack: Python, Go, MySQL, Flux (custom functional language). Still, no JavaScript.</li>
+  <li>New job: <strong>It’s all JavaScript</strong></li>
+</ul>
+
+<p><img src="https://media.giphy.com/media/KupdfnqWwV7J6/giphy.gif" alt="Terrifying Screams" /></p>
+
+<p>Well, TypeScript. But even still.</p>
+
+<p>I’ve had to become fluent in a variety of languages, but the JavaScript ecosystem was never on the list until now. Closest I ever got to building anything was writing tiny, mostly stolen from Stack Overflow, APIs using Express. So what am I to do when I get offered a position building some cool stuff with some incredible people? Say no? I don’t think so.</p>
+
+<p>As you get further into your career, you start seeing new organization’s coding stuff is like everyone else’s coding stuff. It’s just a matter of implementation. So I’ll spend the next few weeks diving in, asking tons of questions, and learning to understand this—no big deal.</p>
+
+<p>In the meantime, I’ll write about some of the stuff I’ve learned, starting with my adventure’s learning TypeScript.</p>
+
+<h3 id="typescript-so-far-">TypeScript So Far <a name="ts-so-far"></a></h3>
+
+<p><img src="https://i.pinimg.com/originals/49/75/86/497586976df92a1b7658f930c1bc299e.png" alt="Chucki Finster image" /></p>
+
+<p>TypeScript is nitpicky. If I were to make a list of program languages as cartoon characters, I’d put TypeScript beside Chuckie Finster from Rugrats. Quick to point out the dangers and not quiet about their objections. However, the more I learn it, the more it becomes the thing needed to maintain the chaotic, almost Tommy Pickles-like nature of JavaScript. I’m starting to become a fan.</p>
+
+<p>Everyone needs a real one like Chuck Finster on their adventures.</p>
+
+<p>Coming from Python as my primary tool in the last job, I needed to shake off the cobwebs for statically typed languages. Just make sure the types match. No big deal, right? Mostly.</p>
+
+<p>TypeScript takes this a great deal further in its implementations. Let’s go over what I mean.</p>
+
+<h3 id="type-definitions-in-functions-">Type Definitions In Functions <a name="type-definitions-in-functions"></a></h3>
+
+<p>In Python, everything is an object. In TypeScript, objects are just everywhere. One example is the use of objects defined in the function signature.</p>
+
+<p><img src="https://d4kma4si4pw0z.cloudfront.net/2022-05-22-adventures-in-typescript/obj-in-function-def.png" alt="Greeting function" /></p>
+
+<p>In this example, we define the object <code class="highlighter-rouge">options</code> and then give the parameters in the form of function arguments. That makes sense for maintainability. A single type that is only used in one spot is a perfect candidate. It also helps that the IntelliSense will be able to pick up on the type and give you the ability to access those properties in the autocomplete.</p>
+
+<h3 id="generics-">Generics <a name="generics"></a></h3>
+
+<p><a href="https://www.typescriptlang.org/docs/handbook/2/generics.html">Generics</a> are stand-ins used for passing around data types where the type of an object or property might not be known. TypeScript takes these to an interesting extreme. Let’s take a look.</p>
+
+<p>Generics can be used in interfaces; <a href="https://www.typescriptlang.org/docs/handbook/2/objects.html">interfaces are an abstract type used for holding data</a>. See what I mean below.</p>
+
+<p><img src="https://d4kma4si4pw0z.cloudfront.net/2022-05-22-adventures-in-typescript/interface-generic.png" alt="Generics for interfaces" /></p>
+
+<p>Here we define and interface <code class="highlighter-rouge">Model</code> and assign it the type <code class="highlighter-rouge">&lt;;T&gt;</code>; you use the angle brackets to pass in types. The idea here is that this <code class="highlighter-rouge">Model</code> interface can be reused and take the form of many different model types. <code class="highlighter-rouge">&lt;T&gt;</code> is just a stand-in and can be used by any type. The generic is then passed into the <code class="highlighter-rouge">value</code> property because we don’t know what the value could be.</p>
+
+<p>So going down into the variable definition for <code class="highlighter-rouge">newModel</code> we are looking to pass in a string type, and we do that by using the <code class="highlighter-rouge">&lt;&gt;</code> angle brackets. Finally, we assign the <code class="highlighter-rouge">value</code> property to the string <code class="highlighter-rouge">"Brenda"</code>. You can see the printout below that. Now we can pass in any data type we’d like in this interface and use that same type as the value property.</p>
+
+<p>Cool right? You can do that with functions too! As seen below.</p>
+
+<p><img src="https://d4kma4si4pw0z.cloudfront.net/2022-05-22-adventures-in-typescript/function-generic.png" alt="Generics for functions" /></p>
+
+<p>So we have a <code class="highlighter-rouge">User</code> interface with two properties which will serve as an example of a data type for use to pass in. Then we have a function below where the idea is that it will be reused to grab any kind of resource from an API.</p>
+
+<p>In the <code class="highlighter-rouge">getResource</code> function, you can see where the usefulness comes in; Seeing as we’re not sure what type of data we’re going to get, we can pass in the <code class="highlighter-rouge">&lt;T&gt;</code> generic and then use that generic to return an array of types <code class="highlighter-rouge">&lt;T&gt;</code>. Here we can safely use the <code class="highlighter-rouge">User</code> interface or any other interface. Check out the results.</p>
+
+<p><img src="https://d4kma4si4pw0z.cloudfront.net/2022-05-22-adventures-in-typescript/function-generic-alocation.png" alt="Use of Generics in functions" /></p>
+
+<p>We called the <code class="highlighter-rouge">getResource</code> function and passed in the <code class="highlighter-rouge">User</code> type, and we can then map out the results from the <code class="highlighter-rouge">User</code> type. As seen in the notes, we’ll also have access to the type properties via autocomplete.</p>
+
+<h3 id="union-types-">Union Types <a name="union-types"></a></h3>
+
+<p>Something that blew my mind was working with <a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types">union types</a>. It was weird syntax I’d never seen, and it threw me until someone explained it to me.</p>
+
+<p>A union type is a type that can be one of two or more types. Let me show you what I mean.</p>
+
+<p><img src="https://d4kma4si4pw0z.cloudfront.net/2022-05-22-adventures-in-typescript/union-type.png" alt="union-type" /></p>
+
+<p>We defined <code class="highlighter-rouge">data</code>, which can be either a string or a variable. The pipe operator, <code class="highlighter-rouge">|</code>, which is <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators#bitwise_operators">the bitwise OR operator in JavaScript</a>, denotes the different types of which this variable could be. Below are the results from printing this.</p>
+
+<p><img src="https://d4kma4si4pw0z.cloudfront.net/2022-05-22-adventures-in-typescript/union-type-assignment.png" alt="union-type-assignment.png" /></p>
+
+<p>So we can assign multiple types to this variable through union types.</p>
+
+<p>This one is pretty simple, but we have union types in the source code at work that could be one of ten different types.</p>
+
+<p>This is again great for code reuse in that we can use assets differently due to them being able to take the form of more than one type and have different behavior.</p>
+
+<h3 id="conclusion-">Conclusion <a name="conclusion"></a></h3>
+
+<p>There is a ton of other stuff I’ve learned. Much of which is still in my notes and on my <a href="https://github.com/georgeoffley/til">Today I Learned repo</a> and in need of digesting.</p>
+
+<p>This is just the beginning. I have an opportunity to learn so much from this group of engineers, and I am excited. In doing that, maybe I can help someone else learn too!</p>
+
+<p>-George</p>
+
+
+                
+                    <p><a href="/blog/adventures-in-typescript.html" role="button">Read More</a></p>
+                
+            </div>
+
+            <footer class="post-footer">
+                <div class="share">Share
+                    <ul class="social-networks">
+                        <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Adventures In TypeScript&p[summary]=
+    
+
+
+Table Of Contents
+
+  Introduction
+  TypeScript So Far
+  Type Definitions In Functions
+  Generics
+  Union Types
+  Conclusion
+
+
+Int...&p[url]=https://georgeoffley.com/blog/adventures-in-typescript.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>
+                        <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/blog/adventures-in-typescript.html&text=
+    
+
+
+Table Of Contents
+
+  Introduction
+  TypeScript So Far
+  Type Definitions In Functions
+  Generics
+  Union Types
+  Conclusion
+
+
+Int...&hashtags=TypeScript,JavaScript,Newbie," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+                    </ul>
+                </div>
+                
+                <div class="tags">
+                    <ul>
+                        
+                        <li><a href="https://georgeoffley.com/tag/TypeScript">TypeScript</a></li>
+                        
+                        <li><a href="https://georgeoffley.com/tag/JavaScript">JavaScript</a></li>
+                        
+                        <li><a href="https://georgeoffley.com/tag/Newbie">Newbie</a></li>
+                        
+                    </ul>
+                </div>
+                
+            </footer>
+        </article>
+        
+    
+        
+    
 
     
         

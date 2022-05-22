@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Context In React | George Offley &mdash; Software Engineer </title>
-    <meta property="og:title" content="Context In React | George Offley &mdash; Software Engineer " />
+    <title>Adventures In TypeScript | George Offley &mdash; Software Engineer </title>
+    <meta property="og:title" content="Adventures In TypeScript | George Offley &mdash; Software Engineer " />
 
     <meta name="description" content="I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!">
     <meta name="description" property="og:description" content="I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!" />
@@ -14,19 +14,19 @@
     <!-- Twitter cards -->
     <meta name="twitter:site"    content="@georgeoffley">
     <meta name="twitter:creator" content="@georgeoffley">
-    <meta name="twitter:title"   content="Context In React">
+    <meta name="twitter:title"   content="Adventures In TypeScript">
 
     
-    <meta name="twitter:description" content="How can we handle passing state around our components? Let's find out!">
+    <meta name="twitter:description" content="I've been learning some stuff about TypeScript, and I want to share!">
     
 
     
     <meta name="twitter:card"  content="summary_large_image">
-    <meta name="twitter:image" content="https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/cover.png">
+    <meta name="twitter:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/768px-Typescript_logo_2020.svg.png?20210506173343">
     
     <!-- end of Twitter cards -->
     
-    <meta property="og:url" content="https://georgeoffley.com/blog/context-in-react.html" />
+    <meta property="og:url" content="https://georgeoffley.com/blog/adventures-in-typescript.html" />
 
     <meta property="og:image" content="" />
 
@@ -104,7 +104,7 @@
     
     <link rel="stylesheet" href="https://georgeoffley.com/assets/css/main.css">
 
-    <link rel="canonical" href="https://georgeoffley.com/blog/context-in-react.html">
+    <link rel="canonical" href="https://georgeoffley.com/blog/adventures-in-typescript.html">
 
     <link rel="alternate" type="application/rss+xml" title="" href="https://georgeoffley.com/feed.xml">
 </head>
@@ -230,7 +230,7 @@
                 <article class="post single" role="article" itemscope itemtype="http://schema.org/BlogPosting">
     <header class="post-header">
         <ul>
-            <li><time datetime="2022-04-18T12:00:00-04:00" itemprop="datePublished">18 Apr, 2022</time></li>
+            <li><time datetime="2022-05-22T12:00:00-04:00" itemprop="datePublished">22 May, 2022</time></li>
             
                 
                 <li class="cats">
@@ -241,100 +241,111 @@
                 
             
         </ul>
-        <h2 itemprop="name headline">Context In React</h2>
+        <h2 itemprop="name headline">Adventures In TypeScript</h2>
     </header>
 
     <div class="post-content">
         <figure>
-    <img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/cover.png" />
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/768px-Typescript_logo_2020.svg.png?20210506173343" />
 </figure>
 
 <h2 id="table-of-contents">Table Of Contents</h2>
 <ul>
   <li><a href="#introduction">Introduction</a></li>
-  <li><a href="#data-in-react">Data In React</a></li>
-  <li><a href="#context-in-react">Context In React</a></li>
-  <li><a href="#context-in-use">Context In Use</a></li>
+  <li><a href="#ts-so-far">TypeScript So Far</a></li>
+  <li><a href="#type-definitions-in-functions">Type Definitions In Functions</a></li>
+  <li><a href="#generics">Generics</a></li>
+  <li><a href="#union-types">Union Types</a></li>
   <li><a href="#conclusion">Conclusion</a></li>
 </ul>
 
 <h3 id="introduction-">Introduction <a name="introduction"></a></h3>
 
-<p>React offers the ability to build out web applications quickly. One of the details of this strategy includes passing data to different components in the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction">DOM</a>. This can consist of needed data to build features, states of a component, and anything you can think of.</p>
+<p>I started a new job, and the stack is entirely different from what I know. Allow me a moment to break it down.</p>
 
-<!--more-->
+<ul>
+  <li>First Engineering job stack: PHP, HTML/CSS, VBScript, C#,.Net, and MySQL. No JavaScript</li>
+  <li>Second job stack: Python, Go, MySQL, Flux (custom functional language). Still, no JavaScript.</li>
+  <li>New job: <strong>It’s all JavaScript</strong></li>
+</ul>
 
-<h3 id="data-in-react-">Data In React <a name="data-in-react"></a></h3>
+<p><img src="https://media.giphy.com/media/KupdfnqWwV7J6/giphy.gif" alt="Terrifying Screams" /></p>
 
-<p>One great pattern in React is how data can be passed through the different components. However, this can get messy.</p>
+<p>Well, TypeScript. But even still.</p>
 
-<p>An application might be broken down like below.</p>
+<p>I’ve had to become fluent in a variety of languages, but the JavaScript ecosystem was never on the list until now. Closest I ever got to building anything was writing tiny, mostly stolen from Stack Overflow, APIs using Express. So what am I to do when I get offered a position building some cool stuff with some incredible people? Say no? I don’t think so.</p>
 
-<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/basic-app-layout.png" alt="Basic layout of an app" /></p>
+<p>As you get further into your career, you start seeing new organization’s coding stuff is like everyone else’s coding stuff. It’s just a matter of implementation. So I’ll spend the next few weeks diving in, asking tons of questions, and learning to understand this—no big deal.</p>
 
-<p>A collection of components. Some of these components return other components. These are called parent components, and their children are nested components.</p>
+<p>In the meantime, I’ll write about some of the stuff I’ve learned, starting with my adventure’s learning TypeScript.</p>
 
-<p>We can pass data back and forth throughout the lifetime of each component. Working with only props, for example, lets us pass data down the tree to the components that need it. However, this can present a problem.</p>
+<h3 id="typescript-so-far-">TypeScript So Far <a name="ts-so-far"></a></h3>
 
-<p>Using props or properties is a great way to handle data. However, the deeper the component is buried, the more you have to pass the props down. This is called <a href="https://beta.reactjs.org/learn/passing-data-deeply-with-context#the-problem-with-passing-props">prop drilling</a>.</p>
+<p><img src="https://i.pinimg.com/originals/49/75/86/497586976df92a1b7658f930c1bc299e.png" alt="Chucki Finster image" /></p>
 
-<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/react-props-only.png" alt="React app with only Props" /></p>
+<p>TypeScript is nitpicky. If I were to make a list of program languages as cartoon characters, I’d put TypeScript beside Chuckie Finster from Rugrats. Quick to point out the dangers and not quiet about their objections. However, the more I learn it, the more it becomes the thing needed to maintain the chaotic, almost Tommy Pickles-like nature of JavaScript. I’m starting to become a fan.</p>
 
-<p>Using the workflow above, we have a couple of nested components passing the <code class="highlighter-rouge">Username</code> prop down the tree. The <code class="highlighter-rouge">Page</code> and <code class="highlighter-rouge">MainContent</code> props are just passing down the props used by the <code class="highlighter-rouge">UserCard</code> component like a vertical <a href="https://youtu.be/uviAFx4K78Y">game of telephone</a>.</p>
+<p>Everyone needs a real one like Chuck Finster on their adventures.</p>
 
-<p>Now combine this with having to scale out your context to include hundreds of bits of data or state, which need to be passed down to various components at various levels of the tree, and we’ve got a problem.</p>
+<p>Coming from Python as my primary tool in the last job, I needed to shake off the cobwebs for statically typed languages. Just make sure the types match. No big deal, right? Mostly.</p>
 
-<h3 id="context-in-react-">Context in React <a name="context-in-react"></a></h3>
+<p>TypeScript takes this a great deal further in its implementations. Let’s go over what I mean.</p>
 
-<p><a href="https://reactjs.org/docs/context.html">Context</a> solves the problem by allowing us to pass down data without relying on continually passing props through components. Context in React should be used handling global data that does not have to change often. Using context to keep track of our username state improves the workflow by allowing components to use context as needed without passing it down the tree. Pictured below.</p>
+<h3 id="type-definitions-in-functions-">Type Definitions In Functions <a name="type-definitions-in-functions"></a></h3>
 
-<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/react-context.png" alt="React with Context" /></p>
+<p>In Python, everything is an object. In TypeScript, objects are just everywhere. One example is the use of objects defined in the function signature.</p>
 
-<p>As illustrated above, we can provide the context to one component, and the children component will be able to access the context regardless of the level they are at. All without needing to have their parent components pass the data down.</p>
+<p><img src="https://d4kma4si4pw0z.cloudfront.net/2022-05-22-adventures-in-typescript/obj-in-function-def.png" alt="Greeting function" /></p>
 
-<h3 id="context-in-use-">Context In Use <a name="context-in-use"></a></h3>
+<p>In this example, we define the object <code class="highlighter-rouge">options</code> and then give the parameters in the form of function arguments. That makes sense for maintainability. A single type that is only used in one spot is a perfect candidate. It also helps that the IntelliSense will be able to pick up on the type and give you the ability to access those properties in the autocomplete.</p>
 
-<p>So let’s look at an example of context. I created a small React app and just made some barebones components. The first file we should check out is the <code class="highlighter-rouge">App</code> component.</p>
+<h3 id="generics-">Generics <a name="generics"></a></h3>
 
-<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/app.js.png" alt="App.js file" /></p>
+<p><a href="https://www.typescriptlang.org/docs/handbook/2/generics.html">Generics</a> are stand-ins used for passing around data types where the type of an object or property might not be known. TypeScript takes these to an interesting extreme. Let’s take a look.</p>
 
-<p>There are some lines of note, as you’ve undoubtedly seen, and then some other stuff needed for using context. The first out-of-place thing is using the React function <code class="highlighter-rouge">React.createContext()</code>, which we use to create a context object. We also made a <a href="https://reactjs.org/docs/context.html#contextprovider"><em>provider</em></a> for our context object and wrapped our <code class="highlighter-rouge">Page</code> component in it.</p>
+<p>Generics can be used in interfaces; <a href="https://www.typescriptlang.org/docs/handbook/2/objects.html">interfaces are an abstract type used for holding data</a>. See what I mean below.</p>
 
-<p>Context works using Providers and Consumers. In this case, we are looking to provide the context to our app for consumption by the components. So we use the provider tag, which every context object has, to pass in the <code class="highlighter-rouge">value</code> string to our nested components.</p>
+<p><img src="https://d4kma4si4pw0z.cloudfront.net/2022-05-22-adventures-in-typescript/interface-generic.png" alt="Generics for interfaces" /></p>
 
-<p>The <code class="highlighter-rouge">value</code> attribute is a prop that the provider accepts and can pass down the tree. Many consumers can subscribe to one provider, and we’ll talk about that more.</p>
+<p>Here we define and interface <code class="highlighter-rouge">Model</code> and assign it the type <code class="highlighter-rouge">&lt;;T&gt;</code>; you use the angle brackets to pass in types. The idea here is that this <code class="highlighter-rouge">Model</code> interface can be reused and take the form of many different model types. <code class="highlighter-rouge">&lt;T&gt;</code> is just a stand-in and can be used by any type. The generic is then passed into the <code class="highlighter-rouge">value</code> property because we don’t know what the value could be.</p>
 
-<p>We’re not passing anything to the <code class="highlighter-rouge">Page</code> component except the <code class="highlighter-rouge">Header</code> and <code class="highlighter-rouge">MainContent</code> components.</p>
+<p>So going down into the variable definition for <code class="highlighter-rouge">newModel</code> we are looking to pass in a string type, and we do that by using the <code class="highlighter-rouge">&lt;&gt;</code> angle brackets. Finally, we assign the <code class="highlighter-rouge">value</code> property to the string <code class="highlighter-rouge">"Brenda"</code>. You can see the printout below that. Now we can pass in any data type we’d like in this interface and use that same type as the value property.</p>
 
-<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/page.js.png" alt="Page.js component" /></p>
+<p>Cool right? You can do that with functions too! As seen below.</p>
 
-<p>Let’s look at the <code class="highlighter-rouge">Header</code> component.</p>
+<p><img src="https://d4kma4si4pw0z.cloudfront.net/2022-05-22-adventures-in-typescript/function-generic.png" alt="Generics for functions" /></p>
 
-<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/header.js.png" alt="Header.js component" /></p>
+<p>So we have a <code class="highlighter-rouge">User</code> interface with two properties which will serve as an example of a data type for use to pass in. Then we have a function below where the idea is that it will be reused to grab any kind of resource from an API.</p>
 
-<p>The header is a regular old React component. However, we use the React hook <code class="highlighter-rouge">React.createContent()</code> to subscribe to the <code class="highlighter-rouge">UserContext</code> object that we import into this component from the <code class="highlighter-rouge">App</code> component. We can now use the curly brackets to pass in the <code class="highlighter-rouge">userNameContext</code> into the JSX being returned by the component.</p>
+<p>In the <code class="highlighter-rouge">getResource</code> function, you can see where the usefulness comes in; Seeing as we’re not sure what type of data we’re going to get, we can pass in the <code class="highlighter-rouge">&lt;T&gt;</code> generic and then use that generic to return an array of types <code class="highlighter-rouge">&lt;T&gt;</code>. Here we can safely use the <code class="highlighter-rouge">User</code> interface or any other interface. Check out the results.</p>
 
-<p>Let’s look at another example. Below we have our <code class="highlighter-rouge">MainContent</code> component.</p>
+<p><img src="https://d4kma4si4pw0z.cloudfront.net/2022-05-22-adventures-in-typescript/function-generic-alocation.png" alt="Use of Generics in functions" /></p>
 
-<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/maincontent.js.png" alt="MainContent.js component" /></p>
+<p>We called the <code class="highlighter-rouge">getResource</code> function and passed in the <code class="highlighter-rouge">User</code> type, and we can then map out the results from the <code class="highlighter-rouge">User</code> type. As seen in the notes, we’ll also have access to the type properties via autocomplete.</p>
 
-<p>Just another component with a nested component, <code class="highlighter-rouge">UserBox</code>. Let’s look at what is in the <code class="highlighter-rouge">UserBox</code> component.</p>
+<h3 id="union-types-">Union Types <a name="union-types"></a></h3>
 
-<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/userbox.js.png" alt="userbox.js.png" /></p>
+<p>Something that blew my mind was working with <a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types">union types</a>. It was weird syntax I’d never seen, and it threw me until someone explained it to me.</p>
 
-<p>The <code class="highlighter-rouge">UserBox</code> component can do as our header did; import the context object, subscribe to the provider using the <code class="highlighter-rouge">useContext</code> hook and pass in the context using that context object. This is cool because we’re using context two levels below from where it was created without passing props through subsequent components.</p>
+<p>A union type is a type that can be one of two or more types. Let me show you what I mean.</p>
 
-<p>The app would look something similar to the below image. We can see the username string in the <code class="highlighter-rouge">header</code> and the <code class="highlighter-rouge">UserCard</code> components. I am not one for styling things effectively, so hold your judgments.</p>
+<p><img src="https://d4kma4si4pw0z.cloudfront.net/2022-05-22-adventures-in-typescript/union-type.png" alt="union-type" /></p>
 
-<p><img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/whole-app.jpg" alt="The Whole App" /></p>
+<p>We defined <code class="highlighter-rouge">data</code>, which can be either a string or a variable. The pipe operator, <code class="highlighter-rouge">|</code>, which is <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators#bitwise_operators">the bitwise OR operator in JavaScript</a>, denotes the different types of which this variable could be. Below are the results from printing this.</p>
+
+<p><img src="https://d4kma4si4pw0z.cloudfront.net/2022-05-22-adventures-in-typescript/union-type-assignment.png" alt="union-type-assignment.png" /></p>
+
+<p>So we can assign multiple types to this variable through union types.</p>
+
+<p>This one is pretty simple, but we have union types in the source code at work that could be one of ten different types.</p>
+
+<p>This is again great for code reuse in that we can use assets differently due to them being able to take the form of more than one type and have different behavior.</p>
 
 <h3 id="conclusion-">Conclusion <a name="conclusion"></a></h3>
 
-<p>Changing the value of the state would cause a render for the other components subscribed to the context. So it could cause issues if the state is constantly changing. So context fits nicely with a global state that is not likely to change often.</p>
+<p>There is a ton of other stuff I’ve learned. Much of which is still in my notes and on my <a href="https://github.com/georgeoffley/til">Today I Learned repo</a> and in need of digesting.</p>
 
-<p>The code for the above example can be <a href="https://github.com/georgeoffley/Blog-Code/tree/3f6e720bfedcc049c73e8a2fd14b8c06ec7edf78/context-in-react/context-in-react">found on my GitHub</a>.</p>
-
-<p>This has been an interesting learning experience. I’m happy to have gotten one of the fundamentals of React down on paper, so to speak. I hope this helps someone new coming into the React scene.</p>
+<p>This is just the beginning. I have an opportunity to learn so much from this group of engineers, and I am excited. In doing that, maybe I can help someone else learn too!</p>
 
 <p>-George</p>
 
@@ -343,45 +354,43 @@
     <footer class="post-footer">
         <div class="share">Share
             <ul class="social-networks">
-                <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Context In React&p[summary]=
+                <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Adventures In TypeScript&p[summary]=
     
 
 
 Table Of Contents
 
   Introduction
-  Data In React
-  Context In React
-  Context In Use
+  TypeScript So Far
+  Type Definitions In Functions
+  Generics
+  Union Types
   Conclusion
 
 
-Introduction 
-
-React offers ...&p[url]=https://georgeoffley.com/blog/context-in-react.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></li>
-                <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/blog/context-in-react.html&text=
+Int...&p[url]=https://georgeoffley.com/blog/adventures-in-typescript.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></li>
+                <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/blog/adventures-in-typescript.html&text=
     
 
 
 Table Of Contents
 
   Introduction
-  Data In React
-  Context In React
-  Context In Use
+  TypeScript So Far
+  Type Definitions In Functions
+  Generics
+  Union Types
   Conclusion
 
 
-Introduction 
-
-React offers ...&hashtags=React,JavaScript,Newbie," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+Int...&hashtags=TypeScript,JavaScript,Newbie," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
             </ul>
         </div>
         
         <div class="tags">
             <ul>
                 
-                <li><a href="https://georgeoffley.com/tag/React">React</a></li>
+                <li><a href="https://georgeoffley.com/tag/TypeScript">TypeScript</a></li>
                 
                 <li><a href="https://georgeoffley.com/tag/JavaScript">JavaScript</a></li>
                 

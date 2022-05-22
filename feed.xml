@@ -5,9 +5,130 @@
     <description>I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!</description>
     <link>https://georgeoffley.com/</link>
     <atom:link href="https://georgeoffley.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 18 Apr 2022 17:12:37 -0400</pubDate>
-    <lastBuildDate>Mon, 18 Apr 2022 17:12:37 -0400</lastBuildDate>
+    <pubDate>Sun, 22 May 2022 13:44:51 -0400</pubDate>
+    <lastBuildDate>Sun, 22 May 2022 13:44:51 -0400</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
+    
+      <item>
+        <title>Adventures In TypeScript</title>
+        <description>&lt;figure&gt;
+    &lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/768px-Typescript_logo_2020.svg.png?20210506173343&quot; /&gt;
+&lt;/figure&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#ts-so-far&quot;&gt;TypeScript So Far&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#type-definitions-in-functions&quot;&gt;Type Definitions In Functions&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#generics&quot;&gt;Generics&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#union-types&quot;&gt;Union Types&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#conclusion&quot;&gt;Conclusion&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;introduction-&quot;&gt;Introduction &lt;a name=&quot;introduction&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;I started a new job, and the stack is entirely different from what I know. Allow me a moment to break it down.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;First Engineering job stack: PHP, HTML/CSS, VBScript, C#,.Net, and MySQL. No JavaScript&lt;/li&gt;
+  &lt;li&gt;Second job stack: Python, Go, MySQL, Flux (custom functional language). Still, no JavaScript.&lt;/li&gt;
+  &lt;li&gt;New job: &lt;strong&gt;It’s all JavaScript&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://media.giphy.com/media/KupdfnqWwV7J6/giphy.gif&quot; alt=&quot;Terrifying Screams&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Well, TypeScript. But even still.&lt;/p&gt;
+
+&lt;p&gt;I’ve had to become fluent in a variety of languages, but the JavaScript ecosystem was never on the list until now. Closest I ever got to building anything was writing tiny, mostly stolen from Stack Overflow, APIs using Express. So what am I to do when I get offered a position building some cool stuff with some incredible people? Say no? I don’t think so.&lt;/p&gt;
+
+&lt;p&gt;As you get further into your career, you start seeing new organization’s coding stuff is like everyone else’s coding stuff. It’s just a matter of implementation. So I’ll spend the next few weeks diving in, asking tons of questions, and learning to understand this—no big deal.&lt;/p&gt;
+
+&lt;p&gt;In the meantime, I’ll write about some of the stuff I’ve learned, starting with my adventure’s learning TypeScript.&lt;/p&gt;
+
+&lt;h3 id=&quot;typescript-so-far-&quot;&gt;TypeScript So Far &lt;a name=&quot;ts-so-far&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.pinimg.com/originals/49/75/86/497586976df92a1b7658f930c1bc299e.png&quot; alt=&quot;Chucki Finster image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;TypeScript is nitpicky. If I were to make a list of program languages as cartoon characters, I’d put TypeScript beside Chuckie Finster from Rugrats. Quick to point out the dangers and not quiet about their objections. However, the more I learn it, the more it becomes the thing needed to maintain the chaotic, almost Tommy Pickles-like nature of JavaScript. I’m starting to become a fan.&lt;/p&gt;
+
+&lt;p&gt;Everyone needs a real one like Chuck Finster on their adventures.&lt;/p&gt;
+
+&lt;p&gt;Coming from Python as my primary tool in the last job, I needed to shake off the cobwebs for statically typed languages. Just make sure the types match. No big deal, right? Mostly.&lt;/p&gt;
+
+&lt;p&gt;TypeScript takes this a great deal further in its implementations. Let’s go over what I mean.&lt;/p&gt;
+
+&lt;h3 id=&quot;type-definitions-in-functions-&quot;&gt;Type Definitions In Functions &lt;a name=&quot;type-definitions-in-functions&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;In Python, everything is an object. In TypeScript, objects are just everywhere. One example is the use of objects defined in the function signature.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://d4kma4si4pw0z.cloudfront.net/2022-05-22-adventures-in-typescript/obj-in-function-def.png&quot; alt=&quot;Greeting function&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In this example, we define the object &lt;code class=&quot;highlighter-rouge&quot;&gt;options&lt;/code&gt; and then give the parameters in the form of function arguments. That makes sense for maintainability. A single type that is only used in one spot is a perfect candidate. It also helps that the IntelliSense will be able to pick up on the type and give you the ability to access those properties in the autocomplete.&lt;/p&gt;
+
+&lt;h3 id=&quot;generics-&quot;&gt;Generics &lt;a name=&quot;generics&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.typescriptlang.org/docs/handbook/2/generics.html&quot;&gt;Generics&lt;/a&gt; are stand-ins used for passing around data types where the type of an object or property might not be known. TypeScript takes these to an interesting extreme. Let’s take a look.&lt;/p&gt;
+
+&lt;p&gt;Generics can be used in interfaces; &lt;a href=&quot;https://www.typescriptlang.org/docs/handbook/2/objects.html&quot;&gt;interfaces are an abstract type used for holding data&lt;/a&gt;. See what I mean below.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://d4kma4si4pw0z.cloudfront.net/2022-05-22-adventures-in-typescript/interface-generic.png&quot; alt=&quot;Generics for interfaces&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Here we define and interface &lt;code class=&quot;highlighter-rouge&quot;&gt;Model&lt;/code&gt; and assign it the type &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;;T&amp;gt;&lt;/code&gt;; you use the angle brackets to pass in types. The idea here is that this &lt;code class=&quot;highlighter-rouge&quot;&gt;Model&lt;/code&gt; interface can be reused and take the form of many different model types. &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;T&amp;gt;&lt;/code&gt; is just a stand-in and can be used by any type. The generic is then passed into the &lt;code class=&quot;highlighter-rouge&quot;&gt;value&lt;/code&gt; property because we don’t know what the value could be.&lt;/p&gt;
+
+&lt;p&gt;So going down into the variable definition for &lt;code class=&quot;highlighter-rouge&quot;&gt;newModel&lt;/code&gt; we are looking to pass in a string type, and we do that by using the &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;&amp;gt;&lt;/code&gt; angle brackets. Finally, we assign the &lt;code class=&quot;highlighter-rouge&quot;&gt;value&lt;/code&gt; property to the string &lt;code class=&quot;highlighter-rouge&quot;&gt;&quot;Brenda&quot;&lt;/code&gt;. You can see the printout below that. Now we can pass in any data type we’d like in this interface and use that same type as the value property.&lt;/p&gt;
+
+&lt;p&gt;Cool right? You can do that with functions too! As seen below.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://d4kma4si4pw0z.cloudfront.net/2022-05-22-adventures-in-typescript/function-generic.png&quot; alt=&quot;Generics for functions&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So we have a &lt;code class=&quot;highlighter-rouge&quot;&gt;User&lt;/code&gt; interface with two properties which will serve as an example of a data type for use to pass in. Then we have a function below where the idea is that it will be reused to grab any kind of resource from an API.&lt;/p&gt;
+
+&lt;p&gt;In the &lt;code class=&quot;highlighter-rouge&quot;&gt;getResource&lt;/code&gt; function, you can see where the usefulness comes in; Seeing as we’re not sure what type of data we’re going to get, we can pass in the &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;T&amp;gt;&lt;/code&gt; generic and then use that generic to return an array of types &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;T&amp;gt;&lt;/code&gt;. Here we can safely use the &lt;code class=&quot;highlighter-rouge&quot;&gt;User&lt;/code&gt; interface or any other interface. Check out the results.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://d4kma4si4pw0z.cloudfront.net/2022-05-22-adventures-in-typescript/function-generic-alocation.png&quot; alt=&quot;Use of Generics in functions&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We called the &lt;code class=&quot;highlighter-rouge&quot;&gt;getResource&lt;/code&gt; function and passed in the &lt;code class=&quot;highlighter-rouge&quot;&gt;User&lt;/code&gt; type, and we can then map out the results from the &lt;code class=&quot;highlighter-rouge&quot;&gt;User&lt;/code&gt; type. As seen in the notes, we’ll also have access to the type properties via autocomplete.&lt;/p&gt;
+
+&lt;h3 id=&quot;union-types-&quot;&gt;Union Types &lt;a name=&quot;union-types&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Something that blew my mind was working with &lt;a href=&quot;https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types&quot;&gt;union types&lt;/a&gt;. It was weird syntax I’d never seen, and it threw me until someone explained it to me.&lt;/p&gt;
+
+&lt;p&gt;A union type is a type that can be one of two or more types. Let me show you what I mean.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://d4kma4si4pw0z.cloudfront.net/2022-05-22-adventures-in-typescript/union-type.png&quot; alt=&quot;union-type&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We defined &lt;code class=&quot;highlighter-rouge&quot;&gt;data&lt;/code&gt;, which can be either a string or a variable. The pipe operator, &lt;code class=&quot;highlighter-rouge&quot;&gt;|&lt;/code&gt;, which is &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Operators#bitwise_operators&quot;&gt;the bitwise OR operator in JavaScript&lt;/a&gt;, denotes the different types of which this variable could be. Below are the results from printing this.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://d4kma4si4pw0z.cloudfront.net/2022-05-22-adventures-in-typescript/union-type-assignment.png&quot; alt=&quot;union-type-assignment.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So we can assign multiple types to this variable through union types.&lt;/p&gt;
+
+&lt;p&gt;This one is pretty simple, but we have union types in the source code at work that could be one of ten different types.&lt;/p&gt;
+
+&lt;p&gt;This is again great for code reuse in that we can use assets differently due to them being able to take the form of more than one type and have different behavior.&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusion-&quot;&gt;Conclusion &lt;a name=&quot;conclusion&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;There is a ton of other stuff I’ve learned. Much of which is still in my notes and on my &lt;a href=&quot;https://github.com/georgeoffley/til&quot;&gt;Today I Learned repo&lt;/a&gt; and in need of digesting.&lt;/p&gt;
+
+&lt;p&gt;This is just the beginning. I have an opportunity to learn so much from this group of engineers, and I am excited. In doing that, maybe I can help someone else learn too!&lt;/p&gt;
+
+&lt;p&gt;-George&lt;/p&gt;
+</description>
+        <pubDate>Sun, 22 May 2022 12:00:00 -0400</pubDate>
+        <link>https://georgeoffley.com/blog/adventures-in-typescript.html</link>
+        <guid isPermaLink="true">https://georgeoffley.com/blog/adventures-in-typescript.html</guid>
+        
+        <category>TypeScript</category>
+        
+        <category>JavaScript</category>
+        
+        <category>Newbie</category>
+        
+        
+        <category>Blog</category>
+        
+      </item>
     
       <item>
         <title>Context In React</title>
@@ -885,84 +1006,6 @@
         <category>Lambda</category>
         
         <category>API Gateway</category>
-        
-        
-        <category>Blog</category>
-        
-      </item>
-    
-      <item>
-        <title>Shenanigans with Shaders</title>
-        <description>&lt;figure&gt;
-    &lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-11-21-shenanigans-in-shaders/cover.jpg&quot; /&gt;
-&lt;/figure&gt;
-
-&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#shaders&quot;&gt;Shaders&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#setup&quot;&gt;Setup&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#shader_code&quot;&gt;Shader Code&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#conslusion&quot;&gt;Conclusion&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;For those of you who love rabbit holes, learning graphics programming is a pretty deep one. There’s always some new thing to learn, there’s a bunch of different new languages and toolsets to know, and on top of all that, &lt;a href=&quot;https://www.youtube.com/watch?v=tt_gPXpx0eo&amp;amp;t=101s&amp;amp;ab_channel=SamwellTarly&quot;&gt;there’s math&lt;/a&gt;. Like anything else in programming, you pick up momentum with each new thing you build, so I &lt;a href=&quot;https://github.com/Xibanya/ShaderTutorials&quot;&gt;found a tutorial&lt;/a&gt; and started making shaders. I know very little about this. However, I’m writing what I’m learning, so don’t come for me if I’m off on anything.&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;h3 id=&quot;shaders-&quot;&gt;Shaders &lt;a name=&quot;shaders&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;A shader is a program that runs on the GPU as part of the &lt;a href=&quot;https://en.wikipedia.org/wiki/Graphics_pipeline&quot;&gt;graphics pipeline&lt;/a&gt;. We’re going to focus primarily on shaders in Unity. There are other ways to tackle this, but Unity gives an easy setup to get started quickly. For the context of Unity, a shader is a small script containing logic and calculations for determining the colors of a pixel.&lt;/p&gt;
-
-&lt;p&gt;In Unity, we create &lt;em&gt;shader objects&lt;/em&gt; which act as wrappers for our shader program. A shader object exists in a &lt;em&gt;shader asset&lt;/em&gt; which is just the script we are writing. Creating these in Unity allows for a great deal of freedom in what we make. What we’ll focus on is adding some basic functionality to a shader. We’ll be focusing on using &lt;a href=&quot;https://docs.unity3d.com/Manual/SL-Reference.html&quot;&gt;&lt;em&gt;ShaderLab&lt;/em&gt;&lt;/a&gt; to create shaders.&lt;/p&gt;
-
-&lt;h3 id=&quot;setup-&quot;&gt;Setup &lt;a name=&quot;setup&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;The first thing to set yourself up making shaders in Unity is Unity. So &lt;a href=&quot;https://unity3d.com/get-unity/download&quot;&gt;download it&lt;/a&gt;, and create a new project.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-11-21-shenanigans-in-shaders/new_scene.png&quot; alt=&quot;New Scene in Unity&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;I won’t give a full rundown of Unity and the stuff you can do. I leave that to &lt;a href=&quot;https://learn.unity.com/&quot;&gt;better minds&lt;/a&gt;. In the &lt;em&gt;Hierarchy Window&lt;/em&gt;, right-click and scroll to &lt;em&gt;3D Object&lt;/em&gt; and click whichever object grabs your fancy. I always pick sphere for testing stuff. Now we have a &lt;a href=&quot;https://en.wikipedia.org/wiki/Polygon_mesh&quot;&gt;&lt;em&gt;3D Mesh&lt;/em&gt;&lt;/a&gt; on the screen that we can begin adding things to it. In the &lt;em&gt;Project Window&lt;/em&gt;, right-click on the word &lt;em&gt;Assets&lt;/em&gt; and create two new folders, &lt;em&gt;Materials&lt;/em&gt; and &lt;em&gt;Shaders&lt;/em&gt;. Double click into the Materials folder, right-click and Create is right at the top -&amp;gt; click Material. Materials are similar to skins we can apply to 3D objects. We will use this new material to add our new shader to the 3D Mesh. After that, drag our new material into the &lt;em&gt;Scene Window&lt;/em&gt; where our sphere is and onto the sphere we made. Now right-click our Shaders folder scroll to Create -&amp;gt; Shader -&amp;gt; Standard Surface Shader. Click the sphere in the Scene window to bring up the &lt;em&gt;Inspector Window&lt;/em&gt;. Finally, drag the shader file over to the inspector window with our sphere covered in our new material. We have just applied our shader to the materials. You should see this in the Inspector Window.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-11-21-shenanigans-in-shaders/test_material.png&quot; alt=&quot;Test Material inspector window&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Now go back to the Project window and double click our new Shader file. Unity will launch an IDE for use to check out the code. You can configure your choice of IDE; I have VSCode configured. Open the Shader file, and let’s check out the code. I created some basic shader code you can use.&lt;/p&gt;
-
-&lt;h3 id=&quot;shader-code-&quot;&gt;Shader Code &lt;a name=&quot;shader_code&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;Here is the complete, minimal shader code:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-11-21-shenanigans-in-shaders/code.png&quot; alt=&quot;Full Shader Code&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;It looks a bit much to anyone new to this, including myself, so let’s take it a section at a time. The first thing at the top, starting with “Shader,” is the &lt;em&gt;Shader Block&lt;/em&gt;. This is used to define our Shader Object. You can use this to define your properties, create many shaders using the &lt;em&gt;SubShader&lt;/em&gt; blocks, assign custom options, and assign a &lt;em&gt;fallback&lt;/em&gt; shader object. Here you can see the name of our shader and that it is in the “Custom” directory.&lt;/p&gt;
-
-&lt;p&gt;Within the Shader block curly brackets, we have our other sections. The first is our &lt;em&gt;Properties&lt;/em&gt;. The properties box is where we define the properties for our materials. A material property is what Unity stores along with our materials. This allows for different configurations within Unity by creating things like sliders and inputs within the Inspector window for us to play around with. We defined two properties, the &lt;em&gt;MainColor&lt;/em&gt; and the &lt;em&gt;MainTexture&lt;/em&gt;. Using square brackets, I outlined which property was the default color and default texture. We also defined the default values for these properties. There’s a bit to these values but suffice it to say, both values are default white.&lt;/p&gt;
-
-&lt;p&gt;The second block is our SubShader; this is where our shader logic goes. You can define multiple sub shaders for many different uses. For example, depending on the graphics hardware you want to support, you can make shaders for the various graphics APIs. Within our block, you can see some code for assigning &lt;a href=&quot;https://docs.unity3d.com/Manual/SL-SubShaderTags.html&quot;&gt;&lt;em&gt;tags&lt;/em&gt;&lt;/a&gt;, assigning &lt;a href=&quot;https://docs.unity3d.com/Manual/SL-ShaderLOD.html&quot;&gt;&lt;em&gt;levels of detail (LOD)&lt;/em&gt;&lt;/a&gt;, and the &lt;a href=&quot;https://en.wikibooks.org/wiki/Cg_Programming/Unity&quot;&gt;&lt;em&gt;CGPROGRAM&lt;/em&gt;&lt;/a&gt; block. I want to draw your attention to this section of the code:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-11-21-shenanigans-in-shaders/output.png&quot; alt=&quot;Output function&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;First, we define the data types for our inputs and outputs and create a function for us to serve the outputs into unity. Our Input we set up as &lt;em&gt;uv_Maintex&lt;/em&gt;; this allows for us to input a texture object. Then we create a &lt;em&gt;fixed4&lt;/em&gt; variable for our &lt;em&gt;_Color&lt;/em&gt; attribute. The &lt;em&gt;o.Albedo&lt;/em&gt; parameter is what is used to control the base color of the surface. Here we are taking the values of our texture and multiplying them by our color input. The code above gets you something similar to this:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2021-11-21-shenanigans-in-shaders/color.png&quot; alt=&quot;Output function&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;I was proud of myself the first time I made this from memory. Our coded shader lets us control the color of the material and add basic textures to it. Working in graphics does not lead to instant gratification, as anything you do requires a ton of setup. However, this and &lt;a href=&quot;https://www.shadertoy.com/&quot;&gt;ShaderToy&lt;/a&gt; get you that dopamine hit.&lt;/p&gt;
-
-&lt;h3 id=&quot;conclusion-&quot;&gt;Conclusion &lt;a name=&quot;conclusion&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;Above I went through some fundamentals of shaders in Unity. I skipped over a ton of information as I’m still learning a lot, and a full informed explainer would be twenty pages long. There is a lot to programming graphics and shaders specifically. I suggest you check out stuff like &lt;a href=&quot;https://github.com/Xibanya/ShaderTutorials&quot;&gt;Team Dogpit’s shader tutorial&lt;/a&gt; for a way better deep dive. I’m excited to dig into this world. I want to learn to create some of the incredible stories I see in animation, and any first step is a step in the right direction. Thanks for reading.&lt;/p&gt;
-
-&lt;p&gt;-George&lt;/p&gt;
-</description>
-        <pubDate>Sun, 21 Nov 2021 12:00:00 -0500</pubDate>
-        <link>https://georgeoffley.com/blog/shinanigans-with-shaders-copy.html</link>
-        <guid isPermaLink="true">https://georgeoffley.com/blog/shinanigans-with-shaders-copy.html</guid>
-        
-        <category>Graphics</category>
-        
-        <category>Unity</category>
-        
-        <category>ShaderLab</category>
         
         
         <category>Blog</category>

@@ -61,6 +61,10 @@
 <lastmod>2022-04-18T12:00:00-04:00</lastmod>
 </url>
 <url>
+<loc>https://georgeoffley.com/blog/adventures-in-typescript.html</loc>
+<lastmod>2022-05-22T12:00:00-04:00</lastmod>
+</url>
+<url>
 <loc>https://georgeoffley.com/404</loc>
 </url>
 <url>
@@ -128,6 +132,9 @@
 </url>
 <url>
 <loc>https://georgeoffley.com/tag/Tailwind/</loc>
+</url>
+<url>
+<loc>https://georgeoffley.com/tag/TypeScript/</loc>
 </url>
 <url>
 <loc>https://georgeoffley.com/categories/Blog/</loc>
