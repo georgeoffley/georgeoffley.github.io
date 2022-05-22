@@ -5,8 +5,8 @@
     <description>I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!</description>
     <link>https://georgeoffley.com/</link>
     <atom:link href="https://georgeoffley.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 22 May 2022 13:44:51 -0400</pubDate>
-    <lastBuildDate>Sun, 22 May 2022 13:44:51 -0400</lastBuildDate>
+    <pubDate>Sun, 22 May 2022 13:46:24 -0400</pubDate>
+    <lastBuildDate>Sun, 22 May 2022 13:46:24 -0400</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
     
       <item>
@@ -28,6 +28,8 @@
 &lt;h3 id=&quot;introduction-&quot;&gt;Introduction &lt;a name=&quot;introduction&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
 
 &lt;p&gt;I started a new job, and the stack is entirely different from what I know. Allow me a moment to break it down.&lt;/p&gt;
+
+&lt;!--more--&gt;
 
 &lt;ul&gt;
   &lt;li&gt;First Engineering job stack: PHP, HTML/CSS, VBScript, C#,.Net, and MySQL. No JavaScript&lt;/li&gt;
