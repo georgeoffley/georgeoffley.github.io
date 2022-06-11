@@ -200,6 +200,8 @@
             
                 
             
+                
+            
         </div>
         
     
@@ -228,6 +230,91 @@
 
 
                 
+<article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
+    <header class="post-header">
+        <ul>
+            <li><time datetime="2022-06-11T12:00:00-04:00" itemprop="datePublished">11 Jun, 2022</time></li>
+            
+                <li class="cats">
+                    
+                        <a href="/categories/Blog/">Blog</a>
+                    
+                </li>
+            
+        </ul>
+        <h2 itemprop="name headline"><a href="https://georgeoffley.com/blog/adventures-in-typescript-destructuring-and-code-organization.html">Adventures In TypeScript: Destructuring and Code Organization</a></h2>
+    </header>
+
+    <div class="post-content">
+        <figure>
+    <img src="https://d4kma4si4pw0z.cloudfront.net/2022-06-11-adventures-in-typescript-destructuring-and-code-organization/cover.png" />
+</figure>
+
+<h2 id="table-of-contents">Table Of Contents</h2>
+<ul>
+  <li><a href="#introduction">Introduction</a></li>
+  <li><a href="#destructuring">Destructuring</a></li>
+  <li><a href="#destructuring-imports">Destructuring Imports</a></li>
+  <li><a href="#destructuring-imports">A Cleaner Way To Destructure Imports</a></li>
+  <li><a href="#my-conclusions">My Conclusions</a></li>
+</ul>
+
+<h3 id="introduction-">Introduction <a name="introduction"></a></h3>
+
+<p>I’ve been diving deep into the JavaScript ecosystem via TypeScript. One thing I’m observing in the more established engineering culture I’m part of now is the idea of cleaner code using things like destructuring. I am still new to this type of stack, so I wanted to talk about it and understand how we can better organize code.</p>
+
+
+
+        
+            <p><a href="https://georgeoffley.com/blog/adventures-in-typescript-destructuring-and-code-organization.html" role="button">Read More</a></p>
+        
+    </div>
+
+    <footer class="post-footer">
+        <div class="share">Share
+            <ul class="social-networks">
+               <!-- <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Adventures In TypeScript: Destructuring and Code Organization&p[summary]=
+    
+
+
+Table Of Contents
+
+  Introduction
+  Destructuring
+  Destructuring Imports
+  A Cleaner Way To Destructure Imports
+  My Conclusions...&p[url]=https://georgeoffley.com/blog/adventures-in-typescript-destructuring-and-code-organization.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>-->
+                <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/blog/adventures-in-typescript-destructuring-and-code-organization.html&text=
+    
+
+
+Table Of Contents
+
+  Introduction
+  Destructuring
+  Destructuring Imports
+  A Cleaner Way To Destructure Imports
+  My Conclusions...&hashtags=TypeScript,JavaScript,Destructuring,Newbie," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+            </ul>
+        </div>
+        
+        <div class="tags">
+            <ul>
+                
+                <li><a href="https://georgeoffley.com/tag/TypeScript">TypeScript</a></li>
+                
+                <li><a href="https://georgeoffley.com/tag/JavaScript">JavaScript</a></li>
+                
+                <li><a href="https://georgeoffley.com/tag/Destructuring">Destructuring</a></li>
+                
+                <li><a href="https://georgeoffley.com/tag/Newbie">Newbie</a></li>
+                
+            </ul>
+        </div>
+        
+    </footer>
+</article>
+
 <article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
     <header class="post-header">
         <ul>
@@ -1040,92 +1127,6 @@ Recently, I was experiment...&hashtags=Docker,Intermediate," rel="noreferrer" ta
                 <li><a href="https://georgeoffley.com/tag/Docker">Docker</a></li>
                 
                 <li><a href="https://georgeoffley.com/tag/Intermediate">Intermediate</a></li>
-                
-            </ul>
-        </div>
-        
-    </footer>
-</article>
-
-<article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
-    <header class="post-header">
-        <ul>
-            <li><time datetime="2022-02-09T12:00:00-05:00" itemprop="datePublished">9 Feb, 2022</time></li>
-            
-                <li class="cats">
-                    
-                        <a href="/categories/Blog/">Blog</a>
-                    
-                </li>
-            
-        </ul>
-        <h2 itemprop="name headline"><a href="https://georgeoffley.com/blog/using-api-gateway-with-lambda.html">Using Amazon API Gateway with Lambda</a></h2>
-    </header>
-
-    <div class="post-content">
-        <figure>
-    <img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-02-09-using-api-gateway-with-lambda/cover.png" />
-</figure>
-
-<h2 id="table-of-contents">Table Of Contents</h2>
-<ul>
-  <li><a href="#introduction">Introduction</a></li>
-  <li><a href="#amazon_api_gateway">Amazon API Gateway</a></li>
-  <li><a href="#setting_up_an_api">Setting up an API</a></li>
-  <li><a href="#adding_the_trigger">Adding the Trigger</a></li>
-  <li><a href="#setting_the_methods">Setting the Methods</a></li>
-  <li><a href="#conclusion">Conclusion</a></li>
-</ul>
-
-<h3 id="introductions-">Introductions <a name="Introduction"></a></h3>
-
-<p>I follow this movie podcast where they review and talk about well movies. It’s a fantastic podcast with a diverse set of people who’ve worked in the industry a long time, and I enjoy their opinions. At the end of each episode, they do a “Staff Pick” where they pick out a movie that shares themes with the movie they just reviewed or movies they think people should see. As I don’t have time to watch all the movies they suggest every week, I need to keep a running list of these films. They offer some good stuff.</p>
-
-
-
-        
-            <p><a href="https://georgeoffley.com/blog/using-api-gateway-with-lambda.html" role="button">Read More</a></p>
-        
-    </div>
-
-    <footer class="post-footer">
-        <div class="share">Share
-            <ul class="social-networks">
-               <!-- <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Using Amazon API Gateway with Lambda&p[summary]=
-    
-
-
-Table Of Contents
-
-  Introduction
-  Amazon API Gateway
-  Setting up an API
-  Adding the Trigger
-  Setting the Methods
-  Conclusio...&p[url]=https://georgeoffley.com/blog/using-api-gateway-with-lambda.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>-->
-                <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/blog/using-api-gateway-with-lambda.html&text=
-    
-
-
-Table Of Contents
-
-  Introduction
-  Amazon API Gateway
-  Setting up an API
-  Adding the Trigger
-  Setting the Methods
-  Conclusio...&hashtags=AWS,Lambda,API Gateway," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
-            </ul>
-        </div>
-        
-        <div class="tags">
-            <ul>
-                
-                <li><a href="https://georgeoffley.com/tag/AWS">AWS</a></li>
-                
-                <li><a href="https://georgeoffley.com/tag/Lambda">Lambda</a></li>
-                
-                <li><a href="https://georgeoffley.com/tag/API Gateway">API Gateway</a></li>
                 
             </ul>
         </div>
