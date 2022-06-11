@@ -166,7 +166,7 @@ var index = lunr(function () {
 var store = [{
     "title": "Adventures In TypeScript: Destructuring and Code Organization",
     "link": "/blog/adventures-in-typescript-destructuring-and-code-organization.html",
-    "image": "https://d4kma4si4pw0z.cloudfront.net/2022-06-11-adventures-in-typescript-destructuring-and-code-organization/cover.png",
+    "image": "https://georgeoffley-blog-images.s3.amazonaws.com/2022-06-11-adventures-in-typescript-destructuring-and-code-organization/cover.png",
     "date": "June 11, 2022",
     "category": ["Blog"],
     "excerpt": "Table Of Contents Introduction Destructuring Destructuring Imports A Cleaner Way To Destructure Imports My Conclusions Introduction I’ve been diving deep..."
