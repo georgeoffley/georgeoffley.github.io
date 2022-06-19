@@ -233,6 +233,97 @@
 <article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
     <header class="post-header">
         <ul>
+            <li><time datetime="2022-06-19T12:00:00-04:00" itemprop="datePublished">19 Jun, 2022</time></li>
+            
+                <li class="cats">
+                    
+                        <a href="/categories/Blog/">Blog</a>
+                    
+                </li>
+            
+        </ul>
+        <h2 itemprop="name headline"><a href="https://georgeoffley.com/blog/adventures-in-typescript-typing-my-way-out-of-problems.html">Adventures In TypeScript: Typing My Way Out of Problems</a></h2>
+    </header>
+
+    <div class="post-content">
+        <figure>
+    <img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-06-19-adventures-in-typescript-typing-my-way-out-of-problems/cover.jpg" />
+</figure>
+
+<h2 id="table-of-contents">Table Of Contents</h2>
+<ul>
+  <li><a href="#introduction">Introduction</a></li>
+  <li><a href="#the-problem">The Problem</a></li>
+  <li><a href="#rendering-a-link">Rendering A Link</a></li>
+  <li><a href="#objects-and-typing-issues">Objects And Typing Issues</a></li>
+  <li><a href="#cheating">Cheating</a></li>
+  <li><a href="#another-solution">Another Solution</a></li>
+  <li><a href="#the-better-solution">The Better Solution</a></li>
+</ul>
+
+<h3 id="introduction-">Introduction <a name="introduction"></a></h3>
+
+<p>I’ve been taking more and more tickets with the new gig. This week I was tracking down some text to make some updates, and this was not as simple as I thought it might be, so I decided to take some notes and reflect on some stuff I learned.</p>
+
+
+
+        
+            <p><a href="https://georgeoffley.com/blog/adventures-in-typescript-typing-my-way-out-of-problems.html" role="button">Read More</a></p>
+        
+    </div>
+
+    <footer class="post-footer">
+        <div class="share">Share
+            <ul class="social-networks">
+               <!-- <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Adventures In TypeScript: Typing My Way Out of Problems&p[summary]=
+    
+
+
+Table Of Contents
+
+  Introduction
+  The Problem
+  Rendering A Link
+  Objects And Typing Issues
+  Cheating
+  Another Solution
+  Th...&p[url]=https://georgeoffley.com/blog/adventures-in-typescript-typing-my-way-out-of-problems.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>-->
+                <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/blog/adventures-in-typescript-typing-my-way-out-of-problems.html&text=
+    
+
+
+Table Of Contents
+
+  Introduction
+  The Problem
+  Rendering A Link
+  Objects And Typing Issues
+  Cheating
+  Another Solution
+  Th...&hashtags=TypeScript,JavaScript,React,Newbie," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+            </ul>
+        </div>
+        
+        <div class="tags">
+            <ul>
+                
+                <li><a href="https://georgeoffley.com/tag/TypeScript">TypeScript</a></li>
+                
+                <li><a href="https://georgeoffley.com/tag/JavaScript">JavaScript</a></li>
+                
+                <li><a href="https://georgeoffley.com/tag/React">React</a></li>
+                
+                <li><a href="https://georgeoffley.com/tag/Newbie">Newbie</a></li>
+                
+            </ul>
+        </div>
+        
+    </footer>
+</article>
+
+<article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
+    <header class="post-header">
+        <ul>
             <li><time datetime="2022-06-11T12:00:00-04:00" itemprop="datePublished">11 Jun, 2022</time></li>
             
                 <li class="cats">
@@ -1037,94 +1128,6 @@ We are spinn...&hashtags=Docker,Testing,Intermediate," rel="noreferrer" target="
                 <li><a href="https://georgeoffley.com/tag/Docker">Docker</a></li>
                 
                 <li><a href="https://georgeoffley.com/tag/Testing">Testing</a></li>
-                
-                <li><a href="https://georgeoffley.com/tag/Intermediate">Intermediate</a></li>
-                
-            </ul>
-        </div>
-        
-    </footer>
-</article>
-
-<article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
-    <header class="post-header">
-        <ul>
-            <li><time datetime="2022-03-05T12:00:00-05:00" itemprop="datePublished">5 Mar, 2022</time></li>
-            
-                <li class="cats">
-                    
-                        <a href="/categories/Blog/">Blog</a>
-                    
-                </li>
-            
-        </ul>
-        <h2 itemprop="name headline"><a href="https://georgeoffley.com/blog/shared-memory-in-docker.html">Shared Memory in Docker</a></h2>
-    </header>
-
-    <div class="post-content">
-        <figure>
-    <img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-05-shared-memory-in-docker/cover.png" />
-</figure>
-
-<h2 id="table-of-contents">Table Of Contents</h2>
-<ul>
-  <li><a href="#introduction">Introduction</a></li>
-  <li><a href="#shared_memory_device">Shared Memory Device</a></li>
-  <li><a href="#use_in_docker">Use in Docker</a></li>
-  <li><a href="#conclusion">Conclusion</a></li>
-</ul>
-
-<h3 id="introduction-">Introduction <a name="introduction"></a></h3>
-
-<p>Recently, I was experimenting with system testing on a new stack. While working with <a href="https://www.selenium.dev/documentation/webdriver/remote_webdriver/">Selenium Remote Driver</a> to create <a href="https://en.wikipedia.org/wiki/Headless_browser">headless web browsers</a> (more on that later) to run against my app, I came across a Docker option I had not known. This Docker feature allowed for easily accessible and fast file reading and writing between the host and the container. It was being used as a volume, but I learned it was much more. When I looked it up, it was referred to as a <a href="https://en.wikipedia.org/wiki/Shared_memory"><em>Shared Memory Device</em></a>.</p>
-
-
-
-        
-            <p><a href="https://georgeoffley.com/blog/shared-memory-in-docker.html" role="button">Read More</a></p>
-        
-    </div>
-
-    <footer class="post-footer">
-        <div class="share">Share
-            <ul class="social-networks">
-               <!-- <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Shared Memory in Docker&p[summary]=
-    
-
-
-Table Of Contents
-
-  Introduction
-  Shared Memory Device
-  Use in Docker
-  Conclusion
-
-
-Introduction 
-
-Recently, I was experiment...&p[url]=https://georgeoffley.com/blog/shared-memory-in-docker.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>-->
-                <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/blog/shared-memory-in-docker.html&text=
-    
-
-
-Table Of Contents
-
-  Introduction
-  Shared Memory Device
-  Use in Docker
-  Conclusion
-
-
-Introduction 
-
-Recently, I was experiment...&hashtags=Docker,Intermediate," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
-            </ul>
-        </div>
-        
-        <div class="tags">
-            <ul>
-                
-                <li><a href="https://georgeoffley.com/tag/Docker">Docker</a></li>
                 
                 <li><a href="https://georgeoffley.com/tag/Intermediate">Intermediate</a></li>
                 

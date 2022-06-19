@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta content="text/html; charset=UTF-8" name="Content-Type" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Adventures In TypeScript: Typing My Way Out of Problems | George Offley &mdash; Software Engineer </title>
+    <meta property="og:title" content="Adventures In TypeScript: Typing My Way Out of Problems | George Offley &mdash; Software Engineer " />
+
+    <meta name="description" content="I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!">
+    <meta name="description" property="og:description" content="I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!" />
+
+    <!-- Twitter cards -->
+    <meta name="twitter:site"    content="@georgeoffley">
+    <meta name="twitter:creator" content="@georgeoffley">
+    <meta name="twitter:title"   content="Adventures In TypeScript: Typing My Way Out of Problems">
+
+    
+    <meta name="twitter:description" content="I've trying to bang out tasks at work, so I wrote about one I did this week.">
+    
+
+    
+    <meta name="twitter:card"  content="summary_large_image">
+    <meta name="twitter:image" content="https://georgeoffley-blog-images.s3.amazonaws.com/2022-06-19-adventures-in-typescript-typing-my-way-out-of-problems/cover.jpg">
+    
+    <!-- end of Twitter cards -->
+    
+    <meta property="og:url" content="https://georgeoffley.com/blog/adventures-in-typescript-typing-my-way-out-of-problems.html" />
+
+    <meta property="og:image" content="" />
+
+    <meta name="author" content="George Offley" />
+
+    <meta name="copyright" content="Copyright by George Offley. All Rights Reserved." />
+
+    <style>
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 300;
+            src: local('Roboto Light'), local('Roboto-Light'), url(https://fonts.gstatic.com/s/roboto/v15/Hgo13k-tfSpn0qi1SFdUfVtXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 400;
+            src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v15/CWB0XYA8bzo0kSThX0UTuA.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 700;
+            src: local('Roboto Bold'), local('Roboto-Bold'), url(https://fonts.gstatic.com/s/roboto/v15/d-6IYplOFocCacKzxwXSOFtXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 900;
+            src: local('Roboto Black'), local('Roboto-Black'), url(https://fonts.gstatic.com/s/roboto/v15/mnpfi9pxYH-Go5UiibESIltXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 300;
+            src: local('Roboto Light Italic'), local('Roboto-LightItalic'), url(https://fonts.gstatic.com/s/roboto/v15/7m8l7TlFO-S3VkhHuR0at44P5ICox8Kq3LLUNMylGO4.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 400;
+            src: local('Roboto Italic'), local('Roboto-Italic'), url(https://fonts.gstatic.com/s/roboto/v15/vPcynSL0qHq_6dX7lKVByfesZW2xOQ-xsNqO47m55DA.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 700;
+            src: local('Roboto Bold Italic'), local('Roboto-BoldItalic'), url(https://fonts.gstatic.com/s/roboto/v15/t6Nd4cfPRhZP44Q5QAjcC44P5ICox8Kq3LLUNMylGO4.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 900;
+            src: local('Roboto Black Italic'), local('Roboto-BlackItalic'), url(https://fonts.gstatic.com/s/roboto/v15/bmC0pGMXrhphrZJmniIZpY4P5ICox8Kq3LLUNMylGO4.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+    </style>
+    
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    
+    <link rel="stylesheet" href="https://georgeoffley.com/assets/css/main.css">
+
+    <link rel="canonical" href="https://georgeoffley.com/blog/adventures-in-typescript-typing-my-way-out-of-problems.html">
+
+    <link rel="alternate" type="application/rss+xml" title="" href="https://georgeoffley.com/feed.xml">
+</head>
+
+    <body>
+        <div class="wrapper">
+            <aside class="user-profile fixed" role="complementary">
+    <div class="burger">
+        <input class="trigger hidden" id="toggleBurger" type="checkbox" />
+        <label for="toggleBurger">
+            <span>Navigation</span>
+        </label>
+    </div>
+
+    <div class="compact-header">
+        <a class="avatar" href="https://georgeoffley.com"><img alt="Avatar" src="https://raw.githubusercontent.com/georgeoffley/georgeoffley.github.io/master/assets/images/george_headshot_small.jpg" /></a>
+        <div class="my-info">
+            <strong class="my-name">George Offley</strong>
+            <span class="my-job-title">Software Engineer</span>
+        </div>
+    </div>
+
+    
+        
+        <div class="mainmenu">
+            <a href="https://georgeoffley.com" >Home</a>
+            
+                
+            
+                
+            
+                
+            
+                
+                    <a href="https://georgeoffley.com/challenges/" >Challenges</a>
+                
+            
+                
+                    <a href="https://georgeoffley.com/blog/" >Blog</a>
+                
+            
+                
+                    <a href="https://georgeoffley.com/about_me/" >About Me</a>
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+        </div>
+        
+    
+
+    <p class="about-me">I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!</p>
+
+    <ul class="socials">
+        <li><a href="https://twitter.com/georgeoffley"><svg title="twitter" width="16" height="16" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li><li><a href="https://www.linkedin.com/in/georgeoffley/"><svg title="linkedin" width="16" height="16" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#linkedin-icon"></use></svg></a></li><li><a href="https://github.com/georgeoffley"><svg title="github" width="16" height="16" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#github-icon"></use></svg></a></li>
+
+        
+
+        
+    </ul>
+</aside>
+
+            <main class="the-content" role="main">
+                <div class="search" role="search">
+    <div>
+        <div class="show-results-count">0 Results</div>
+        <div class="search-holder">
+            <input type="text" id="search-input" placeholder="search for..." />
+        </div>
+    </div>
+    <ul id="results-container" class="results-container"></ul>
+</div>
+
+
+                <article class="post single" role="article" itemscope itemtype="http://schema.org/BlogPosting">
+    <header class="post-header">
+        <ul>
+            <li><time datetime="2022-06-19T12:00:00-04:00" itemprop="datePublished">19 Jun, 2022</time></li>
+            
+                
+                <li class="cats">
+                    
+                        <a href="/categories/Blog/">Blog</a>
+                    
+                </li>
+                
+            
+        </ul>
+        <h2 itemprop="name headline">Adventures In TypeScript: Typing My Way Out of Problems</h2>
+    </header>
+
+    <div class="post-content">
+        <figure>
+    <img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-06-19-adventures-in-typescript-typing-my-way-out-of-problems/cover.jpg" />
+</figure>
+
+<h2 id="table-of-contents">Table Of Contents</h2>
+<ul>
+  <li><a href="#introduction">Introduction</a></li>
+  <li><a href="#the-problem">The Problem</a></li>
+  <li><a href="#rendering-a-link">Rendering A Link</a></li>
+  <li><a href="#objects-and-typing-issues">Objects And Typing Issues</a></li>
+  <li><a href="#cheating">Cheating</a></li>
+  <li><a href="#another-solution">Another Solution</a></li>
+  <li><a href="#the-better-solution">The Better Solution</a></li>
+</ul>
+
+<h3 id="introduction-">Introduction <a name="introduction"></a></h3>
+
+<p>I’ve been taking more and more tickets with the new gig. This week I was tracking down some text to make some updates, and this was not as simple as I thought it might be, so I decided to take some notes and reflect on some stuff I learned.</p>
+
+<!--more-->
+
+<h3 id="the-problem-">The Problem <a name="the-problem"></a></h3>
+
+<p>The task was simple, update some text on the platform. I quickly discovered that it was not as straightforward as I thought.</p>
+
+<p>The first issue was trying to track down where some of these values which needed changing lived.</p>
+
+<p>The second problem was the updated content included a link to some external docs for our platform.</p>
+
+<h3 id="rendering-a-link-">Rendering A Link <a name="rendering-a-link"></a></h3>
+
+<p>So I found where the objects storing the text were. That problem is solved. On to the next</p>
+
+<p>So how do I add a link to these strings I mentioned? It seemed easy; you replace the string, but how do you make the link element work?</p>
+
+<p>The solution should have been more obvious to me at that point. But sometimes I forget stuff; I’m human. I’m allowed. So let’s go through my process.</p>
+
+<p>I thought I could just put an <a href="https://www.w3schools.com/tags/tag_a.asp">href tag</a> into the string value I was updating. Like so.</p>
+
+<p><img src="https://d4kma4si4pw0z.cloudfront.net/2022-06-19-adventures-in-typescript-typing-my-way-out-of-problems/first-though-link-string.png" alt="First Thought Link String" /></p>
+
+<p>And I pass it into the JSX like this.</p>
+
+<p><img src="https://d4kma4si4pw0z.cloudfront.net/2022-06-19-adventures-in-typescript-typing-my-way-out-of-problems/first-though-link-string-jsx.png" alt="First Thought Link String in JSX" /></p>
+
+<p>That won’t work since you end up with this.</p>
+
+<p><img src="https://d4kma4si4pw0z.cloudfront.net/2022-06-19-adventures-in-typescript-typing-my-way-out-of-problems/link-in-jsx.png" alt="Link in JSX" /></p>
+
+<p>Since JSX will interpolate this as a string or a JavaScript function and won’t interpret pure HTML elements as HTML tags, this isn’t my solution.</p>
+
+<p>So we needed something closer to this.</p>
+
+<p><img src="https://d4kma4si4pw0z.cloudfront.net/2022-06-19-adventures-in-typescript-typing-my-way-out-of-problems/link-in-jsx-link-component.png" alt="Link Component in JSX" /></p>
+
+<p>I’m using <a href="https://mui.com/material-ui/react-link/">the prebuilt Link component</a> provided by Material UI, and I needed to get the link passed into this component in our JSX as a string, which solves this problem and takes us to the next problem.</p>
+
+<h3 id="objects-and-typing-issues-">Objects and Typing Issues <a name="objects-and-typing-issues"></a></h3>
+
+<p>Now I have a new goal.</p>
+
+<p>I created an object literal to hold my values and possibly use it to hold URLs for additional help docs in the future.</p>
+
+<p><img src="https://d4kma4si4pw0z.cloudfront.net/2022-06-19-adventures-in-typescript-typing-my-way-out-of-problems/doc-map-literal.png" alt="DocMap literal" /></p>
+
+<p>The next step was to pass that URL around. Here’s another layer; I wanted to reuse a string value used to grab all the config options to cut down on hard-coded stuff. So I made the key in my object literal match possible values for this string object. Something like this.</p>
+
+<p><img src="https://d4kma4si4pw0z.cloudfront.net/2022-06-19-adventures-in-typescript-typing-my-way-out-of-problems/variable-as-key.png" alt="Variable as Key" /></p>
+
+<p>We’re using bracket notation to pass in the object key and have it evaluated as the variable <code class="highlighter-rouge">key</code> rather than a standard dot notation, which would throw an error.</p>
+
+<p>Although you undoubtedly noticed the squiggly line yelling at me, that gave me this message that I didn’t understand.</p>
+
+<p><img src="https://d4kma4si4pw0z.cloudfront.net/2022-06-19-adventures-in-typescript-typing-my-way-out-of-problems/string-ts-error.png" alt="String TypeScript error" /></p>
+
+<p>What I initially did confused TypeScript, and thus the error vomit. If we look at the error, though, it’s less error vomit and more a breadcrumb trail back to where I made a mistake.</p>
+
+<p>Our string variable <code class="highlighter-rouge">key</code> is typed as a string, but TypeScript has no idea what the context is since we’re using an object literal without a type. So for TypeScript, <code class="highlighter-rouge">key</code> could be anything in my code, and now I’ve confused it. Here’s where I stepped on a landmine.</p>
+
+<h3 id="cheating-">Cheating <a name="cheating"></a></h3>
+
+<p>My first solution was to cast my object as the <a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any"><code class="highlighter-rouge">any</code></a> type.</p>
+
+<p><img src="https://d4kma4si4pw0z.cloudfront.net/2022-06-19-adventures-in-typescript-typing-my-way-out-of-problems/doc-map-any.png" alt="DocMap as any type" /></p>
+
+<p>This cleared the error, and I could run the project with the behavior I wanted. Problem solved, correct? Nah.</p>
+
+<p>TypeScript introduced type checking into JavaScript, effectively making it a <a href="https://developer.mozilla.org/en-US/docs/Glossary/Static_typing">statically typed language</a>. So the types of objects are known at compile time. This helps create type-safe code and catch problems earlier. The issue with my solution is that it skips the good parts of TypeScript by <a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any">turning off type checking</a>.</p>
+
+<p>Why use the language if we’re not going to use the language? I looked for a better solution.</p>
+
+<h3 id="another-solution-">Another Solution <a name="another-solution"></a></h3>
+
+<p>A not great solution would be to use some magic.</p>
+
+<p><img src="https://d4kma4si4pw0z.cloudfront.net/2022-06-19-adventures-in-typescript-typing-my-way-out-of-problems/type-assertions.png" alt="Type Assertion solution" /></p>
+
+<p>A bit is going on here. We’re still using the bracket notation, but in the brackets, we’re casting the variable as type string using the <code class="highlighter-rouge">as</code> operator; this is also called a <a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions">type assertion</a>. And then, we’re utilizing the <a href="https://www.typescriptlang.org/docs/handbook/2/keyof-types.html">keyof</a> operator in TypeScript to create a <a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types">union type</a> for our <code class="highlighter-rouge">DocMap</code> object, which is passed in using the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof">typeof</a> operator. It’s a solution that confuses me to think about, makes the code harder to read, and introduces a <a href="https://www.techtarget.com/searchsoftwarequality/tip/Understanding-code-smells-and-how-refactoring-can-help#:~:text=Put%20simply%2C%20code%20smells%20are,in%20accordance%20with%20necessary%20standards.">code smell</a> since it seems like a hack rather than a planned solution.</p>
+
+<h3 id="the-better-solution-">The Better Solution <a name="the-better-solution"></a></h3>
+
+<p>A better way might be to use <a href="https://www.typescriptlang.org/docs/handbook/2/mapped-types.html">mapped types</a> and <a href="https://www.typescriptlang.org/docs/handbook/2/objects.html">interfaces</a>. As a general rule in my TypeScript adventures, I’ve been sticking with making the correct types or interfaces for objects. So following that, I can do something like this.</p>
+
+<p><img src="https://d4kma4si4pw0z.cloudfront.net/2022-06-19-adventures-in-typescript-typing-my-way-out-of-problems/mapped-types-solution.png" alt="Mapped Types Solution" /></p>
+
+<p>This solution creates an interface for the help doc objects, and then I can create a new object with our data using that type. I tested making a mapped type for the first property as a demonstration. Generally, you use those when making types with properties that might not be known ahead of time. It’s a generic type that we can use to denote the types for the value and keys in any <code class="highlighter-rouge">DocMap</code> type object.</p>
+
+<p>My only issue is that it’s still a bit roundabout for what I want. This is one-time use, and it’s not being exported anywhere. So I want something even simpler.</p>
+
+<h3 id="my-solution-">My Solution <a name="my-solution"></a></h3>
+
+<p>My solution was to use a <a href="https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type">Record</a> type to create an object type with the required property types.</p>
+
+<p><img src="https://d4kma4si4pw0z.cloudfront.net/2022-06-19-adventures-in-typescript-typing-my-way-out-of-problems/final-record-type-solution.png" alt="My solution using the Record Type" /></p>
+
+<p>The Record type is a <a href="https://www.typescriptlang.org/docs/handbook/utility-types.html">utility type</a> that uses the passed in types, via the angle brackets <code class="highlighter-rouge">&lt;&gt;</code>, to map the types for the object property names and values. This is type-safe, easy to implement, and checked all the boxes I needed.</p>
+
+<h3 id="conclusion-">Conclusion <a name="conclusion"></a></h3>
+
+<p>This is the strategy for learning the code base. Spend my energy tackling as many problems as I can early. We called this “racking up the cash register” when I was wrestling. The more I take on, the more I learn, and the more I learn, the bigger the challenge I can take on. I hope this helps someone in their learning journey!</p>
+
+<p>-George</p>
+
+    </div>
+
+    <footer class="post-footer">
+        <div class="share">Share
+            <ul class="social-networks">
+                <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Adventures In TypeScript: Typing My Way Out of Problems&p[summary]=
+    
+
+
+Table Of Contents
+
+  Introduction
+  The Problem
+  Rendering A Link
+  Objects And Typing Issues
+  Cheating
+  Another Solution
+  Th...&p[url]=https://georgeoffley.com/blog/adventures-in-typescript-typing-my-way-out-of-problems.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></li>
+                <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/blog/adventures-in-typescript-typing-my-way-out-of-problems.html&text=
+    
+
+
+Table Of Contents
+
+  Introduction
+  The Problem
+  Rendering A Link
+  Objects And Typing Issues
+  Cheating
+  Another Solution
+  Th...&hashtags=TypeScript,JavaScript,React,Newbie," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+            </ul>
+        </div>
+        
+        <div class="tags">
+            <ul>
+                
+                <li><a href="https://georgeoffley.com/tag/TypeScript">TypeScript</a></li>
+                
+                <li><a href="https://georgeoffley.com/tag/JavaScript">JavaScript</a></li>
+                
+                <li><a href="https://georgeoffley.com/tag/React">React</a></li>
+                
+                <li><a href="https://georgeoffley.com/tag/Newbie">Newbie</a></li>
+                
+            </ul>
+        </div>
+        
+    </footer>
+</article>
+
+
+            </main>
+        </div>
+
+        <script src="https://georgeoffley.com/assets/js/jquery-1.12.2.min.js"></script>
+<script src="https://georgeoffley.com/assets/js/backtotop.js"></script>
+<script src="https://georgeoffley.com/assets/js/lunr.min.js"></script>
+<script src="https://georgeoffley.com/assets/js/lunr-feed.js"></script>
+<script src="https://georgeoffley.com/assets/js/jquery.fitvids.js"></script>
+<script src="https://georgeoffley.com/assets/js/svg4everybody.min.js"></script>
+<script src="https://georgeoffley.com/assets/js/scripts.js"></script>
+
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-46498110-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+    </body>
+</html>
