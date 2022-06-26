@@ -21,7 +21,7 @@
 <lastmod>2021-10-30T12:00:00-04:00</lastmod>
 </url>
 <url>
-<loc>https://georgeoffley.com/blog/shinanigans-with-shaders-copy.html</loc>
+<loc>https://georgeoffley.com/graphics/shinanigans-with-shaders-copy.html</loc>
 <lastmod>2021-11-21T12:00:00-05:00</lastmod>
 </url>
 <url>
@@ -86,6 +86,9 @@
 <loc>https://georgeoffley.com/challenges/</loc>
 </url>
 <url>
+<loc>https://georgeoffley.com/graphics/</loc>
+</url>
+<url>
 <loc>https://georgeoffley.com/blog/</loc>
 </url>
 <url>
@@ -111,9 +114,6 @@
 </url>
 <url>
 <loc>https://georgeoffley.com/tag/AMQP/</loc>
-</url>
-<url>
-<loc>https://georgeoffley.com/tag/Graphics/</loc>
 </url>
 <url>
 <loc>https://georgeoffley.com/tag/Unity/</loc>
@@ -156,6 +156,9 @@
 </url>
 <url>
 <loc>https://georgeoffley.com/categories/Blog/</loc>
+</url>
+<url>
+<loc>https://georgeoffley.com/categories/Graphics/</loc>
 </url>
 <url>
 <loc>https://georgeoffley.com/categories/Challenge/</loc>
