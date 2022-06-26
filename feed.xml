@@ -5,8 +5,8 @@
     <description>I make great projects using Python, C#, PHP, and JavaScript. Currently learning about AWS, Go, C++, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!</description>
     <link>https://georgeoffley.com/</link>
     <atom:link href="https://georgeoffley.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 26 Jun 2022 12:34:38 -0400</pubDate>
-    <lastBuildDate>Sun, 26 Jun 2022 12:34:38 -0400</lastBuildDate>
+    <pubDate>Sun, 26 Jun 2022 12:49:19 -0400</pubDate>
+    <lastBuildDate>Sun, 26 Jun 2022 12:49:19 -0400</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
     
       <item>
@@ -148,21 +148,6 @@
         
         
         <category>Blog</category>
-        
-      </item>
-    
-      <item>
-        <title>Test Challenge Post</title>
-        <description>&lt;p&gt;This is a test post with Challenge Category&lt;/p&gt;
-</description>
-        <pubDate>Sun, 19 Jun 2022 12:00:00 -0400</pubDate>
-        <link>https://georgeoffley.com/challenge/adventures-in-typescript-typing-my-way-out-of-problems-copy.html</link>
-        <guid isPermaLink="true">https://georgeoffley.com/challenge/adventures-in-typescript-typing-my-way-out-of-problems-copy.html</guid>
-        
-        <category>Test</category>
-        
-        
-        <category>Challenge</category>
         
       </item>
     
@@ -988,6 +973,101 @@
         <category>React</category>
         
         <category>Newbie</category>
+        
+        
+        <category>Blog</category>
+        
+      </item>
+    
+      <item>
+        <title>Dockerizing System Tests With Selenium</title>
+        <description>&lt;figure&gt;
+    &lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-10-dockerizing-system-tests-with-selenium/selenium.png&quot; /&gt;
+&lt;/figure&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#selenium_webdriver&quot;&gt;Selenium WebDriver&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#setup&quot;&gt;Setup&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#running_tests&quot;&gt;Running Tests&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#notes&quot;&gt;Notes&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#conclusion&quot;&gt;Conclusion&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;introduction-&quot;&gt;Introduction &lt;a name=&quot;introduction&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;We are spinning up a new application for some end users to enter data, so we need to build a robust testing system. Unit tests are a must, but those only test to ensure that all the classes, methods, and functions do what we expect. On top of that, we also need to verify that the web app as a whole looks and behaves how we hope it does to have a complete end-to-end testing apparatus. My goal for these first few spikes in the project was to find a tool for system testing and see if we could make it modular and easily automate it to not interfere with our workflow. I believe I found the solution. &lt;a href=&quot;https://www.selenium.dev/&quot;&gt;Selenium&lt;/a&gt; is a suite of tools for creating and automating browser tests, and I think it is what I was looking for. Let’s dive in.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h3 id=&quot;selenium-webdriver-&quot;&gt;Selenium WebDriver &lt;a name=&quot;selenium_webdriver&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Selenium is a multi-language suite of tools for creating browser-based automation tests. This tool will automate opening a browser, looking for a test condition, and reporting a pass or fail. Selenium is a whole suite of tools, but I decided to focus on &lt;a href=&quot;https://www.selenium.dev/documentation/webdriver/&quot;&gt;Selenium Web Driver&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Much like in the name, the software “drives” the web browser. Much like humans, we can bring up the webpage in a browser, enter in data, look up tags, and utilize all these capabilities to write tests using the API Selenium provides. A test opens a browser, &lt;a href=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-10-dockerizing-system-tests-with-selenium/selenium_video.mp4&quot;&gt;and like magic, many things happen&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;My goal is to automate as much of this process as possible. So it would not be ideal to have a bunch of browsers launch with with ghosts running tests. A better solution was to run &lt;a href=&quot;https://github.com/SeleniumHQ/docker-selenium&quot;&gt;&lt;em&gt;headless browsers&lt;/em&gt;&lt;/a&gt; using container images provided by Selenium. This solution gives us a container with a built-in web browser which we don’t see that our script runs a test against. The results we can see in the terminal.&lt;/p&gt;
+
+&lt;p&gt;As our project utilizes &lt;a href=&quot;https://www.docker.com/&quot;&gt;Docker&lt;/a&gt;, the easiest way to start is to grab the &lt;a href=&quot;https://github.com/SeleniumHQ/docker-selenium&quot;&gt;Docker image for the browser&lt;/a&gt; and start making some scripts. How this will look in the final solution is still to be determined, but I can replicate what I did for the sake of this write-up.&lt;/p&gt;
+
+&lt;h3 id=&quot;setup-&quot;&gt;Setup &lt;a name=&quot;setup&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;To begin, I set up a &lt;code class=&quot;highlighter-rouge&quot;&gt;docker-compose.yml&lt;/code&gt; file with the following:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-10-dockerizing-system-tests-with-selenium/docker-compose.png&quot; alt=&quot;docker-compose.yml file&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This gave us two containers, our browser using the Chrome-based selenium image and a Ruby-based container to run the script. Our new stack uses a lot of Ruby. The system container is built using an image from the docker file in the test directory.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-10-dockerizing-system-tests-with-selenium/ruby-dockerfile.png&quot; alt=&quot;Dockerfile for Ruby based system&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This build handles installing the gems we need, including selenium-webdriver and the chromedriver-helper. Both are used to run our Web Driver script and utilize Chrome capabilities.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-10-dockerizing-system-tests-with-selenium/gemfile.png&quot; alt=&quot;Gemfile&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Finally, the last bit is the script itself.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-10-dockerizing-system-tests-with-selenium/test-script.png&quot; alt=&quot;Test Script&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;running-tests-&quot;&gt;Running Tests &lt;a name=&quot;running_tests&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Let’s look at this script. My Ruby is rusty, but I tried my best. We set all our requirements, set a timer to make the thread sleep (more on that later), and then we write our test. In the script, we are writing the tests using the &lt;a href=&quot;https://rspec.info/&quot;&gt;RSpec&lt;/a&gt;. RSpec is a &lt;a href=&quot;https://www.jetbrains.com/mps/concepts/domain-specific-languages/&quot;&gt;domain-specific language&lt;/a&gt; built using Ruby to test Ruby code. We use this to test our behaviors using the describe and it blocks.&lt;/p&gt;
+
+&lt;p&gt;We start by defining the &lt;a href=&quot;https://www.selenium.dev/documentation/webdriver/capabilities/&quot;&gt;capabilities&lt;/a&gt; we are looking for; in this case, we are testing a chrome browser, so we need to specify that.&lt;/p&gt;
+
+&lt;p&gt;Then we use a variant of WebDriver called the &lt;a href=&quot;https://www.selenium.dev/documentation/webdriver/remote_webdriver/&quot;&gt;Remote WebDriver&lt;/a&gt;. Remote Driver is written identically to WebDriver, just with the caveat of the driver logic looking for the browser in another system. Here we set the address for the Chrome Selenium container so that our WebDriver knows to look for this remote machine to run the test against.&lt;/p&gt;
+
+&lt;p&gt;Both containers are in the same network provided by Docker Compose, so we use the hostnames. Also, note that we are &lt;a href=&quot;https://docs.docker.com/compose/networking/&quot;&gt;mapping port 4444&lt;/a&gt; as the WebDriver will use this port to communicate.&lt;/p&gt;
+
+&lt;p&gt;We then set the driver to navigate to our chosen website as an action. The following line sets what we expect to see using RSpec’s handy &lt;a href=&quot;https://relishapp.com/rspec/rspec-expectations/docs/built-in-matchers&quot;&gt;&lt;em&gt;expect function&lt;/em&gt;&lt;/a&gt;. We expect the page’s title to be equal to a string we provide and fail if the title is mismatched. Then we’ll just take a screenshot and save the image to a local drive using one of the built-in save_screenshot functions. Finally, and this was important, use the &lt;em&gt;quit&lt;/em&gt; function.&lt;/p&gt;
+
+&lt;p&gt;We run this just by running &lt;code class=&quot;highlighter-rouge&quot;&gt;docker-compose up&lt;/code&gt;, and we can see the test passed as going to Google does indeed yield a page title of “Google.”&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-10-dockerizing-system-tests-with-selenium/test-results.png&quot; alt=&quot;Test results in terminal&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We can also see the screenshot taken from the remote browser.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-10-dockerizing-system-tests-with-selenium/test_image.png&quot; alt=&quot;Resulting image from test&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;notes-&quot;&gt;Notes &lt;a name=&quot;notes&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Using the &lt;em&gt;quit&lt;/em&gt; function was essential to kill the connection, but it also closed the browser we can’t see. Additionally, I mentioned I would come back to using the sleep function in Ruby. It turns out using the &lt;a href=&quot;https://docs.docker.com/compose/startup-order/&quot;&gt;&lt;em&gt;depends_on&lt;/em&gt;&lt;/a&gt; feature in Docker Compose is not enough to ensure services are available to each other. When I began running the network, the remote driver would continually fail to connect. It turns out we just needed a moment for everything to boot. &lt;a href=&quot;https://docs.docker.com/compose/startup-order/&quot;&gt;Docker recommends creating a wait script&lt;/a&gt; but pausing the thread for a moment worked just as well.&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusion-&quot;&gt;Conclusion &lt;a name=&quot;conclusion&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;This was a pretty simple example, but it answered my questions. We can use this to test website behavior, make it modular, and automate the tests. That checks enough boxes for me to keep going down this rabbit hole. The next goal is to develop an automated solution and possibly clean up the deployment a little. I’m thinking of having these two containers not run with the rest of the project and boot up the containers using a bash script specifically for testing. I might write about that too.&lt;/p&gt;
+
+&lt;p&gt;-George&lt;/p&gt;
+</description>
+        <pubDate>Thu, 10 Mar 2022 12:00:00 -0500</pubDate>
+        <link>https://georgeoffley.com/blog/dockerizing-system-tests-with-selenium.html</link>
+        <guid isPermaLink="true">https://georgeoffley.com/blog/dockerizing-system-tests-with-selenium.html</guid>
+        
+        <category>Docker</category>
+        
+        <category>Testing</category>
+        
+        <category>Intermediate</category>
         
         
         <category>Blog</category>
