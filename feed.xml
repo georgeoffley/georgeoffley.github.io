@@ -5,17 +5,13 @@
     <description>I make projects with many different stacks. Currently learning about TypeScript, Rust, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!</description>
     <link>https://georgeoffley.com/</link>
     <atom:link href="https://georgeoffley.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 26 Jun 2022 12:51:42 -0400</pubDate>
-    <lastBuildDate>Sun, 26 Jun 2022 12:51:42 -0400</lastBuildDate>
+    <pubDate>Sun, 26 Jun 2022 13:30:18 -0400</pubDate>
+    <lastBuildDate>Sun, 26 Jun 2022 13:30:18 -0400</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
     
       <item>
         <title>Adventures In TypeScript: Typing My Way Out of Problems</title>
-        <description>&lt;figure&gt;
-    &lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-06-19-adventures-in-typescript-typing-my-way-out-of-problems/cover.jpg&quot; /&gt;
-&lt;/figure&gt;
-
-&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
+        <description>&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;#the-problem&quot;&gt;The Problem&lt;/a&gt;&lt;/li&gt;
@@ -153,11 +149,7 @@
     
       <item>
         <title>Adventures In TypeScript: Destructuring and Code Organization</title>
-        <description>&lt;figure&gt;
-    &lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-06-11-adventures-in-typescript-destructuring-and-code-organization/cover.png&quot; /&gt;
-&lt;/figure&gt;
-
-&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
+        <description>&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;#destructuring&quot;&gt;Destructuring&lt;/a&gt;&lt;/li&gt;
@@ -263,11 +255,7 @@
     
       <item>
         <title>Adventures In TypeScript</title>
-        <description>&lt;figure&gt;
-    &lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/768px-Typescript_logo_2020.svg.png?20210506173343&quot; /&gt;
-&lt;/figure&gt;
-
-&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
+        <description>&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;#ts-so-far&quot;&gt;TypeScript So Far&lt;/a&gt;&lt;/li&gt;
@@ -386,11 +374,7 @@
     
       <item>
         <title>Context In React</title>
-        <description>&lt;figure&gt;
-    &lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-18-context-in-react/cover.png&quot; /&gt;
-&lt;/figure&gt;
-
-&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
+        <description>&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;#data-in-react&quot;&gt;Data In React&lt;/a&gt;&lt;/li&gt;
@@ -496,11 +480,7 @@
     
       <item>
         <title>Spiking Tailwind CSS in a React App</title>
-        <description>&lt;figure&gt;
-    &lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-04-02-spiking-tailwind-in-a-react-app/cover.png&quot; /&gt;
-&lt;/figure&gt;
-
-&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
+        <description>&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;#tailwind&quot;&gt;Tailwind&lt;/a&gt;&lt;/li&gt;
@@ -654,11 +634,7 @@
     
       <item>
         <title>Using SWR for Easy API Calls in React</title>
-        <description>&lt;figure&gt;
-    &lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-25-using-swr-for-easy-api-calls-in-react/cover.png&quot; /&gt;
-&lt;/figure&gt;
-
-&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
+        <description>&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;#swr&quot;&gt;SWR&lt;/a&gt;&lt;/li&gt;
@@ -729,11 +705,7 @@
     
       <item>
         <title>Table Resource VS Client in AWS</title>
-        <description>&lt;figure&gt;
-    &lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-19-table-resource-vs-client-in-aws/cover.png&quot; /&gt;
-&lt;/figure&gt;
-
-&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
+        <description>&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;#the_problem&quot;&gt;The Problem&lt;/a&gt;&lt;/li&gt;
@@ -806,11 +778,7 @@
     
       <item>
         <title>Modules in React</title>
-        <description>&lt;figure&gt;
-    &lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-18-modules-in-react/cover.png&quot; /&gt;
-&lt;/figure&gt;
-
-&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
+        <description>&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;#react-modules&quot;&gt;React Modules&lt;/a&gt;&lt;/li&gt;
@@ -905,11 +873,7 @@
     
       <item>
         <title>Implementing Routing in React</title>
-        <description>&lt;figure&gt;
-    &lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-12-implementing-routing-in-react/cover.png&quot; /&gt;
-&lt;/figure&gt;
-
-&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
+        <description>&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;#react_router_dom&quot;&gt;React Router Dom&lt;/a&gt;&lt;/li&gt;
@@ -981,11 +945,7 @@
     
       <item>
         <title>Dockerizing System Tests With Selenium</title>
-        <description>&lt;figure&gt;
-    &lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-10-dockerizing-system-tests-with-selenium/selenium.png&quot; /&gt;
-&lt;/figure&gt;
-
-&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
+        <description>&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;#selenium_webdriver&quot;&gt;Selenium WebDriver&lt;/a&gt;&lt;/li&gt;
