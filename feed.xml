@@ -5,9 +5,104 @@
     <description>I make projects with many different stacks. Currently learning about TypeScript, Rust, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!</description>
     <link>https://georgeoffley.com/</link>
     <atom:link href="https://georgeoffley.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 26 Jun 2022 13:30:18 -0400</pubDate>
-    <lastBuildDate>Sun, 26 Jun 2022 13:30:18 -0400</lastBuildDate>
+    <pubDate>Sat, 16 Jul 2022 16:48:52 -0400</pubDate>
+    <lastBuildDate>Sat, 16 Jul 2022 16:48:52 -0400</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
+    
+      <item>
+        <title>Browser Testing With Cypress</title>
+        <description>&lt;h3 id=&quot;introduction&quot;&gt;Introduction&lt;/h3&gt;
+
+&lt;p&gt;When I write code, I try to remember that everything is broken until proven otherwise. I’ve been shifting my learning to browser-based platforms that I am working on and with that shift, browser tests have started to be folded into that mindset.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.cypress.io/&quot;&gt;Cypress&lt;/a&gt; is a tool for browser tests that I’ve started learning, and it’s been an interesting week. I’ve &lt;a href=&quot;https://georgeoffley.com/blog/dockerizing-system-tests-with-selenium.html&quot;&gt;written about browser testing before&lt;/a&gt;, so this will be a bit less comprehensive and will mostly be my thoughts on the tool and how useful I think it is. Complete tutorials for creating end-to-end browser testing solutions using Cypress can be &lt;a href=&quot;https://docs.cypress.io/guides/overview/why-cypress&quot;&gt;found in their docs&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;browser-tests&quot;&gt;Browser Tests&lt;/h3&gt;
+
+&lt;p&gt;Testing has a lot of different connotations. In this context, browser tests are tests that try to use your app and tell you if something is broken. Cypress is one such tool, but there are many others.&lt;/p&gt;
+
+&lt;h3 id=&quot;cypress-setup&quot;&gt;Cypress Setup&lt;/h3&gt;
+
+&lt;p&gt;Compared to something like Selenium, the setup was simple. Cypress advertises as an all-in-one solution for end-to-end testing. And so far, that’s been true. Selenium requires a web driver and external resources to function, whereas Cypress seems to work quickly out of the box.&lt;/p&gt;
+
+&lt;p&gt;Their docs suggest setting up the cypress commands in your &lt;code class=&quot;highlighter-rouge&quot;&gt;package.json&lt;/code&gt; file for easier running. This is a good approach to test your app how you need to.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://d4kma4si4pw0z.cloudfront.net/2022-07-16-browser-testing-with-cypress/package-json-scripts-cypress-open.png&quot; alt=&quot;Example snippit of a cypress command which can be written into the local package.json file.&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;To help with your setup, you have access to their testing GUI.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://docs.cypress.io/_nuxt/img/launchpad.fcc7cac.png&quot; alt=&quot;Cypress testing GUI found on the Cypress docs website.&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This is a vast improvement over other tools I’ve learned since everything can be set up in a GUI, including choosing a browser to do your testing on.&lt;/p&gt;
+
+&lt;p&gt;I’ve only been able to try end-to-end testing, but I’d like to dive a little more into component testing. More to come.&lt;/p&gt;
+
+&lt;h3 id=&quot;simple-cypress-tests&quot;&gt;Simple Cypress Tests&lt;/h3&gt;
+
+&lt;p&gt;So the tests themselves are relatively simple. The scripts only need a few lines of code, as most of the setup is in the project config and support files. Another great advantage over other tools I’ve tried so far.&lt;/p&gt;
+
+&lt;p&gt;A test might look something like this.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://d4kma4si4pw0z.cloudfront.net/2022-07-16-browser-testing-with-cypress/simple-test.png&quot; alt=&quot;A simple test taken from Cypress docs to test if a website loads.&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The above test, taken from their docs, is put into a &lt;code class=&quot;highlighter-rouge&quot;&gt;describe()&lt;/code&gt; block. This gives us flexibility in creating testing classes and organizing our tests. Within that block is another block, the &lt;code class=&quot;highlighter-rouge&quot;&gt;it()&lt;/code&gt; block, which is our test itself. We can be as granular as we want with our tests. For example, if we want to write an &lt;code class=&quot;highlighter-rouge&quot;&gt;it()&lt;/code&gt; block for every step in an end-to-end test, we can do so with the confidence that we’ll see which stage failed.&lt;/p&gt;
+
+&lt;p&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;cy.visit()&lt;/code&gt; is a command and assertion. So, in this example, if a website is not sending a response, we can see this test fail. So this gives us the flexibility to write out the exact behavior we expect.&lt;/p&gt;
+
+&lt;p&gt;So we can add all the steps needed to test a part of our app. Like so.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://d4kma4si4pw0z.cloudfront.net/2022-07-16-browser-testing-with-cypress/full-test.png&quot; alt=&quot;Complete Cypress test example from Cypress docs&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This example, also taken from their docs, takes advantage of everything described above. It also introduces chaining, which we can use for multi-step processes.&lt;/p&gt;
+
+&lt;h3 id=&quot;testing-gui&quot;&gt;Testing GUI&lt;/h3&gt;
+
+&lt;p&gt;OK, on to some of the stuff that makes Cypress a fun tool to dive into. Namely the GUI.&lt;/p&gt;
+
+&lt;p&gt;Browser-based engineering is still a space I’ve only been in for a while, so this might be new to me, but adding a browser tool for developing your apps blows me away. Let me tell you why.&lt;/p&gt;
+
+&lt;p&gt;So we wrote the test above. Great. Now we need directions to tell a Cypress how to navigate our app. So we need some selectors, which are always murky to me as relying on class selectors is a brittle test that can be broken with a new release. We need something better, and it’s not always clear what that “better” may be. So in comes the testing playground.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://d4kma4si4pw0z.cloudfront.net/2022-07-16-browser-testing-with-cypress/cypress-browser-gui.gif&quot; alt=&quot;Cypress Testing Playground taken from the Cypress docs showing all the browser tools.&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The above, also taken from their docs, demonstrates what made using Cypress enjoyable. Their testing suite gives you valuable tools like a real-time test runner, a test builder, a time machine so you can go through each testing step to see where issues might pop up, and an advanced selector playground.&lt;/p&gt;
+
+&lt;p&gt;This tool does a great job of helping you create robust selectors for your test. It allows you to hover over elements, highlight them, and the selector playground will provide you with their best guess for a &lt;code class=&quot;highlighter-rouge&quot;&gt;cy.get()&lt;/code&gt; command so tests can be filled out quickly.&lt;/p&gt;
+
+&lt;h3 id=&quot;some-more-cool-stuff&quot;&gt;Some More Cool Stuff&lt;/h3&gt;
+
+&lt;p&gt;Just a couple more things I wanted to mention. One was how easy their API makes it to &lt;a href=&quot;https://docs.cypress.io/api/cypress-api/custom-commands&quot;&gt;creating new commands in their API&lt;/a&gt; for common functionality to your testing apparatus.&lt;/p&gt;
+
+&lt;p&gt;For example, we created one which goes to our site, types in login info, and clicks the login button. Now we have all that functionality in a single command for use in any test we need authentication for. Before long we’ll have tons of them so we can focus on testing our platform’s behavior.&lt;/p&gt;
+
+&lt;p&gt;Another was using what they call &lt;a href=&quot;https://docs.cypress.io/api/commands/fixture&quot;&gt;fixtures&lt;/a&gt; for injecting static data into your tests, which I love. Static data, like login credentials, names, etc, are much cleaner when you can create a JSON file and utilize the existing API to access the necessary values. I love that; it makes maintenance so much easier.&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h3&gt;
+
+&lt;p&gt;After all that, I can confidently say I enjoy writing tests using Cypress. It allows me to write tests the right (easy) way. Testing is often not something people think about. So make it easy to do, and Cypress does that. I’m excited to continue learning.&lt;/p&gt;
+
+&lt;p&gt;-George&lt;/p&gt;
+</description>
+        <pubDate>Sat, 16 Jul 2022 12:00:00 -0400</pubDate>
+        <link>https://georgeoffley.com/blog/2022-browser-testing-with-cypress.html</link>
+        <guid isPermaLink="true">https://georgeoffley.com/blog/2022-browser-testing-with-cypress.html</guid>
+        
+        <category>Cypress</category>
+        
+        <category>Testing</category>
+        
+        <category>JavaScript</category>
+        
+        <category>TypeScript</category>
+        
+        <category>Newbie</category>
+        
+        
+        <category>Blog</category>
+        
+      </item>
     
       <item>
         <title>Adventures In TypeScript: Typing My Way Out of Problems</title>
@@ -937,97 +1032,6 @@
         <category>React</category>
         
         <category>Newbie</category>
-        
-        
-        <category>Blog</category>
-        
-      </item>
-    
-      <item>
-        <title>Dockerizing System Tests With Selenium</title>
-        <description>&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#selenium_webdriver&quot;&gt;Selenium WebDriver&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#setup&quot;&gt;Setup&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#running_tests&quot;&gt;Running Tests&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#notes&quot;&gt;Notes&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#conclusion&quot;&gt;Conclusion&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;introduction-&quot;&gt;Introduction &lt;a name=&quot;introduction&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;We are spinning up a new application for some end users to enter data, so we need to build a robust testing system. Unit tests are a must, but those only test to ensure that all the classes, methods, and functions do what we expect. On top of that, we also need to verify that the web app as a whole looks and behaves how we hope it does to have a complete end-to-end testing apparatus. My goal for these first few spikes in the project was to find a tool for system testing and see if we could make it modular and easily automate it to not interfere with our workflow. I believe I found the solution. &lt;a href=&quot;https://www.selenium.dev/&quot;&gt;Selenium&lt;/a&gt; is a suite of tools for creating and automating browser tests, and I think it is what I was looking for. Let’s dive in.&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;h3 id=&quot;selenium-webdriver-&quot;&gt;Selenium WebDriver &lt;a name=&quot;selenium_webdriver&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;Selenium is a multi-language suite of tools for creating browser-based automation tests. This tool will automate opening a browser, looking for a test condition, and reporting a pass or fail. Selenium is a whole suite of tools, but I decided to focus on &lt;a href=&quot;https://www.selenium.dev/documentation/webdriver/&quot;&gt;Selenium Web Driver&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Much like in the name, the software “drives” the web browser. Much like humans, we can bring up the webpage in a browser, enter in data, look up tags, and utilize all these capabilities to write tests using the API Selenium provides. A test opens a browser, &lt;a href=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-10-dockerizing-system-tests-with-selenium/selenium_video.mp4&quot;&gt;and like magic, many things happen&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;My goal is to automate as much of this process as possible. So it would not be ideal to have a bunch of browsers launch with with ghosts running tests. A better solution was to run &lt;a href=&quot;https://github.com/SeleniumHQ/docker-selenium&quot;&gt;&lt;em&gt;headless browsers&lt;/em&gt;&lt;/a&gt; using container images provided by Selenium. This solution gives us a container with a built-in web browser which we don’t see that our script runs a test against. The results we can see in the terminal.&lt;/p&gt;
-
-&lt;p&gt;As our project utilizes &lt;a href=&quot;https://www.docker.com/&quot;&gt;Docker&lt;/a&gt;, the easiest way to start is to grab the &lt;a href=&quot;https://github.com/SeleniumHQ/docker-selenium&quot;&gt;Docker image for the browser&lt;/a&gt; and start making some scripts. How this will look in the final solution is still to be determined, but I can replicate what I did for the sake of this write-up.&lt;/p&gt;
-
-&lt;h3 id=&quot;setup-&quot;&gt;Setup &lt;a name=&quot;setup&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;To begin, I set up a &lt;code class=&quot;highlighter-rouge&quot;&gt;docker-compose.yml&lt;/code&gt; file with the following:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-10-dockerizing-system-tests-with-selenium/docker-compose.png&quot; alt=&quot;docker-compose.yml file&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;This gave us two containers, our browser using the Chrome-based selenium image and a Ruby-based container to run the script. Our new stack uses a lot of Ruby. The system container is built using an image from the docker file in the test directory.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-10-dockerizing-system-tests-with-selenium/ruby-dockerfile.png&quot; alt=&quot;Dockerfile for Ruby based system&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;This build handles installing the gems we need, including selenium-webdriver and the chromedriver-helper. Both are used to run our Web Driver script and utilize Chrome capabilities.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-10-dockerizing-system-tests-with-selenium/gemfile.png&quot; alt=&quot;Gemfile&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Finally, the last bit is the script itself.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-10-dockerizing-system-tests-with-selenium/test-script.png&quot; alt=&quot;Test Script&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;running-tests-&quot;&gt;Running Tests &lt;a name=&quot;running_tests&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;Let’s look at this script. My Ruby is rusty, but I tried my best. We set all our requirements, set a timer to make the thread sleep (more on that later), and then we write our test. In the script, we are writing the tests using the &lt;a href=&quot;https://rspec.info/&quot;&gt;RSpec&lt;/a&gt;. RSpec is a &lt;a href=&quot;https://www.jetbrains.com/mps/concepts/domain-specific-languages/&quot;&gt;domain-specific language&lt;/a&gt; built using Ruby to test Ruby code. We use this to test our behaviors using the describe and it blocks.&lt;/p&gt;
-
-&lt;p&gt;We start by defining the &lt;a href=&quot;https://www.selenium.dev/documentation/webdriver/capabilities/&quot;&gt;capabilities&lt;/a&gt; we are looking for; in this case, we are testing a chrome browser, so we need to specify that.&lt;/p&gt;
-
-&lt;p&gt;Then we use a variant of WebDriver called the &lt;a href=&quot;https://www.selenium.dev/documentation/webdriver/remote_webdriver/&quot;&gt;Remote WebDriver&lt;/a&gt;. Remote Driver is written identically to WebDriver, just with the caveat of the driver logic looking for the browser in another system. Here we set the address for the Chrome Selenium container so that our WebDriver knows to look for this remote machine to run the test against.&lt;/p&gt;
-
-&lt;p&gt;Both containers are in the same network provided by Docker Compose, so we use the hostnames. Also, note that we are &lt;a href=&quot;https://docs.docker.com/compose/networking/&quot;&gt;mapping port 4444&lt;/a&gt; as the WebDriver will use this port to communicate.&lt;/p&gt;
-
-&lt;p&gt;We then set the driver to navigate to our chosen website as an action. The following line sets what we expect to see using RSpec’s handy &lt;a href=&quot;https://relishapp.com/rspec/rspec-expectations/docs/built-in-matchers&quot;&gt;&lt;em&gt;expect function&lt;/em&gt;&lt;/a&gt;. We expect the page’s title to be equal to a string we provide and fail if the title is mismatched. Then we’ll just take a screenshot and save the image to a local drive using one of the built-in save_screenshot functions. Finally, and this was important, use the &lt;em&gt;quit&lt;/em&gt; function.&lt;/p&gt;
-
-&lt;p&gt;We run this just by running &lt;code class=&quot;highlighter-rouge&quot;&gt;docker-compose up&lt;/code&gt;, and we can see the test passed as going to Google does indeed yield a page title of “Google.”&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-10-dockerizing-system-tests-with-selenium/test-results.png&quot; alt=&quot;Test results in terminal&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;We can also see the screenshot taken from the remote browser.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-10-dockerizing-system-tests-with-selenium/test_image.png&quot; alt=&quot;Resulting image from test&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;notes-&quot;&gt;Notes &lt;a name=&quot;notes&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;Using the &lt;em&gt;quit&lt;/em&gt; function was essential to kill the connection, but it also closed the browser we can’t see. Additionally, I mentioned I would come back to using the sleep function in Ruby. It turns out using the &lt;a href=&quot;https://docs.docker.com/compose/startup-order/&quot;&gt;&lt;em&gt;depends_on&lt;/em&gt;&lt;/a&gt; feature in Docker Compose is not enough to ensure services are available to each other. When I began running the network, the remote driver would continually fail to connect. It turns out we just needed a moment for everything to boot. &lt;a href=&quot;https://docs.docker.com/compose/startup-order/&quot;&gt;Docker recommends creating a wait script&lt;/a&gt; but pausing the thread for a moment worked just as well.&lt;/p&gt;
-
-&lt;h3 id=&quot;conclusion-&quot;&gt;Conclusion &lt;a name=&quot;conclusion&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;This was a pretty simple example, but it answered my questions. We can use this to test website behavior, make it modular, and automate the tests. That checks enough boxes for me to keep going down this rabbit hole. The next goal is to develop an automated solution and possibly clean up the deployment a little. I’m thinking of having these two containers not run with the rest of the project and boot up the containers using a bash script specifically for testing. I might write about that too.&lt;/p&gt;
-
-&lt;p&gt;-George&lt;/p&gt;
-</description>
-        <pubDate>Thu, 10 Mar 2022 12:00:00 -0500</pubDate>
-        <link>https://georgeoffley.com/blog/dockerizing-system-tests-with-selenium.html</link>
-        <guid isPermaLink="true">https://georgeoffley.com/blog/dockerizing-system-tests-with-selenium.html</guid>
-        
-        <category>Docker</category>
-        
-        <category>Testing</category>
-        
-        <category>Intermediate</category>
         
         
         <category>Blog</category>

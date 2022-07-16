@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Shared Memory in Docker | George Offley &mdash; Software Engineer </title>
-    <meta property="og:title" content="Shared Memory in Docker | George Offley &mdash; Software Engineer " />
+    <title>Browser Testing With Cypress | George Offley &mdash; Software Engineer </title>
+    <meta property="og:title" content="Browser Testing With Cypress | George Offley &mdash; Software Engineer " />
 
     <meta name="description" content="I make projects with many different stacks. Currently learning about TypeScript, Rust, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!">
     <meta name="description" property="og:description" content="I make projects with many different stacks. Currently learning about TypeScript, Rust, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!" />
@@ -14,19 +14,19 @@
     <!-- Twitter cards -->
     <meta name="twitter:site"    content="@georgeoffley">
     <meta name="twitter:creator" content="@georgeoffley">
-    <meta name="twitter:title"   content="Shared Memory in Docker">
+    <meta name="twitter:title"   content="Browser Testing With Cypress">
 
     
-    <meta name="twitter:description" content="What does /dev/shm/ mean in Docker? Let's find out!">
+    <meta name="twitter:description" content="This week I've been messing with browser testing in Cypress so I wrote some thoughts down.">
     
 
     
     <meta name="twitter:card"  content="summary_large_image">
-    <meta name="twitter:image" content="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-05-shared-memory-in-docker/cover.png">
+    <meta name="twitter:image" content="https://media.giphy.com/media/iVDo6InQKyW8o/giphy.gif">
     
     <!-- end of Twitter cards -->
     
-    <meta property="og:url" content="https://georgeoffley.com/blog/shared-memory-in-docker.html" />
+    <meta property="og:url" content="https://georgeoffley.com/blog/2022-browser-testing-with-cypress.html" />
 
     <meta property="og:image" content="" />
 
@@ -104,7 +104,7 @@
     
     <link rel="stylesheet" href="https://georgeoffley.com/assets/css/main.css">
 
-    <link rel="canonical" href="https://georgeoffley.com/blog/shared-memory-in-docker.html">
+    <link rel="canonical" href="https://georgeoffley.com/blog/2022-browser-testing-with-cypress.html">
 
     <link rel="alternate" type="application/rss+xml" title="" href="https://georgeoffley.com/feed.xml">
 </head>
@@ -234,7 +234,7 @@
                 <article class="post single" role="article" itemscope itemtype="http://schema.org/BlogPosting">
     <header class="post-header">
         <ul>
-            <li><time datetime="2022-03-05T12:00:00-05:00" itemprop="datePublished">5 Mar, 2022</time></li>
+            <li><time datetime="2022-07-16T12:00:00-04:00" itemprop="datePublished">16 Jul, 2022</time></li>
             
                 
                 <li class="cats">
@@ -245,62 +245,86 @@
                 
             
         </ul>
-        <h2 itemprop="name headline">Shared Memory in Docker</h2>
+        <h2 itemprop="name headline">Browser Testing With Cypress</h2>
     </header>
 
     <div class="post-content">
         
             <figure>
-                <img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-05-shared-memory-in-docker/cover.png" alt="What does /dev/shm/ mean in Docker? Let's find out!" />
+                <img src="https://media.giphy.com/media/iVDo6InQKyW8o/giphy.gif" alt="This week I've been messing with browser testing in Cypress so I wrote some thoughts down." />
             </figure>
         
-        <h2 id="table-of-contents">Table Of Contents</h2>
-<ul>
-  <li><a href="#introduction">Introduction</a></li>
-  <li><a href="#shared_memory_device">Shared Memory Device</a></li>
-  <li><a href="#use_in_docker">Use in Docker</a></li>
-  <li><a href="#conclusion">Conclusion</a></li>
-</ul>
+        <h3 id="introduction">Introduction</h3>
 
-<h3 id="introduction-">Introduction <a name="introduction"></a></h3>
-
-<p>Recently, I was experimenting with system testing on a new stack. While working with <a href="https://www.selenium.dev/documentation/webdriver/remote_webdriver/">Selenium Remote Driver</a> to create <a href="https://en.wikipedia.org/wiki/Headless_browser">headless web browsers</a> (more on that later) to run against my app, I came across a Docker option I had not known. This Docker feature allowed for easily accessible and fast file reading and writing between the host and the container. It was being used as a volume, but I learned it was much more. When I looked it up, it was referred to as a <a href="https://en.wikipedia.org/wiki/Shared_memory"><em>Shared Memory Device</em></a>.</p>
+<p>When I write code, I try to remember that everything is broken until proven otherwise. I’ve been shifting my learning to browser-based platforms that I am working on and with that shift, browser tests have started to be folded into that mindset.</p>
 
 <!--more-->
 
-<h3 id="shared-memory-device-">Shared Memory Device <a name="shared_memory_device"></a></h3>
+<p><a href="https://www.cypress.io/">Cypress</a> is a tool for browser tests that I’ve started learning, and it’s been an interesting week. I’ve <a href="https://georgeoffley.com/blog/dockerizing-system-tests-with-selenium.html">written about browser testing before</a>, so this will be a bit less comprehensive and will mostly be my thoughts on the tool and how useful I think it is. Complete tutorials for creating end-to-end browser testing solutions using Cypress can be <a href="https://docs.cypress.io/guides/overview/why-cypress">found in their docs</a>.</p>
 
-<p>Turns out that this is an old Linux staple. The shared memory device, located in the <code class="highlighter-rouge">/dev/shm/</code> directory in the file system, utilizes temporary storage using RAM rather than disk storage. Using a shared volume available on the RAM and not the disk makes for a much faster read/write speeds. These devices also allows for <a href="https://en.wikipedia.org/wiki/Inter-process_communication">inter-process communication</a>.</p>
+<h3 id="browser-tests">Browser Tests</h3>
 
-<h3 id="use-in-docker-">Use in Docker <a name="use_in_docker"></a></h3>
+<p>Testing has a lot of different connotations. In this context, browser tests are tests that try to use your app and tell you if something is broken. Cypress is one such tool, but there are many others.</p>
 
-<p>Docker allows for the use of this device. When conducting my testing, I used the volume mapping feature to easily map local directories with directories inside the containers we’re working on. As seen below.</p>
+<h3 id="cypress-setup">Cypress Setup</h3>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">--rm</span> <span class="nt">-it</span> <span class="nt">-v</span> /dev/shm/:/dev/shm/ <span class="nt">--name</span> ubuntu ubuntu
-</code></pre></div></div>
+<p>Compared to something like Selenium, the setup was simple. Cypress advertises as an all-in-one solution for end-to-end testing. And so far, that’s been true. Selenium requires a web driver and external resources to function, whereas Cypress seems to work quickly out of the box.</p>
 
-<p>This mapped the local shared memory device to the Docker device. Docker, by default, allows for up to 64 MB of storage space using the shared memory device. You can see the default allocation when searching for the shared storage device within the container. As seen below.</p>
+<p>Their docs suggest setting up the cypress commands in your <code class="highlighter-rouge">package.json</code> file for easier running. This is a good approach to test your app how you need to.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker inspect ubuntu | <span class="nb">grep</span> <span class="nt">-i</span> shm
-            <span class="s2">"ShmSize"</span>: 67108864,
-</code></pre></div></div>
+<p><img src="https://d4kma4si4pw0z.cloudfront.net/2022-07-16-browser-testing-with-cypress/package-json-scripts-cypress-open.png" alt="Example snippit of a cypress command which can be written into the local package.json file." /></p>
 
-<p>I was saving screenshots just to ensure that I was looking at the thing I was hoping to look at. Although I was only doing some foundational work, I could find myself in a pickle with only 64 MB of space available if this work ends up scaling. Should we need to, Docker lets us change the size of this device using the <em>–shm-size</em> option. As seen below.</p>
+<p>To help with your setup, you have access to their testing GUI.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">--rm</span> <span class="nt">-it</span> <span class="nt">-v</span> /dev/shm/:/dev/shm <span class="nt">--shm-size</span><span class="o">=</span>2gb <span class="nt">--name</span> ubuntu ubuntu
-</code></pre></div></div>
+<p><img src="https://docs.cypress.io/_nuxt/img/launchpad.fcc7cac.png" alt="Cypress testing GUI found on the Cypress docs website." /></p>
 
-<p>Above we add in the <em>–shm-size</em> option and we can specify all the space we need! Let’s look one more time to confirm that it works.</p>
+<p>This is a vast improvement over other tools I’ve learned since everything can be set up in a GUI, including choosing a browser to do your testing on.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker inspect ubuntu | <span class="nb">grep</span> <span class="nt">-i</span> shm
-            <span class="s2">"ShmSize"</span>: 2147483648,
-</code></pre></div></div>
+<p>I’ve only been able to try end-to-end testing, but I’d like to dive a little more into component testing. More to come.</p>
 
-<p>Shazam! We have more storage in our shared memory device to play around with.</p>
+<h3 id="simple-cypress-tests">Simple Cypress Tests</h3>
 
-<h3 id="conclusion-">Conclusion <a name="conclusion"></a></h3>
+<p>So the tests themselves are relatively simple. The scripts only need a few lines of code, as most of the setup is in the project config and support files. Another great advantage over other tools I’ve tried so far.</p>
 
-<p>There is more to come about my adventures in Dockerizing system testing, but for now, I was able to learn a new thing about Linux and Docker. I hope it helps someone who came across it without knowing as I did.</p>
+<p>A test might look something like this.</p>
+
+<p><img src="https://d4kma4si4pw0z.cloudfront.net/2022-07-16-browser-testing-with-cypress/simple-test.png" alt="A simple test taken from Cypress docs to test if a website loads." /></p>
+
+<p>The above test, taken from their docs, is put into a <code class="highlighter-rouge">describe()</code> block. This gives us flexibility in creating testing classes and organizing our tests. Within that block is another block, the <code class="highlighter-rouge">it()</code> block, which is our test itself. We can be as granular as we want with our tests. For example, if we want to write an <code class="highlighter-rouge">it()</code> block for every step in an end-to-end test, we can do so with the confidence that we’ll see which stage failed.</p>
+
+<p>The <code class="highlighter-rouge">cy.visit()</code> is a command and assertion. So, in this example, if a website is not sending a response, we can see this test fail. So this gives us the flexibility to write out the exact behavior we expect.</p>
+
+<p>So we can add all the steps needed to test a part of our app. Like so.</p>
+
+<p><img src="https://d4kma4si4pw0z.cloudfront.net/2022-07-16-browser-testing-with-cypress/full-test.png" alt="Complete Cypress test example from Cypress docs" /></p>
+
+<p>This example, also taken from their docs, takes advantage of everything described above. It also introduces chaining, which we can use for multi-step processes.</p>
+
+<h3 id="testing-gui">Testing GUI</h3>
+
+<p>OK, on to some of the stuff that makes Cypress a fun tool to dive into. Namely the GUI.</p>
+
+<p>Browser-based engineering is still a space I’ve only been in for a while, so this might be new to me, but adding a browser tool for developing your apps blows me away. Let me tell you why.</p>
+
+<p>So we wrote the test above. Great. Now we need directions to tell a Cypress how to navigate our app. So we need some selectors, which are always murky to me as relying on class selectors is a brittle test that can be broken with a new release. We need something better, and it’s not always clear what that “better” may be. So in comes the testing playground.</p>
+
+<p><img src="https://d4kma4si4pw0z.cloudfront.net/2022-07-16-browser-testing-with-cypress/cypress-browser-gui.gif" alt="Cypress Testing Playground taken from the Cypress docs showing all the browser tools." /></p>
+
+<p>The above, also taken from their docs, demonstrates what made using Cypress enjoyable. Their testing suite gives you valuable tools like a real-time test runner, a test builder, a time machine so you can go through each testing step to see where issues might pop up, and an advanced selector playground.</p>
+
+<p>This tool does a great job of helping you create robust selectors for your test. It allows you to hover over elements, highlight them, and the selector playground will provide you with their best guess for a <code class="highlighter-rouge">cy.get()</code> command so tests can be filled out quickly.</p>
+
+<h3 id="some-more-cool-stuff">Some More Cool Stuff</h3>
+
+<p>Just a couple more things I wanted to mention. One was how easy their API makes it to <a href="https://docs.cypress.io/api/cypress-api/custom-commands">creating new commands in their API</a> for common functionality to your testing apparatus.</p>
+
+<p>For example, we created one which goes to our site, types in login info, and clicks the login button. Now we have all that functionality in a single command for use in any test we need authentication for. Before long we’ll have tons of them so we can focus on testing our platform’s behavior.</p>
+
+<p>Another was using what they call <a href="https://docs.cypress.io/api/commands/fixture">fixtures</a> for injecting static data into your tests, which I love. Static data, like login credentials, names, etc, are much cleaner when you can create a JSON file and utilize the existing API to access the necessary values. I love that; it makes maintenance so much easier.</p>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>After all that, I can confidently say I enjoy writing tests using Cypress. It allows me to write tests the right (easy) way. Testing is often not something people think about. So make it easy to do, and Cypress does that. I’m excited to continue learning.</p>
 
 <p>-George</p>
 
@@ -309,37 +333,27 @@
     <footer class="post-footer">
         <div class="share">Share
             <ul class="social-networks">
-                <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Shared Memory in Docker&p[summary]=Table Of Contents
+                <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Browser Testing With Cypress&p[summary]=Introduction
 
-  Introduction
-  Shared Memory Device
-  Use in Docker
-  Conclusion
+When I write code, I try to remember that everything is broken until proven otherwise. I’ve been shifting my learning to br...&p[url]=https://georgeoffley.com/blog/2022-browser-testing-with-cypress.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></li>
+                <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/blog/2022-browser-testing-with-cypress.html&text=Introduction
 
-
-Introduction 
-
-Recently, I was experimenting with...&p[url]=https://georgeoffley.com/blog/shared-memory-in-docker.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></li>
-                <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/blog/shared-memory-in-docker.html&text=Table Of Contents
-
-  Introduction
-  Shared Memory Device
-  Use in Docker
-  Conclusion
-
-
-Introduction 
-
-Recently, I was experimenting with...&hashtags=Docker,Intermediate," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+When I write code, I try to remember that everything is broken until proven otherwise. I’ve been shifting my learning to br...&hashtags=Cypress,Testing,JavaScript,TypeScript,Newbie," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
             </ul>
         </div>
         
         <div class="tags">
             <ul>
                 
-                <li><a href="https://georgeoffley.com/tag/Docker">Docker</a></li>
+                <li><a href="https://georgeoffley.com/tag/Cypress">Cypress</a></li>
                 
-                <li><a href="https://georgeoffley.com/tag/Intermediate">Intermediate</a></li>
+                <li><a href="https://georgeoffley.com/tag/Testing">Testing</a></li>
+                
+                <li><a href="https://georgeoffley.com/tag/JavaScript">JavaScript</a></li>
+                
+                <li><a href="https://georgeoffley.com/tag/TypeScript">TypeScript</a></li>
+                
+                <li><a href="https://georgeoffley.com/tag/Newbie">Newbie</a></li>
                 
             </ul>
         </div>

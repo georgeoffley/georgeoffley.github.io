@@ -73,6 +73,10 @@
 <lastmod>2022-06-19T12:00:00-04:00</lastmod>
 </url>
 <url>
+<loc>https://georgeoffley.com/blog/2022-browser-testing-with-cypress.html</loc>
+<lastmod>2022-07-16T12:00:00-04:00</lastmod>
+</url>
+<url>
 <loc>https://georgeoffley.com/404</loc>
 </url>
 <url>
@@ -143,6 +147,9 @@
 </url>
 <url>
 <loc>https://georgeoffley.com/tag/Destructuring/</loc>
+</url>
+<url>
+<loc>https://georgeoffley.com/tag/Cypress/</loc>
 </url>
 <url>
 <loc>https://georgeoffley.com/categories/Blog/</loc>
