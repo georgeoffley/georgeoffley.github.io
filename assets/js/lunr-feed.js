@@ -184,7 +184,7 @@ var index = lunr(function () {
 var store = [{
     "title": "Browser Testing With Cypress",
     "link": "/blog/2022-browser-testing-with-cypress.html",
-    "image": "https://media.giphy.com/media/iVDo6InQKyW8o/giphy.gif",
+    "image": null,
     "date": "July 16, 2022",
     "category": ["Blog"],
     "excerpt": "Introduction When I write code, I try to remember that everything is broken until proven otherwise. I’ve been shifting my..."
