@@ -5,9 +5,86 @@
     <description>I make projects with many different stacks. Currently learning about TypeScript, Rust, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!</description>
     <link>https://georgeoffley.com/</link>
     <atom:link href="https://georgeoffley.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 16 Jul 2022 17:47:02 -0400</pubDate>
-    <lastBuildDate>Sat, 16 Jul 2022 17:47:02 -0400</lastBuildDate>
+    <pubDate>Sat, 23 Jul 2022 12:30:28 -0400</pubDate>
+    <lastBuildDate>Sat, 23 Jul 2022 12:30:28 -0400</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
+    
+      <item>
+        <title>Dealing With Multiple Windows in Cypress</title>
+        <description>&lt;h3 id=&quot;introduction&quot;&gt;Introduction&lt;/h3&gt;
+
+&lt;p&gt;Last week I wrote about using &lt;a href=&quot;https://georgeoffley.com/blog/2022-browser-testing-with-cypress.html&quot;&gt;Cypress to test browser applications&lt;/a&gt;. I found a fun little hiccup with links that open new windows or tabs that needed some research and experimenting to get over. I hope my solution helps someone who might come across this in the future.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h3 id=&quot;the-problem&quot;&gt;The Problem&lt;/h3&gt;
+
+&lt;p&gt;I did not think opening new windows or tabs would be an issue. According to their docs, they are firm in their &lt;a href=&quot;https://docs.cypress.io/guides/references/trade-offs#Multiple-tabs&quot;&gt;anti-multitab&lt;/a&gt; stance. It is an odd hill to die on. This has been Cypress’s only speed bump, so I’ll go over the solution.&lt;/p&gt;
+
+&lt;p&gt;So what do I do when I need to test rendered links that open new tabs? Well, the &lt;a href=&quot;https://docs.cypress.io/examples/examples/recipes#Testing-the-DOM&quot;&gt;Cypress docs offer some tips to help deal with that&lt;/a&gt;, and I’ll go over what I ended up with.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-solution&quot;&gt;The Solution&lt;/h3&gt;
+
+&lt;p&gt;Let’s look at what I ended up doing. Here is the complete test&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://d4kma4si4pw0z.cloudfront.net/2022-07-23-dealing-with-multiple-windows-in-cypress/full-test.png&quot; alt=&quot;My complete solution test&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Just a standard test, but I want to draw your attention to this block here.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://d4kma4si4pw0z.cloudfront.net/2022-07-23-dealing-with-multiple-windows-in-cypress/window.png&quot; alt=&quot;Window object block&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This is a fun little hack &lt;a href=&quot;https://github.com/cypress-io/cypress-example-recipes/tree/master/examples/testing-dom__tab-handling-links&quot;&gt;Cypress puts into their docs as a workaround&lt;/a&gt; for multi-window/multi-tab use cases. We’re using their &lt;a href=&quot;https://docs.cypress.io/api/commands/window&quot;&gt;&lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;window()&lt;/code&gt;&lt;/strong&gt;&lt;/a&gt; function in the API to grab the active window object that pops up when we click the link.&lt;/p&gt;
+
+&lt;p&gt;We then utilize the &lt;a href=&quot;https://docs.cypress.io/api/commands/stub&quot;&gt;&lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;stub()&lt;/code&gt;&lt;/strong&gt;&lt;/a&gt; function in their API to store the native &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API/Window/open&quot;&gt;&lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;window.open()&lt;/code&gt;&lt;/strong&gt;&lt;/a&gt; function, which our app uses to open the link.&lt;/p&gt;
+
+&lt;p&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;stub()&lt;/code&gt; function is a tool that allows us to replace a function so that we can control the behavior of the replaced function.&lt;/p&gt;
+
+&lt;p&gt;Finally, we create an alias for us to reference later using the &lt;a href=&quot;https://docs.cypress.io/api/commands/as&quot;&gt;&lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;as()&lt;/code&gt;&lt;/strong&gt;&lt;/a&gt; function.&lt;/p&gt;
+
+&lt;p&gt;This brings us to that second important block.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://d4kma4si4pw0z.cloudfront.net/2022-07-23-dealing-with-multiple-windows-in-cypress/link-click.png&quot; alt=&quot;Link click block&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The first step clicks our link for us. The next step is the crucial bit.&lt;/p&gt;
+
+&lt;p&gt;We use the &lt;a href=&quot;https://docs.cypress.io/api/commands/get#Usage&quot;&gt;&lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;get()&lt;/code&gt;&lt;/strong&gt;&lt;/a&gt; function to grab the window object using the &lt;code class=&quot;highlighter-rouge&quot;&gt;@windowOpen&lt;/code&gt; alias to get the window object we created earlier.&lt;/p&gt;
+
+&lt;p&gt;We then chain our &lt;a href=&quot;https://docs.cypress.io/guides/references/assertions&quot;&gt;assertion&lt;/a&gt; using the &lt;a href=&quot;https://docs.cypress.io/api/commands/should&quot;&gt;&lt;strong&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;should()&lt;/code&gt;&lt;/strong&gt;&lt;/a&gt; function. Cypress packages up another library for their assertions called &lt;a href=&quot;https://github.com/chaijs/chai&quot;&gt;Chai&lt;/a&gt;, and these assertions are used as arguments for the assertion functions in Cypress.&lt;/p&gt;
+
+&lt;p&gt;In the &lt;code class=&quot;highlighter-rouge&quot;&gt;should()&lt;/code&gt; function, the first argument we pass in is the assertion, and the second argument is the thing the assertion is looking for.&lt;/p&gt;
+
+&lt;p&gt;Specifically, we call &lt;code class=&quot;highlighter-rouge&quot;&gt;be.calledWith&lt;/code&gt;, which exists in an extension of Chai called &lt;a href=&quot;https://github.com/domenic/sinon-chai&quot;&gt;Sinon-Chai&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Going back to the window object we created using the &lt;code class=&quot;highlighter-rouge&quot;&gt;stub()&lt;/code&gt; function, the &lt;code class=&quot;highlighter-rouge&quot;&gt;be.calledWith&lt;/code&gt; assertion is looking to confirm that the stub function (our &lt;code class=&quot;highlighter-rouge&quot;&gt;window.open()&lt;/code&gt; function) is being called with the second argument as a substring.&lt;/p&gt;
+
+&lt;p&gt;The second argument is a matcher Cypress uses to find stuff in our assertions. In this case, Cypress sees that our window object is calling &lt;code class=&quot;highlighter-rouge&quot;&gt;window.open(link-url-word-and-the-rest-of-the-link-text)&lt;/code&gt;, and this matcher is looking for the word &lt;code class=&quot;highlighter-rouge&quot;&gt;link-url-word&lt;/code&gt; as a substring within the &lt;code class=&quot;highlighter-rouge&quot;&gt;window.open()&lt;/code&gt; function arguments. Since that word exists in the link string, this test will pass.&lt;/p&gt;
+
+&lt;h3 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h3&gt;
+
+&lt;p&gt;The idea that we can’t expose native browser behavior within Cypress is still an odd choice as we still need to be able to use native browser behavior to test what our app does. Regardless, I appreciate that Cypress offers a solution for this edge case with only a few lines of code.&lt;/p&gt;
+
+&lt;p&gt;I am excited to continue learning about Cypress. So stay tuned for possible future stuff!&lt;/p&gt;
+
+&lt;p&gt;-George&lt;/p&gt;
+</description>
+        <pubDate>Sat, 23 Jul 2022 12:00:00 -0400</pubDate>
+        <link>https://georgeoffley.com/blog/2022-dealing-with-multiple-windows-in-cypress.html</link>
+        <guid isPermaLink="true">https://georgeoffley.com/blog/2022-dealing-with-multiple-windows-in-cypress.html</guid>
+        
+        <category>Cypress</category>
+        
+        <category>Testing</category>
+        
+        <category>JavaScript</category>
+        
+        <category>TypeScript</category>
+        
+        <category>Newbie</category>
+        
+        
+        <category>Blog</category>
+        
+      </item>
     
       <item>
         <title>Browser Testing With Cypress</title>
@@ -956,78 +1033,6 @@
         <pubDate>Fri, 18 Mar 2022 12:00:00 -0400</pubDate>
         <link>https://georgeoffley.com/blog/modules-in-react.html</link>
         <guid isPermaLink="true">https://georgeoffley.com/blog/modules-in-react.html</guid>
-        
-        <category>React</category>
-        
-        <category>Newbie</category>
-        
-        
-        <category>Blog</category>
-        
-      </item>
-    
-      <item>
-        <title>Implementing Routing in React</title>
-        <description>&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#react_router_dom&quot;&gt;React Router Dom&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#setup&quot;&gt;Setup&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#explainer&quot;&gt;Explainer&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#conclusion&quot;&gt;Conclusion&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;introduction-&quot;&gt;Introduction &lt;a name=&quot;introduction&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;Implementing routing in React applications can be one of the first tasks you undertake in the coding part of the development lifecycle. This was true for my team when we sat down to a mob programming session to go through a couple of our stories for a project. We brought in some help from people who know React to help us get started. I am not a React developer, so this is the first time I had actual exposure to people with expertise, so I am grateful it was a group programming session. I don’t know what I was doing when the rest of the world learned React, but I can only guess it had something to do with playing the Sims. Regardless I use the right tool for the job, and I need to learn it now. The first thing we did was implement some routing, and I will implement a much more simplified version of what we did below to show what I learned.&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;h3 id=&quot;react-router-dom-&quot;&gt;React Router Dom &lt;a name=&quot;react_router_dom&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;I understand React is a set of APIs and libraries used in different ways to implement cool stuff on your screen. We got more into using TypeScript on top of React, but I like to write about things even if I only have a cursory knowledge of them, and my understanding of TypeScript doesn’t even measure up to that. So I’ll stick with React only for now.&lt;/p&gt;
-
-&lt;p&gt;Routing in a React app is what the app does when a user goes to a specific URL. As we’re dealing with React, we need to create components that make up our pages, and we’ll use a library to route to those components. In our case, we used the ever-popular &lt;a href=&quot;https://reactrouter.com/&quot;&gt;React Router Dom&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h3 id=&quot;setup-&quot;&gt;Setup &lt;a name=&quot;setup&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;An easy bit of setup. I created a new app using &lt;code class=&quot;highlighter-rouge&quot;&gt;npx create-react-app react-router&lt;/code&gt;, which gave me a basic app. I then ran &lt;code class=&quot;highlighter-rouge&quot;&gt;npm install react-router-dom&lt;/code&gt; to install the needed package. Then I was off to the races.&lt;/p&gt;
-
-&lt;p&gt;I created two simple page components to then import into my main App.js.&lt;/p&gt;
-
-&lt;p&gt;The Home component.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-12-implementing-routing-in-react/home.png&quot; alt=&quot;Home component&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;And the About component.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-12-implementing-routing-in-react/about.png&quot; alt=&quot;About component&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Finally, I went through some of the docs and found an easy way to get basic routing. All of which is reflected in my main App.js file.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-12-implementing-routing-in-react/app.png&quot; alt=&quot;App.js file&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;explainer-&quot;&gt;Explainer &lt;a name=&quot;explainer&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;This needs explaining. I created a basic component for the home and the about pages. Both of them just return a header with the name in the tag. I imported them into app.js and imported BrowserRouter, Routes, and Route from the React Router Dom package. Each of these is going to help us create routing.&lt;/p&gt;
-
-&lt;p&gt;First, we create the router using the BrowserRouter tag. Then nested in there, we make the Routes block. The routes block, which took the place of the Switch block in v6 of the React Router Package, looks at our nested routes and tells the app where to go. Finally, we have the “links” in the Route tags. We specify the path to look for in the Route tag and which element to point at. It’s also good to remember that the element should take the form of curly brackets and an open and closing tag (the &lt;code class=&quot;highlighter-rouge&quot;&gt;{&amp;lt;Home/&amp;gt;}&lt;/code&gt; you see in my code). I mention this as most tutorials I looked up about this used Switch, Links, and the elements used the &lt;code class=&quot;highlighter-rouge&quot;&gt;{Home}&lt;/code&gt; syntax.&lt;/p&gt;
-
-&lt;p&gt;And that is it. If I navigate to &lt;code class=&quot;highlighter-rouge&quot;&gt;localhost:3000/&lt;/code&gt;, we see the below image.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-12-implementing-routing-in-react/home_page.png&quot; alt=&quot;Home Page after implementing routing&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;And the same thing on the about page at &lt;code class=&quot;highlighter-rouge&quot;&gt;localhost:3000/about&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-12-implementing-routing-in-react/about_page.png&quot; alt=&quot;About Page after implementing routing&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;conclusion-&quot;&gt;Conclusion &lt;a name=&quot;conclusion&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;It is a simple thing but something I learned while working with a team of React people. Using React is still akin to reading an upsidedown French map of Germany. However, I am starting to grasp the basics. Everything seems just to be something that’s been imported from somewhere else. Next time I think I’ll write about how you can create React packages similar to Python for easy and clean importing.&lt;/p&gt;
-</description>
-        <pubDate>Sat, 12 Mar 2022 12:00:00 -0500</pubDate>
-        <link>https://georgeoffley.com/blog/implementing-routing-in-react.html</link>
-        <guid isPermaLink="true">https://georgeoffley.com/blog/implementing-routing-in-react.html</guid>
         
         <category>React</category>
         
