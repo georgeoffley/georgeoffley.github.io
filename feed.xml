@@ -5,9 +5,78 @@
     <description>I make projects with many different stacks. Currently learning about TypeScript, Rust, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!</description>
     <link>https://georgeoffley.com/</link>
     <atom:link href="https://georgeoffley.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 23 Jul 2022 12:30:28 -0400</pubDate>
-    <lastBuildDate>Sat, 23 Jul 2022 12:30:28 -0400</lastBuildDate>
+    <pubDate>Sat, 30 Jul 2022 18:22:31 -0400</pubDate>
+    <lastBuildDate>Sat, 30 Jul 2022 18:22:31 -0400</lastBuildDate>
     <generator>Jekyll v3.8.4</generator>
+    
+      <item>
+        <title>JavaScript Shenanigans: </title>
+        <description>&lt;h3 id=&quot;introduction&quot;&gt;Introduction&lt;/h3&gt;
+
+&lt;p&gt;JavaScript, like every language, is weird in it’s own ways. As I continue diving in, I am starting to realize the depths of the silliness.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;So the other day, I wrote some logic for something using pure JavaScript. It looked a little like this.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://d4kma4si4pw0z.cloudfront.net/2022-07-30-javascript-shenanigans-empty-arrays/sample-code.png&quot; alt=&quot;Code with issues&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This would eventually be used to create an array of objects with months and total users for that month. I wanted to do this by creating an array, looping through data, and checking if the array was empty. Add the first empty object to the array. If it was not empty, run the logic for the next object in the array.&lt;/p&gt;
+
+&lt;p&gt;Pretty simple, I’ve done it similarly in Python many times. So I couldn’t understand why nothing was working.&lt;/p&gt;
+
+&lt;p&gt;Come to find out, JavasScript like’s to do things a certain way.&lt;/p&gt;
+
+&lt;p&gt;The initiated amongst you already noted this, but for the rest of us draw your attention to line seven for the issue.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://d4kma4si4pw0z.cloudfront.net/2022-07-30-javascript-shenanigans-empty-arrays/sample-code-highlight.png&quot; alt=&quot;Highlighted issues from the sample code.&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;JavaScript will evaluate empty arrays (and objects) as truthy or True in a boolean context.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://media.giphy.com/media/4a5b3ppQ3Th8oDZB7y/giphy.gif&quot; alt=&quot;What? Why?&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;It made no sense to me why this was happening. It’s an empty array. In Python, when using a boolean operation, &lt;a href=&quot;https://docs.python.org/3/library/operator.html?highlight=#operator.not_&quot;&gt;arrays utilize the &lt;code class=&quot;highlighter-rouge&quot;&gt;__bool__&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;__len__&lt;/code&gt; dunder function&lt;/a&gt;, which, if the array is empty, returns a &lt;code class=&quot;highlighter-rouge&quot;&gt;0&lt;/code&gt;. Which evaluates to &lt;code class=&quot;highlighter-rouge&quot;&gt;False&lt;/code&gt;. The above is common practice for Python code.&lt;/p&gt;
+
+&lt;p&gt;Not in JavaScript.&lt;/p&gt;
+
+&lt;p&gt;This might be just me &lt;a href=&quot;https://youtu.be/jqrwo6UBefk&quot;&gt;getting glasses for the first time and realizing that leaves on trees are not weird green blobs&lt;/a&gt; but have shapes. I don’t know. But I say again; Why?&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://media.giphy.com/media/2xwWl4iiaR0UKIiiRQ/giphy.gif&quot; alt=&quot;I mean... why?&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;why&quot;&gt;Why?&lt;/h3&gt;
+
+&lt;p&gt;They (kind of but not really) tell you &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Glossary/Truthy&quot;&gt;right in the&lt;/a&gt; &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Glossary/Falsy&quot;&gt;MDN docs&lt;/a&gt;. And to quote them:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;All values are truthy unless they are defined as falsy. That is, all values are truthy except &lt;code class=&quot;highlighter-rouge&quot;&gt;False&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;0&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;-0&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;0n&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;&quot;&quot;&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;null&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;undefined&lt;/code&gt;, and &lt;code class=&quot;highlighter-rouge&quot;&gt;NaN&lt;/code&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;So JavaScript has some magic going on that treats even empty arrays as objects and evaluates them as &lt;code class=&quot;highlighter-rouge&quot;&gt;True&lt;/code&gt;. &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Glossary/Type_coercion&quot;&gt;Type coercion&lt;/a&gt; is that magic.&lt;/p&gt;
+
+&lt;p&gt;Type coercion is the process JavaScript uses when making comparisons. So, for example, if we have &lt;code class=&quot;highlighter-rouge&quot;&gt;'1' == 1&lt;/code&gt;, the JavaScript will compiler will coerce the number type &lt;code class=&quot;highlighter-rouge&quot;&gt;1&lt;/code&gt; into a string and returns &lt;code class=&quot;highlighter-rouge&quot;&gt;True&lt;/code&gt;. You can force type checking by doing this &lt;code class=&quot;highlighter-rouge&quot;&gt;'1' === 1&lt;/code&gt;, which will return &lt;code class=&quot;highlighter-rouge&quot;&gt;False&lt;/code&gt;. I learned that early, although I did not realize it was through the same process that would trip me up now.&lt;/p&gt;
+
+&lt;p&gt;JavaScript coerces the empty array to be &lt;code class=&quot;highlighter-rouge&quot;&gt;True&lt;/code&gt; in my code, and my logic doesn’t work.&lt;/p&gt;
+
+&lt;p&gt;This is not a problem, just an odd quirk. I avoided this by checking the length directly—no big deal.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://d4kma4si4pw0z.cloudfront.net/2022-07-30-javascript-shenanigans-empty-arrays/new-sample-code.png&quot; alt=&quot;Corrected code&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And now we’re good. I hope this helps someone new to the language, and I’m sure I’ll write about its quirkiness in the future.&lt;/p&gt;
+
+&lt;p&gt;-George&lt;/p&gt;
+</description>
+        <pubDate>Sat, 30 Jul 2022 12:00:00 -0400</pubDate>
+        <link>https://georgeoffley.com/blog/2022-javascript-shenanigans-empty-arrays.html</link>
+        <guid isPermaLink="true">https://georgeoffley.com/blog/2022-javascript-shenanigans-empty-arrays.html</guid>
+        
+        <category>JavaScript</category>
+        
+        <category>Newbie</category>
+        
+        
+        <category>Blog</category>
+        
+      </item>
     
       <item>
         <title>Dealing With Multiple Windows in Cypress</title>
@@ -942,101 +1011,6 @@
         <category>Lambda</category>
         
         <category>Intermediate</category>
-        
-        
-        <category>Blog</category>
-        
-      </item>
-    
-      <item>
-        <title>Modules in React</title>
-        <description>&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;#introduction&quot;&gt;Introduction&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#react-modules&quot;&gt;React Modules&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#in-app-example&quot;&gt;In-App Example&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#named-v-default&quot;&gt;Named Imports vs. Default Imports&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;#conclusion&quot;&gt;Conclusion&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;introduction-&quot;&gt;Introduction &lt;a name=&quot;introduction&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;The organization of your apps is one of the most effortless quality of life improvements you can make. Recently I’ve been deep-diving into React for a work project, and I was able to get a crash course in how you organize one such app. Including how React treats its files and how we’re importing them. So today, I’d like to get into how React handles modules and how importing is done.&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;h3 id=&quot;react-modules-&quot;&gt;React Modules &lt;a name=&quot;react-modules&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://reactjs.org/docs/faq-structure.html#is-there-a-recommended-way-to-structure-react-projects&quot;&gt;React has no opinions on how you organize your code&lt;/a&gt;. This is fine as engineers usually have plenty of views on this, and the subject matter expert we’re working with was no exception. After talking it through, we decided to organize our app where each feature was organized into its own directory. This also gives us a choice to utilize &lt;code class=&quot;highlighter-rouge&quot;&gt;index.js&lt;/code&gt; files to handle exports.&lt;/p&gt;
-
-&lt;p&gt;The most straightforward analogy coming from Python was that React lets you put your files into a directory and then create an &lt;code class=&quot;highlighter-rouge&quot;&gt;index.js&lt;/code&gt; file that exports everything. This is similar to how Python will utilize an &lt;code class=&quot;highlighter-rouge&quot;&gt;__init__.py&lt;/code&gt; file to export everything into the main logic files.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-18-modules-in-react/react_modules.jpeg&quot; alt=&quot;React Modules diagram&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;So if I have one or more modules I need to import into the &lt;code class=&quot;highlighter-rouge&quot;&gt;App.js&lt;/code&gt; file for a feature, I can utilize the &lt;code class=&quot;highlighter-rouge&quot;&gt;index.js&lt;/code&gt; file to import all of them and serve as one export point for your &lt;code class=&quot;highlighter-rouge&quot;&gt;App.js&lt;/code&gt; or wherever you are utilizing said feature.&lt;/p&gt;
-
-&lt;h3 id=&quot;in-app-example-&quot;&gt;In-App Example &lt;a name=&quot;in-app-example&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;Let’s go through a quick example. I created a small React application to demonstrate what I am talking about. I organized it as such.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Src
-    &lt;ul&gt;
-      &lt;li&gt;App Feature
-        &lt;ul&gt;
-          &lt;li&gt;Hello.js&lt;/li&gt;
-          &lt;li&gt;Worlds.js&lt;/li&gt;
-          &lt;li&gt;Index.js&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;App.js&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;I created a directory named AppFeature to hold the modules I want to organize under there. The Hello and World modules look similar; they are only components that render a new div tag with some words. See the code below.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-18-modules-in-react/hello.png&quot; alt=&quot;hello.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-18-modules-in-react/world.png&quot; alt=&quot;world.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The AppFeature directory will have an &lt;code class=&quot;highlighter-rouge&quot;&gt;index.js&lt;/code&gt; file that will handle exporting. This file will be used as a “central hub” where we can export all our modules into different parts of the application. You can see the code below.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-18-modules-in-react/indexjs.png&quot; alt=&quot;indexjs.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;In the code above I put in two export statements. From here is where our modules will be exported from. This makes for cleaner imports into our &lt;code class=&quot;highlighter-rouge&quot;&gt;App.js&lt;/code&gt; file. As seen below.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-18-modules-in-react/appjs.png&quot; alt=&quot;appjs.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;At the top, you can see a clean import statement where we import a list of modules from the AppFeature directory. After that, we can apply them right into our application. It comes out looking like this.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-18-modules-in-react/app_page.png&quot; alt=&quot;app_page.png&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;named-imports-vs-default-imports-&quot;&gt;Named Imports vs. Default Imports &lt;a name=&quot;named-v-default&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;The above example details what are referred to as Named Imports, but that is not the only way to handle exporting and importing. There are other ways to export/import your needed modules. For example, suppose we are building components with multiple modules that do not need to be imported into the main application files. In that case, we can organize them so our main module can import all it needs and serve as the main component or class module to be exported. As demonstrated below.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-18-modules-in-react/defualt_hello_world.png&quot; alt=&quot;defaulthelloworld.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-18-modules-in-react/default_indexjs.png&quot; alt=&quot;default_index.js&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://georgeoffley-blog-images.s3.amazonaws.com/2022-03-18-modules-in-react/default_appjs.png&quot; alt=&quot;default_app.js&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;If we organize our code such that we want to keep internal modules internal, we can explore this type of organization. Using Default Imports, we’re still doing the same thing: we use our &lt;code class=&quot;highlighter-rouge&quot;&gt;index.js&lt;/code&gt; file to handle our exports. The difference is that we’re organizing everything into one module and only exporting that one module. This makes everything even cleaner.&lt;/p&gt;
-
-&lt;h3 id=&quot;conclusion-&quot;&gt;Conclusion &lt;a name=&quot;conclusion&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;One of the goals for the application we are building is to optimize our workflow. Organizing your code by utilizing modules in React is just one way in which we are meeting that goal. There are many things to consider, but I believe we are headed in the right direction. I hope this helps someone looking to organize their React projects.&lt;/p&gt;
-
-&lt;p&gt;-George&lt;/p&gt;
-</description>
-        <pubDate>Fri, 18 Mar 2022 12:00:00 -0400</pubDate>
-        <link>https://georgeoffley.com/blog/modules-in-react.html</link>
-        <guid isPermaLink="true">https://georgeoffley.com/blog/modules-in-react.html</guid>
-        
-        <category>React</category>
-        
-        <category>Newbie</category>
         
         
         <category>Blog</category>
