@@ -10,7 +10,7 @@ var index = lunr(function () {
 
 
     index.add({
-      title: "JavaScript Shenanigans: ",
+      title: "JavaScript Shenanigans: Empty Arrays",
       category: ["Blog"],
       content: "Introduction\n\nJavaScript, like every language, is weird in it’s own ways. As I continue diving in, I am starting to realize the depths of the silliness.\n\n\n\nSo the other day, I wrote some logic for something using pure JavaScript. It looked a little like this.\n\n\n\nThis would eventually be used to create an array of objects with months and total users for that month. I wanted to do this by creating an array, looping through data, and checking if the array was empty. Add the first empty object to the array. If it was not empty, run the logic for the next object in the array.\n\nPretty simple, I’ve done it similarly in Python many times. So I couldn’t understand why nothing was working.\n\nCome to find out, JavasScript like’s to do things a certain way.\n\nThe initiated amongst you already noted this, but for the rest of us draw your attention to line seven for the issue.\n\n\n\nJavaScript will evaluate empty arrays (and objects) as truthy or True in a boolean context.\n\n\n\nIt made no sense to me why this was happening. It’s an empty array. In Python, when using a boolean operation, arrays utilize the __bool__ or __len__ dunder function, which, if the array is empty, returns a 0. Which evaluates to False. The above is common practice for Python code.\n\nNot in JavaScript.\n\nThis might be just me getting glasses for the first time and realizing that leaves on trees are not weird green blobs but have shapes. I don’t know. But I say again; Why?\n\n\n\nWhy?\n\nThey (kind of but not really) tell you right in the MDN docs. And to quote them:\n\n\n  All values are truthy unless they are defined as falsy. That is, all values are truthy except False, 0, -0, 0n, \"\", null, undefined, and NaN.\n\n\nSo JavaScript has some magic going on that treats even empty arrays as objects and evaluates them as True. Type coercion is that magic.\n\nType coercion is the process JavaScript uses when making comparisons. So, for example, if we have '1' == 1, the JavaScript will compiler will coerce the number type 1 into a string and returns True. You can force type checking by doing this '1' === 1, which will return False. I learned that early, although I did not realize it was through the same process that would trip me up now.\n\nJavaScript coerces the empty array to be True in my code, and my logic doesn’t work.\n\nThis is not a problem, just an odd quirk. I avoided this by checking the length directly—no big deal.\n\n\n\nAnd now we’re good. I hope this helps someone new to the language, and I’m sure I’ll write about its quirkiness in the future.\n\n-George\n",
       tags: ["JavaScript","Newbie"],
@@ -200,7 +200,7 @@ var index = lunr(function () {
 
 
 var store = [{
-    "title": "JavaScript Shenanigans: ",
+    "title": "JavaScript Shenanigans: Empty Arrays",
     "link": "/blog/2022-javascript-shenanigans-empty-arrays.html",
     "image": "https://georgeoffley-blog-images.s3.amazonaws.com/2022-07-30-javascript-shenanigans-empty-arrays/cover.jpg",
     "date": "July 30, 2022",
