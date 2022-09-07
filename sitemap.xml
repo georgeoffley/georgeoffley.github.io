@@ -85,6 +85,10 @@
 <lastmod>2022-07-30T12:00:00-04:00</lastmod>
 </url>
 <url>
+<loc>https://georgeoffley.com/blog/easy-cdn-using-aws-s3-and-cloudfront.html</loc>
+<lastmod>2022-09-07T12:00:00-04:00</lastmod>
+</url>
+<url>
 <loc>https://georgeoffley.com/404</loc>
 </url>
 <url>
@@ -158,6 +162,9 @@
 </url>
 <url>
 <loc>https://georgeoffley.com/tag/Cypress/</loc>
+</url>
+<url>
+<loc>https://georgeoffley.com/tag/Tooling/</loc>
 </url>
 <url>
 <loc>https://georgeoffley.com/categories/Blog/</loc>

@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title> George Offley &mdash; Software Engineer </title>
-    <meta property="og:title" content=" George Offley &mdash; Software Engineer " />
+    <title>Easy CDN using S3 and CloudFront | George Offley &mdash; Software Engineer </title>
+    <meta property="og:title" content="Easy CDN using S3 and CloudFront | George Offley &mdash; Software Engineer " />
 
     <meta name="description" content="I make projects with many different stacks. Currently learning about TypeScript, Rust, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!">
     <meta name="description" property="og:description" content="I make projects with many different stacks. Currently learning about TypeScript, Rust, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!" />
@@ -14,19 +14,19 @@
     <!-- Twitter cards -->
     <meta name="twitter:site"    content="@georgeoffley">
     <meta name="twitter:creator" content="@georgeoffley">
-    <meta name="twitter:title"   content="">
+    <meta name="twitter:title"   content="Easy CDN using S3 and CloudFront">
 
     
-    <meta name="twitter:description" content="I make projects with many different stacks. Currently learning about TypeScript, Rust, and the graphics pipeline. I also love writing and well made movies. Check out my blog and my twitter to contact me!">
+    <meta name="twitter:description" content="I created an easy CDN for my static website assets.">
     
 
     
     <meta name="twitter:card"  content="summary_large_image">
-    <meta name="twitter:image" content="https://georgeoffley.com/assets/images/flat-laptop-cover.png">
+    <meta name="twitter:image" content="https://georgeoffley-blog-images.s3.amazonaws.com/2022-09-07-easy-cdn-with-aws-s3-and-cloudfront/cover.png">
     
     <!-- end of Twitter cards -->
     
-    <meta property="og:url" content="https://georgeoffley.com/404" />
+    <meta property="og:url" content="https://georgeoffley.com/blog/easy-cdn-using-aws-s3-and-cloudfront.html" />
 
     <meta property="og:image" content="" />
 
@@ -104,7 +104,7 @@
     
     <link rel="stylesheet" href="https://georgeoffley.com/assets/css/main.css">
 
-    <link rel="canonical" href="https://georgeoffley.com/404">
+    <link rel="canonical" href="https://georgeoffley.com/blog/easy-cdn-using-aws-s3-and-cloudfront.html">
 
     <link rel="alternate" type="application/rss+xml" title="" href="https://georgeoffley.com/feed.xml">
 </head>
@@ -235,7 +235,124 @@
 </div>
 
 
-                <div class="not-found post">Oops! There is nothing here.</div>
+                <article class="post single" role="article" itemscope itemtype="http://schema.org/BlogPosting">
+    <header class="post-header">
+        <ul>
+            <li><time datetime="2022-09-07T12:00:00-04:00" itemprop="datePublished">7 Sep, 2022</time></li>
+            
+                
+                <li class="cats">
+                    
+                        <a href="/categories/Blog/">Blog</a>
+                    
+                </li>
+                
+            
+        </ul>
+        <h2 itemprop="name headline">Easy CDN using S3 and CloudFront</h2>
+    </header>
+
+    <div class="post-content">
+        
+            <figure>
+                <img src="https://georgeoffley-blog-images.s3.amazonaws.com/2022-09-07-easy-cdn-with-aws-s3-and-cloudfront/cover.png" alt="I created an easy CDN for my static website assets." />
+            </figure>
+        
+        <h3 id="introduction">Introduction</h3>
+
+<p>Since I started blogging, I have been using S3 to store images for my blog. I just used the publicly accessible S3 Link. Easy, simple, no problem.</p>
+
+<!--more-->
+
+<p>I did this for a long time without realizing two things.</p>
+
+<ol>
+  <li>
+    <p>I was leaving some performance on the table by not utilizing a content delivery network.</p>
+  </li>
+  <li>
+    <p>I was probably using the least secure method for serving images.</p>
+  </li>
+</ol>
+
+<p>So I combined S3 with CloudFront to create a more secure and performant static asset delivery workflow.</p>
+
+<p>My only regret is not taking controlled measurements of my image serving times, as once this was completed, my static assets loaded much faster. Regardless let’s go through what I did.</p>
+
+<h3 id="setup">Setup</h3>
+
+<p>I already had an S3 bucket set up, but it is a simple process if you don’t.</p>
+
+<p>Sign in to your AWS console and navigate to the S3 management screen.</p>
+
+<p><img src="https://d4kma4si4pw0z.cloudfront.net/2022-09-07-easy-cdn-with-aws-s3-and-cloudfront/s3.png" alt="S3 Page" /></p>
+
+<p>You can create a new bucket by hitting the “Create bucket” button.</p>
+
+<p>You can leave all the default options for the bucket. We’ll take an extra step to ensure only our new distribution has access to our bucket.</p>
+
+<p>After completing this, head over to the CloudFront screen in AWS and hit the “Create distribution” button.</p>
+
+<p><img src="https://d4kma4si4pw0z.cloudfront.net/2022-09-07-easy-cdn-with-aws-s3-and-cloudfront/cloudfront.png" alt="CloudFront page" /></p>
+
+<p>The first option is setting the origin. Clicking that input box brings down a list of your S3 buckets; I chose the one I made earlier.</p>
+
+<p><img src="https://d4kma4si4pw0z.cloudfront.net/2022-09-07-easy-cdn-with-aws-s3-and-cloudfront/origin-setting.png" alt="Setting the origin" /></p>
+
+<p>There are dozens of different settings for the distribution that you can go through and customize to fit your situation, but I want to focus on the “Origin access” section. I clicked the option for “Origin access control settings,” which has you choose an origins access control template. I created a new one for this purpose.</p>
+
+<p>Once you click the create button, you’ll be taken back to the main page while the distribution starts deploying. At the top, you’ll see a button to copy the bucket policy for S3. Clicking this button will copy some JSON code into your clipboard meant to be copied into your S3 permissions tab. The console will also have a convenient link to open the “Permissions” tab in your S3 bucket.</p>
+
+<p>Scroll down to the “Bucket policy” section, where you can hit the “Edit” button and copy in the JSON CloudFront provided.</p>
+
+<p><img src="https://d4kma4si4pw0z.cloudfront.net/2022-09-07-easy-cdn-with-aws-s3-and-cloudfront/bucket-policy.png" alt="Bucket policy section in S3 bucket" /></p>
+
+<p>Note: I had to go to <a href="https://jsonformatter.org/json-pretty-print">this site</a> and copy in the JSON to better format it for S3 to accept the settings.</p>
+
+<p>Once you do that, you click “Save changes,” and you’re done. You can now serve images of Serena being fantastic in a performant and scalable way.</p>
+
+<p><img src="https://dsjfx74oztd4h.cloudfront.net/serena.gif" alt="Serena being fantastic" /></p>
+
+<p>Just note that you’ll have to go back to distribution and get the distribution URL. You just add the route to your S3 assets from there, like below, and you’re golden.</p>
+
+<p><img src="https://d4kma4si4pw0z.cloudfront.net/2022-09-07-easy-cdn-with-aws-s3-and-cloudfront/url.png" alt="URL breakdown for CloudFront assets" /></p>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>An easy solution to hosting images and whatever else you want. I have some issues with it that I will get into, but so far, so good.</p>
+
+<p>-George</p>
+
+    </div>
+
+    <footer class="post-footer">
+        <div class="share">Share
+            <ul class="social-networks">
+                <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Easy CDN using S3 and CloudFront&p[summary]=Introduction
+
+Since I started blogging, I have been using S3 to store images for my blog. I just used the publicly accessible S3 Link. Ea...&p[url]=https://georgeoffley.com/blog/easy-cdn-using-aws-s3-and-cloudfront.html" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></li>
+                <li class="share-twitter"><a href="http://twitter.com/share?url=https://georgeoffley.com/blog/easy-cdn-using-aws-s3-and-cloudfront.html&text=Introduction
+
+Since I started blogging, I have been using S3 to store images for my blog. I just used the publicly accessible S3 Link. Ea...&hashtags=AWS,Newbie,Tooling," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://georgeoffley.com/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+            </ul>
+        </div>
+        
+        <div class="tags">
+            <ul>
+                
+                <li><a href="https://georgeoffley.com/tag/AWS">AWS</a></li>
+                
+                <li><a href="https://georgeoffley.com/tag/Newbie">Newbie</a></li>
+                
+                <li><a href="https://georgeoffley.com/tag/Tooling">Tooling</a></li>
+                
+            </ul>
+        </div>
+        
+    </footer>
+</article>
+
+
             </main>
         </div>
 
